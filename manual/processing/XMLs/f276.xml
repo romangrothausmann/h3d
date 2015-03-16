@@ -1,4 +1,4 @@
 <ict_transform_list>
-	<iict_transform class="mpicbg.trakem2.transform.RigidModel2D" data="-0.043927436389818095 -1813.1118343582305 472.0410444621839" />
-	<iict_transform invertible="true" class="mpicbg.trakem2.transform.TranslationModel2D" data="0.0 0.0" />
+	<iict_transform class="mpicbg.trakem2.transform.RigidModel2D" data="-0.12229634760706276 353.28137 1877.8494" />
+	<iict_transform invertible="true" class="mpicbg.trakem2.transform.TranslationModel2D" data="333.0 -312.0" />
 </ict_transform_list>
