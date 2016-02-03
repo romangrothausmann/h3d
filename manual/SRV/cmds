@@ -1,0 +1,36 @@
+
+grothama@iana0:/raid5/sdb3/grothama/kap-net/histo-slices/kap-net_histo_reg/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1+0.331662/SRV$
+
+ln -s ../z-slice.lst .
+
+make -j12 #24 causes swapping due to RAM used by c3d
+
+rsync -avP plane-B_* plane-A_* kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2*png vis_SRV-*png /net/home/grothama/publications/acn/latex/images/SRV/
+
+
+##for vis.
+
+ln -s ../virt_endo2/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_Bt+mask_rs+0+1.0_sws_th+0.vtp Bt.vtp
+
+ln -s ../virt_endo2/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+V+mask_rs+0+1.0_sws_th+0_V.vtp V.vtp
+ln -s ../virt_endo2/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+V+mask_rs+0+1.0_sws_th+0_A.vtp A.vtp
+
+## for blender vis
+
+make -j12 vis_SRV-curved.blend
+
+
+make Makefile.dot.svg
+
+
+
+
+- created and added fig_SRV-curved.blend to git
+-- fig_SRV-curved.blend has only linked Meshes and is less than 1MB
+-- fig_SRV-curved.blend belongs to the intermediate files that Makefile depends on
+
+make fig_SRV-curved_01.png fig_SRV-curved_02.png fig_SRV-curved_03.png fig_SRV-curved_04.png # creates images for fig:srv-curved
+
+
+
+
