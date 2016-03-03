@@ -7,8 +7,9 @@ SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 ## run IM tools without setting cration and modification date (or -strip) to avoid changes in PNGs that are not visual: http://stackoverflow.com/questions/13577280/getting-imagemagick-convert-to-not-write-out-extra-info
-convertIM:= convert +set date:create +set date:modify
-mogrifyIM:= mogrify +set date:create +set date:modify
+## some bug now needs even more default options: http://unix.stackexchange.com/questions/255252/create-the-same-png-with-imagemagick-2-times-binaries-differ#255256
+convertIM:= convert -define png:exclude-chunks=date,time +set date:create +set date:modify
+mogrifyIM:= mogrify -define png:exclude-chunks=date,time +set date:create +set date:modify
 
 SPACE := $(eval) $(eval)
 base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))
@@ -19,12 +20,17 @@ ITKDIR = ~/itk/simple/build_itk4_iana0
 fig_histo_3D-sliced+seg_PNGs= BG_x@0838.png BG_y@1624.png BG_z@0688_sb.png OV1_LUT_x@0838.png OV1_LUT_y@1624.png OV1_LUT_z@0688.png 3D-OV.png
 fig_histo_3D-sliced+seg_PNGs:= $(addprefix fig_histo_3D-sliced+seg/,$(fig_histo_3D-sliced+seg_PNGs))
 
+SBx= 150
+SBy= 200
+SBw+x= $(shell printf %.0f `echo 100/0.331662+$(SBx) | bc -l`)
+
 .PHONY: all clean
 
 all: fig_histo_3D-sliced+seg.svg fig_histo_3D-sliced+seg.svg.neato.Make.svg fig_histo_3D-sliced+seg.svg.fdp.Make.svg
 
 clean:
-	@-rm -v BG_x@0838.png BG_y@1624.png BG_z@0688.png OV1_LUT_x@0838.png OV1_LUT_y@1624.png OV1_LUT_z@0688.png LUT.png
+	@-rm -v BG_x@0838.png BG_y@1624.png BG_z@0688.png OV1_LUT_x@0838.png OV1_LUT_y@1624.png OV1_LUT_z@0688.png LUT.png 3D-OV.png
+	@-rm -v h3d_hull_00.vtp h3d_rsi+1+1.0.mha BG.mha OV1.mha
 	@-rm -v fig_histo_3D-sliced+seg.svg fig_histo_3D-sliced+seg/*
 	@-rmdir -v fig_histo_3D-sliced+seg/
 	@-rm -v fig_histo_3D-sliced+seg.svg.gv fig_histo_3D-sliced+seg.svg.neato.Make.svg fig_histo_3D-sliced+seg.svg.fdp.Make.svg
@@ -36,6 +42,21 @@ clean:
 # %.mha : ../%.mha
 # 	ln -sf ../$@ .
 
+BG.mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha
+	ln -sf $< $@
+
+OV1.mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B.mha
+	ln -sf $< $@
+
+h3d_rsi+1+1.0.mha : ../../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1+1.0.mha
+	ln -sf $< $@
+
+h3d_hull_00.vtp : ../kap-net_histo_reg_8bit_mask_hull_00.vtp
+	ln -sf $< $@
+
+3D-OV.png : xyz-sliced+hull.pvsm h3d_rsi+1+1.0.mha h3d_hull_00.vtp
+	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/render-view.py  -s 1024 1024 -oa -i $< -png $@
+
 LUT.png :
 	$(convertIM) xc:#000 xc:#f00 xc:#0f0 xc:#00f -append -transparent black $@
 
@@ -43,19 +64,18 @@ OV1_LUT_%.png : OV1_%.png LUT.png
 #	$(eval opts=-rotate 270)
 	$(convertIM) $<  LUT.png  -fx "v.p{0,u.p*2^`$(convertIM) $< -format '%z' info:`}" -transparent black $(opts) $@ # p in [0;1], QuantumRange==IM's max bit depth (see Qxx in convert -version), u.depth should work but does not and is very slow
 
+## uncomment to replace black with transp (white) in SVG
+# fig_histo_3D-sliced+seg/BG_%.png : BG_%.png
+# 	$(convertIM) $< -transparent black $@
+
 %_sb.png : %.png
-	mv $< $@ # this should be replaced by cmds creating sb, e.g. exiftool -SubjectPixelWidth %.ext.png + convert -gravity SouthEast -stroke ${colour} -strokewidth ${strokewidth} -draw "line ${bh},${uy},${scalebar},${uy}" 
+	$(convertIM) -rotate 180 -stroke white -strokewidth 30 -draw "line $(SBx),$(SBy),$(SBw+x),$(SBy)" -rotate -180 $< $@ # double rotate to mimic -gravity SouthEast, which is not used by line: http://www.imagemagick.org/Usage/annotating/#gravity
 
 fig_histo_3D-sliced+seg/ :
 	mkdir -p $@
 
 fig_histo_3D-sliced+seg/%.png : %.png | fig_histo_3D-sliced+seg/
-## if needed due to new shortest stem matching rule: http://stackoverflow.com/questions/9301669/gnumake-and-pattern-rules  https://lists.gnu.org/archive/html/info-gnu/2010-07/msg00023.html
-	@if [ "$*" == "3D-OV" ]; then \
-	   cp $*.png $@ ; \
-	else \
-	   mv $*.png $@ ; \
-	fi
+	mv $*.png $@ ; \
 
 fig_histo_3D-sliced+seg.svg : $(fig_histo_3D-sliced+seg_PNGs)
 	sed 's$$xlink:href="file:///myURL/$$xlink:href="fig_histo_3D-sliced+seg/$$g' < fig_base.svg > $@
