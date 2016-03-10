@@ -37,8 +37,8 @@ clean :
 $(BNseg).mha : ../h3d_seg_A+B+T.mha
 	ln -sf $< $@
 
-%_rs+1.0.mha : ../h3d_rsi+1+1.0.mha
-	ln -sf $< $@
+%_rs+1.0.mha : %.mha
+	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
 
 %_B_raw.vtp %_B_sws.vtp : %.mha
 	$(VTKDIR)/discrete_marching-cubes $< $*_B 1 1 1
