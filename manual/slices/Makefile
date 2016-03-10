@@ -42,16 +42,16 @@ clean:
 # %.mha : ../%.mha
 # 	ln -sf ../$@ .
 
-BG.mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha
+BG.mha : ../../processing/h3d.mha
 	ln -sf $< $@
 
-OV1.mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B.mha
+OV1.mha : ../../processing/h3d_seg_A+B.mha
 	ln -sf $< $@
 
-h3d_rsi+1+1.0.mha : ../../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1+1.0.mha
+h3d_rsi+1+1.0.mha : ../../processing/h3d_rsi+1+1.0.mha
 	ln -sf $< $@
 
-h3d_hull_00.vtp : ../kap-net_histo_reg_8bit_mask_hull_00.vtp
+h3d_hull_00.vtp : ../../processing/h3d_hull_00.vtp
 	ln -sf $< $@
 
 3D-OV.png : xyz-sliced+hull.pvsm h3d_rsi+1+1.0.mha h3d_hull_00.vtp

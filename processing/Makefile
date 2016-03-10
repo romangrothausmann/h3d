@@ -14,11 +14,12 @@ VTKDIR = ~/vtk/simple/build_vtk6_iana0
 .PHONY : all clean
 
 
-all : 
+all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha
 
 
 clean :
-#	@-rm -v 
+	@-rm -v $(BASENAME)_rsi+1+1.0.mha $(BASENAME)_hull_00.vtp $(BASENAME)_hull_00.mha
+#	@-rm -v $(BASENAME).mha $(BASENAME)_seg_A+B.mha # not (yet) covered by make
 
 
 % :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon
@@ -26,6 +27,22 @@ clean :
 
 %.gz : %
 	pigz -v -- $< 
+
+
+
+$(BASENAME)_rsi+1+1.0.mha : $(BASENAME).mha
+	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
+
+$(BASENAME)_hull_00%vtp $(BASENAME)_hull_00%mha : $(BASENAME).mha # % only to force single execution of rule ($@ will only contain one of the targets!): http://stackoverflow.com/questions/2973445/gnu-makefile-rule-generating-a-few-targets-from-a-single-source-file#3077254
+## upper "lit" needs to be above 342.332 as voxelizer seems to voxelize only below!
+	$(VTKDIR)/hull $(BASENAME)_hull_00.vtp 0 0  $<  $(BASENAME)_hull_00.mha  0 \
+		822.25    574.062  -34                1.2191     -0.140661  -0.536829398293234  \
+		34.1557   655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
+		-61.0851  221.929  -32.7672328973014  0.051673   -0.924611  -0.377391  \
+		-67.1372  976.193  -34.2000006437302  0.214026   0.905051   -0.367525  \
+		0         0        0                  0          0          -1         \
+		0         0        342.332            0          0          1          \
+
 
 
 
