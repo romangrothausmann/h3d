@@ -7,8 +7,9 @@ SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 ## run IM tools without setting cration and modification date (or -strip) to avoid changes in PNGs that are not visual: http://stackoverflow.com/questions/13577280/getting-imagemagick-convert-to-not-write-out-extra-info
-convertIM:= convert +set date:create +set date:modify
-mogrifyIM:= mogrify +set date:create +set date:modify
+## some bug now needs even more default options: http://unix.stackexchange.com/questions/255252/create-the-same-png-with-imagemagick-2-times-binaries-differ#255256
+convertIM:= convert -define png:exclude-chunks=date,time +set date:create +set date:modify
+mogrifyIM:= mogrify -define png:exclude-chunks=date,time +set date:create +set date:modify
 
 SPACE := $(eval) $(eval)
 base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))

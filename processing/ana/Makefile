@@ -125,7 +125,7 @@ So.csv : $(BNseg).anaJJ       $(BNseg)_rs+1.0.anaJJ \
 	$(GVmake) -Bnd $* | ~/programme/makefile2graph/make2graph | sed 's/label=".*_\([^_\.]\+\)\.[^\.]*"/label="\1"/g' > $@ # DO NOT PUT a comment with make-var here
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
-#.SECONDARY: 
+.SECONDARY: 
 
 ## just in case .SERIAL should get included in GNU-Make http://savannah.gnu.org/patch/index.php?5108
 .SERIAL :  $(BNseg).anaJS $(BNseg)_rs+1.0.anaJS $(BNseg)_sws.vtp

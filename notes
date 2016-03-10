@@ -13,3 +13,9 @@ processing/: base dir for automatic processing
 processing/low_upp-bounds/: base dir for eval of low/upp bounds (tab:luB)
 processing/ana/: eval V,S @0.33um and @1.0um for tab:V tab:S
 processing/vid:sliced/: creation of vid:sliced
+
+
+Actual build should be done outside source-tree, e.g.
+rsync -avP cap-net/ cap-net_build/
+cd cap-net_build/
+make -j12
