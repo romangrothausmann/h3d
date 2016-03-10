@@ -37,7 +37,7 @@ clean :
 $(BNseg).mha : ../h3d_seg_A+B+T.mha
 	ln -sf $< $@
 
-%_rs+1.0.mha : ../../processing/h3d_rsi+1+1.0.mha
+%_rs+1.0.mha : ../h3d_rsi+1+1.0.mha
 	ln -sf $< $@
 
 %_B_raw.vtp %_B_sws.vtp : %.mha
