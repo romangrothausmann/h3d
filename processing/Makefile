@@ -14,12 +14,13 @@ VTKDIR = ~/vtk/simple/build_vtk6_iana0
 .PHONY : all clean
 
 
-all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha
+all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha $(BASENAME)_seg_A+B+T.mha $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha
 
 
 clean :
 	@-rm -v $(BASENAME)_rsi+1+1.0.mha $(BASENAME)_hull_00.vtp $(BASENAME)_hull_00.mha
 #	@-rm -v $(BASENAME).mha $(BASENAME)_seg_A+B.mha # not (yet) covered by make
+#	@-rm -v $(BASENAME)_seg_A+B+T.mha # not (yet) covered by make
 
 
 % :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon

@@ -8,7 +8,7 @@ base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,
 base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,$1)))
 
 
-BNseg:= acn_seg_A+B+T
+BNseg:= h3d_seg_A+B+T
 
 ITKDIR:= ~/itk/simple/build_itk4_iana0
 VTKDIR:= ~/vtk/simple/build_vtk6_iana0
@@ -34,11 +34,11 @@ clean :
 	pigz -v -- $< 
 
 
-$(BNseg).mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B+tissue.mha
+$(BNseg).mha : ../h3d_seg_A+B+T.mha
 	ln -sf $< $@
 
-%_rs+1.0.mha : %.mha
-	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
+%_rs+1.0.mha : ../../processing/h3d_rsi+1+1.0.mha
+	ln -sf $< $@
 
 %_B_raw.vtp %_B_sws.vtp : %.mha
 	$(VTKDIR)/discrete_marching-cubes $< $*_B 1 1 1
