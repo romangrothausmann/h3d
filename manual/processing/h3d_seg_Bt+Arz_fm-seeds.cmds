@@ -1,0 +1,10 @@
+
+-set seeds for fm: Arz @ 2748 1120 698 (p911 p371 p231 as for demo-path):
+
+itksnap -g ../../processing/h3d_seg_Bt+Arz.mha # save as h3d_seg_Bt+Arz_fm-seeds.mha
+
+$(ITKDIR)/toUInt8 h3d_seg_Bt+Arz_fm-seeds.mha h3d_seg_Bt+Arz_fm-seeds.mha 0
+
+pigz h3d_seg_Bt+Arz_fm-seeds.mha
+
+- add to git as manual file

@@ -3,7 +3,8 @@ base/: base dir for orig data like CZIs, fotos from stereo-Lupe
 
 
 manual/: base dir for manually created files
-manual/seg/: manual corrections of auto-seg
+manual/correction/: manual corrections of auto-seg
+manual/processing/: manual partititions (Bt, Arz), seeds
 manual/SRV/: *pvsm, *blend, *svg for FIGs
 manual/VR/: *pvsm, *svg for FIGs
 manual/VE/: *blend, *svg for FIGs

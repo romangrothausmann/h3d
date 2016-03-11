@@ -14,7 +14,7 @@
    id="svg4856"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_08.svg">
+   sodipodi:docname="h3d_srv+500+500+0.331662+2_08.svg">
   <metadata
      id="metadata5141">
     <rdf:RDF>
@@ -484,7 +484,7 @@
        y="-91.242348"
        x="0.49981689"
        id="image3589"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_x@0250.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_x@0250.png"
        height="84.686363"
        width="734.40027" />
     <image
@@ -492,7 +492,7 @@
        y="1.371384"
        x="0.49988645"
        id="image3600"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_y@0250.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_y@0250.png"
        height="84.686363"
        width="734.40027"
        transform="translate(4.8134044e-7,-4.9598189e-6)" />
@@ -502,7 +502,7 @@
        y="-206.36809"
        x="0.87436676"
        id="image3611"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@0129.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@0129.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -511,7 +511,7 @@
        y="-206.36809"
        x="93.574379"
        id="image3622"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@0640.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@0640.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -520,7 +520,7 @@
        y="-206.36809"
        x="186.27437"
        id="image3633"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@1131.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1131.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -529,7 +529,7 @@
        y="-206.36809"
        x="278.97443"
        id="image3644"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@1533.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1533.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -538,7 +538,7 @@
        y="-206.36809"
        x="371.67444"
        id="image3655"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@1601.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1601.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -547,7 +547,7 @@
        y="116.8715"
        x="0.87436682"
        id="image3666"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@1773.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1773.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -556,7 +556,7 @@
        y="116.8715"
        x="93.574356"
        id="image3677"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@2156.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2156.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -565,7 +565,7 @@
        y="116.8715"
        x="186.27437"
        id="image3688"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@2190.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2190.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -574,7 +574,7 @@
        y="116.8715"
        x="278.97437"
        id="image3699"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@2389.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2389.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -583,7 +583,7 @@
        y="-206.36809"
        x="464.37445"
        id="image3710"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@2497.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2497.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -592,7 +592,7 @@
        y="-206.36807"
        x="557.0744"
        id="image3721"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@2578.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2578.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -601,7 +601,7 @@
        y="116.8715"
        x="371.67438"
        id="image3732"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@2692.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2692.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -610,7 +610,7 @@
        y="116.8715"
        x="464.37439"
        id="image3743"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@2945.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2945.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -619,7 +619,7 @@
        y="116.8715"
        x="557.07434"
        id="image3754"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@3041.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@3041.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -628,7 +628,7 @@
        y="116.8715"
        x="650.21362"
        id="image3765"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@3250.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@3250.png"
        height="84.686363"
        width="84.686363" />
     <image
@@ -637,7 +637,7 @@
        y="-206.74243"
        x="650.21368"
        id="image3776"
-       xlink:href="SRV2D/kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2_z@4046.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@4046.png"
        height="84.686363"
        width="84.686363" />
   </g>

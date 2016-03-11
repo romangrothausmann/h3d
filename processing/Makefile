@@ -1,4 +1,14 @@
 
+#### Notes:
+## $(BASENAME)_seg_B_obp+10+0_kNo+1 : represents main arteries
+## $(BASENAME)_seg_B_obp+10+0_kNo+2 : represents main arteries and venes (A+V)
+
+
+#### ToDo:
+
+## Replace A+B+T by T+B+A as done in processing/low_upp-bounds/Makefile for %_T-mask.mha
+
+#### Done:
 
 BASENAME = h3d
 
@@ -45,14 +55,132 @@ $(BASENAME)_hull_00%vtp $(BASENAME)_hull_00%mha : $(BASENAME).mha # % only to fo
 		0         0        342.332            0          0          1          \
 
 
+## BEGIN blood vessel profile speed map and path extraction in ROI900
 
+%_mps+5.5+1+0.3.vtk %_mps+5.5+1+0.3_max-sphere.mha : %.mha
+	$(ITKDIR)/min-path_seg_f32  $< $*_mps+5.5+1+0.3  0 5.5 1 10000 .3   p277.7 p548.6 p276.7   p466.7 p588.0 p126.0 | tee $*_mps+5.5+1+0.3.out
+
+%_ed+100.mha : %.mha
+	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 100 0
+
+$(BASENAME)_seg_B@1+mps+ROI900.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_B_ROI900_mps+5.5+1+0.3_max-sphere_ed+100.mha
+	$(ITKDIR)/mask $^ $@ 1
+
+## END blood vessel profile speed map and path extraction in ROI900
+
+
+## BEGIN blood vessel profile speed map and path extraction
+
+black.nii.gz : $(BASENAME).mha
+	$(ITKDIR)/thresh-glob $< $@ 1 0 max 0
+
+$(BASENAME)_seg_B.mha : $(BASENAME)_seg_A+B+T.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 1 1
+
+$(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_A+B+T.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
+
+%_obp+10+0.mha : %.mha
+	$(ITKDIR)/open_bin_para $< $@ 0 10 0
+
+%_kNo+2@1.mha : %.mha
+	$(ITKDIRWG)/keep_N_objects_01 $< $@ 1 0 2 0 0 NumberOfPixels
+
+%_op+500+0.mha : %.mha
+	$(ITKDIR)/open_parabolic_f32 $< $@ 0 500 0
+
+%_op+5.5+0.mha : %.mha
+	$(ITKDIR)/open_parabolic_f32 $< $@ 0 5.5 0
+
+%_ROI900.mha : %.mha
+	$(ITKDIR)/extract_subimage $< $@  661 1118 263  1000 1000 770
+
+#%-ROI900.mha : %_ROI900.mha black.nii.gz
+$(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900_op+5.5+0.mha black.nii.gz
+	$(ITKDIR)/paste $^ $@ 0
+
+$(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha  $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha # op should be done on segments@255 to avoid parabola "clipping"
+	$(ITKDIR)/max $^ $@ 0
+
+
+%_mps+0-1+0.331662.vtk %_mps+0-1+0.331662_max-sphere.mha : %.mha
+	$(ITKDIR)/min-path_seg_f32  $< $*_mps+0-1+0.331662  0 0 -1 10000 0.331662    p595 p826 p31    p439 p270 p317    p467.8 p587.9 p125.7  p476.8 p579.6 p124.1 | tee $*_mps+0-1+0.331662.out
+
+%.vtp : %.vtk
+	$(VTKDIR)/vtk2vtp $< $@ 1
+
+demo-path.vtp : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtp
+	ln -s $< $@
+
+## END blood vessel profile speed map and path extraction
+
+
+## BEGIN fm map for LUT coloring of Bt+Arz
+
+$(BASENAME)_seg_Bt.mha : ../manual/processing/$(BASENAME)_seg_Bt.mha
+	ln -sf $< $@
+
+$(BASENAME)_seg_Arz.mha : ../manual/processing/$(BASENAME)_seg_Arz.mha
+	ln -sf $< $@
+
+$(BASENAME)_seg_Bt+Arz_fm-seeds.mha : ../manual/processing/$(BASENAME)_seg_Bt+Arz_fm-seeds.mha
+	ln -sf $< $@
+
+%_fm.mha : $(BASENAME)_seg_Bt+Arz_fm-seeds.mha %.mha
+	$(ITKDIR)/fast-marching_f32 $^ $@ 0
+	$(ITKDIR)/toUInt16 $@ $@ 0
+
+%_add+1360.mha : %.mha
+	$(ITKDIR)/add_const $< $@ 0 +1360
+
+$(BASENAME)_seg_Arz_fm+1360.mha : $(BASENAME)_seg_Arz_fm_add+1360.mha  $(BASENAME)_seg_Arz.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+$(BASENAME)_seg_Bt+Arz-fm.mha : $(BASENAME)_seg_Bt_fm.mha  $(BASENAME)_seg_Arz_fm+1360.mha
+	$(ITKDIR)/max $^ $@ 0
+
+### END fm map for LUT coloring of Bt+Arz
+
+
+### BEGIN fm map for LUT coloring of B
+
+%_kNo+1@1.mha : %.mha
+	$(ITKDIRWG)/keep_N_objects_01 $< $@ 1 0 1 0 0 NumberOfPixels
+
+%_kNo+1@255.mha : %.mha
+	$(ITKDIRWG)/keep_N_objects_01 $< $@ 255 0 1 0 0 NumberOfPixels
+
+%_ed+3.mha : %.mha
+	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 3 0
+
+$(BASENAME)_seg_B_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B_kNo+1@255_ed+3.mha
+	$(ITKDIR)/fast-marching_f32 $^ $@ 0
+	$(ITKDIR)/toUInt16 $@ $@ 0
+
+$(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mha : $(BASENAME)_seg_B_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha # first input defines output type
+	$(ITKDIR)/add $^ $@ 0
+
+$(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mha $(BASENAME)_seg_B@1.mha # first input defines output type
+	$(ITKDIR)/add $^ $@ 0
+
+### END fm map for LUT coloring of B
+
+
+### BEGIN make the vene all blue
+
+$(BASENAME)_seg_V@700.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha
+	$(ITKDIR)/label_connected_components $< $@ 0 0
+	$(ITKDIR)/toUInt16 $@ $@ 0
+	$(ITKDIR)/thresh-glob $@ $@ 0 1 1 700 # works only if input can hold 700
+
+$(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha $(BASENAME)_seg_V@700.mha # first input defines output type
+	$(ITKDIR)/max $^ $@ 0
+
+##End make the vene all blue
 
 
 %_th+1+1.mha : %.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 1 1 
-
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B.mha : $(BASENAME)_A+B_wsmXm_A+B+tissue_th+1+1.mha
-	ln -sf $< $@
 
 %_m+1.mha : %.mha
 	$(ITKDIRWG)/mean-BOX_01 $< $@ +1 0
@@ -117,3 +245,4 @@ $(BASENAME)_A+B_wsmXm_A+B+tissue_B_mask_Bt.vtp : $(BASENAME)_A+B_wsmXm_A+B+tissu
 
 
 
+.SERIAL : $(BASENAME)_seg_B_fm.mha %_fm.mha %_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108

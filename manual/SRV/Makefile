@@ -11,15 +11,17 @@
 SHELL:= /bin/bash
 
 ITKDIR = ~/itk/simple/build_itk4_iana0
+ITKVTKDIR = ~/itk/itk-vtk_CLIs/build_itk4_iana0/
+VTKDIR = ~/vtk/simple/build_vtk6_iana0
 
 ## run IM tools without setting cration and modification date (or -strip) to avoid changes in PNGs that are not visual: http://stackoverflow.com/questions/13577280/getting-imagemagick-convert-to-not-write-out-extra-info
 ## some bug now needs even more default options: http://unix.stackexchange.com/questions/255252/create-the-same-png-with-imagemagick-2-times-binaries-differ#255256
 convertIM:= convert -define png:exclude-chunks=date,time +set date:create +set date:modify
 mogrifyIM:= mogrify -define png:exclude-chunks=date,time +set date:create +set date:modify # avoid mogrify as it likely leads to a kind of input : input rule, which can corrupt the Makefile
 
-SRV_G:= kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_srv+500+500+0.331662+2
-SRV_A:= kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_Bt-fm_comb_Arz-fm+1360_srv+500+500+0.331662+0
-SRV_B:= kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B_rep12_B_kNo+1_ed+3_fm_mod_mask_B_max_700_srv+500+500+0.331662+0
+SRV_G:= h3d_srv+500+500+0.331662+2
+SRV_A:= h3d_seg_Bt+Arz-fm_srv+500+500+0.331662+0
+SRV_B:= h3d_seg_B-fm_srv+500+500+0.331662+0
 
 z-slice_num:= $(shell printf "%04d\n" `cat z-slice.lst`)
 z-slice_lst:= $(z-slice_num:%=plane-G_z@%.png)
@@ -48,9 +50,9 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 .PHONY: all clean
 
-all: fig_SRV-curved.svg fig_SRV-curvedPV.svg fig_SRV-straightenedPV.svg fig_SRV2D.svg \
-  fig_SRV2D.svg.neato.svg fig_SRV-curved.svg.neato.svg \
-  $(fig_SRV-curved_PNGs)
+all: fig_SRV-curvedPV.svg fig_SRV-straightenedPV.svg fig_SRV2D.svg \
+  fig_SRV2D.svg.neato.svg fig_SRV2D.svg.fdp.svg fig_SRV2D.svg.dot.svg \
+#  $(fig_SRV-curved_PNGs) fig_SRV-curved.svg.neato.svg \
 #  all.dot.svg all.neato.svg all.twopi.svg # in all: does not work with restructured makefile
 #	@rm -vf $(planes-g) $(planes-G) $(planes-A) $(planes-B) # do not clean up for later reruns of make
 
@@ -79,8 +81,8 @@ clean:
 
 ##Begin bg
 
-$(SRV_G).mha: ../$(SRV_G).mha #from ~/itk/itk-vtk_CLIs/build_itk4_iana0/straighten kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B_rep10_B_obp+10+0_kNo+2_op+500+0_MAX_ROI900_op+5.5+0_mps+0-1+0.331662_04.vtp   $(SRV_G).mha 0 500 500 0.331662 2   $(SRV_G)  0   $(z-slice_num)
-	ln -s ../$(SRV_G).mha .
+$(SRV_G).mha: ../../processing/h3d.mha ../../processing/demo-path.vtp
+	$(ITKVTKDIR)/straighten $^  $@  0 500 500 0.331662 2   $(basename $@)  0   $(z-slice_num)
 
 
 
@@ -112,8 +114,8 @@ LUT_A.png:
 #	$(convertIM) -size 10x136 gradient:#080-#080 -size 10x89 gradient:#0f0-#0f0 -append -background black -splice  0x1 -transparent black  LUT_A.png # only bright and dark green to reduce confusion of readers
 
 
-$(SRV_A).mha: ../$(SRV_A).mha
-	ln -s ../$(SRV_A).mha .
+$(SRV_A).mha: ../../processing/h3d_seg_Bt+Arz-fm.mha ../../processing/demo-path.vtp
+	$(ITKVTKDIR)/straighten $^  $@  0 500 500 0.331662 0
 
 
 plane-A_%.png: $(SRV_A)_%.tif LUT_A.png # order matters to IM
@@ -135,8 +137,8 @@ LUT_B.png:
 #	$(convertIM) -size 10x270 gradient:#f00-#00f  -background '#f44' -splice  0x1  -background '#800' -splice  0x1  -background black -splice  0x1 -transparent black  LUT_B.png # add a bright red and a dark red as extra levels
 	$(convertIM) -size 10x270 gradient:#f00-#00f  -background '#f00' -splice  0x1  -background '#800' -splice  0x1  -background black -splice  0x1 -transparent black  LUT_B.png # add a red and a dark red as extra levels
 
-$(SRV_B).mha: ../$(SRV_B).mha
-	ln -s ../$(SRV_B).mha .
+$(SRV_B).mha: ../../processing/h3d_seg_B-fm.mha ../../processing/demo-path.vtp
+	$(ITKVTKDIR)/straighten $^  $@  0 500 500 0.331662 0
 
 
 plane-B_%.png: $(SRV_B)_%.tif LUT_B.png # order matters to IM
@@ -151,12 +153,18 @@ plane-B_%.png: $(SRV_B)_%.tif LUT_B.png # order matters to IM
 
 ##End ov-B
 
+xy-plane_%.vtp : h3d_srv+500+500+0.331662+2_%.vtp
+	ln -sf $< $@
 
-$(plane_VTPs) : #../$@ # with dependencies always gets exectued
-	ln -fs  ../$@ . #from ~/itk/itk-vtk_CLIs/build_itk4_iana0/straighten kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B_rep10_B_obp+10+0_kNo+2_op+500+0_MAX_ROI900_op+5.5+0_mps+0-1+0.331662_04.vtp   $(SRV_G).mha 0 500 500 0.331662 2   $(SRV_G)  0   $(z-slice_num)
+xz-plane.vtp : ../../processing/demo-path.vtp
+	$(VTKDIR)/ribbon_FrenetSerret $< $@ 0 82.9155 0
+
+yz-plane.vtp : ../../processing/demo-path.vtp
+	$(VTKDIR)/ribbon_FrenetSerret $< $@ 0 82.9155 90
+
 
 fig_SRV-curvedPV/%.png fig_SRV-curvedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) $(plane_VTPs) | fig_SRV-curvedPV/
-	/opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-curved.py -s $* -o $*.pvsm #vglrun prevents? resize for ss
+	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-curved.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
 	mv $*.png $*_ori-axes.png fig_SRV-curvedPV/
@@ -166,11 +174,11 @@ vis_SRV-curved.blend : $(planes-G) $(planes-A) $(planes-B) $(plane_X3Ds)
 	rm vis_SRV-curved.blend1 # not sure what in the blender script causes a backup save
 
 
-extent.mha:
-	ln -fs ../extent.mha .
+extent.mha : $(SRV_G).mha
+	ln -fs $< $@
 
 fig_SRV-straightenedPV/%.png fig_SRV-straightenedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) extent.mha fig_SRV-curvedPV/vis_SRV-curved.png | fig_SRV-straightenedPV/ #vis_SRV-curved.pvsm added to avoid multiple renders at the same time which can cause missing OVs in ss
-	/opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-straightened.py -s $* -o $*.pvsm
+	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-straightened.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
 	mv $*.png $*_ori-axes.png fig_SRV-straightenedPV/
@@ -203,16 +211,19 @@ fig_SRV-straightenedPV.svg : fig_SRV-straightenedPV/vis_SRV-straightened.png fig
 	touch $@
 
 fig_SRV2D.svg : $(planes-SRV2D)
+#	sed -i 's/h3d/$$(BASENAME)/g' fig_SRV2D_base.svg > $@
 	@echo "changed files: " $?
 	touch $@ # https://www.gnu.org/software/make/manual/html_node/Empty-Targets.html#Empty-Targets
 
 
 %.gv :
-	$(MAKE) -Bnd $* | ~/programme/makefile2graph/make2graph -s > $@ # gets executed even with -n! use $(MAKE) or +make:  http://stackoverflow.com/questions/2942465/cmake-and-parallel-building-with-make-jn#4238592
+	$(MAKE) -Bnd $* | ~/programme/makefile2graph/make2graph | sed 's/label=".*_\([^_\.]\+\)\.[^\.]*"/label="\1"/g' > $@ # gets executed even with -n! use $(MAKE) or +make:  http://stackoverflow.com/questions/2942465/cmake-and-parallel-building-with-make-jn#4238592
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 #.SECONDARY: # $(SRV_G)_[xyz]@[0-9]*.png #not working
 .PRECIOUS:  %.gv # $(SRV_G)_%.png not working because $(SRV_G) is a list, $(addsuffix _%.png,$(SRV_G)) does not work because of %-eval, %.gv works
+
+.SERIAL: fig_SRV-curvedPV/vis_SRV-curved.png
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
 
