@@ -9,6 +9,7 @@
 ## -> not a problem of make but its debug output used by make2graph: https://github.com/lindenb/makefile2graph/issues/12
 
 SHELL:= /bin/bash
+GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 ITKDIR = ~/itk/simple/build_itk4_iana0
 ITKVTKDIR = ~/itk/itk-vtk_CLIs/build_itk4_iana0/
@@ -63,7 +64,7 @@ clean:
 		vis_SRV-curved.png vis_SRV-curved.svg vis_SRV-curved.pvsm vis_SRV-curved.blend vis_SRV-curved.blend[0-9] vis_SRV-straightened.png vis_SRV-straightened.svg vis_SRV-straightened.pvsm \
 		vis_SRV-curved_ori-axes.png vis_SRV-straightened_ori-axes.png LUT_{A,B}.png \
 		{all,fig_SRV2D.svg,fig_SRV-curved.svg}.gv \
-		all.{dot,neato,twopi}.svg fig_SRV2D.svg.{dot,neato,twopi}.svg fig_SRV-curved.svg.{dot,neato,twopi}.svg \
+		all.{dot,neato,twopi,fdp}.svg fig_SRV2D.svg.{dot,neato,twopi,fdp}.svg fig_SRV-curved.svg.{dot,neato,twopi,fdp}.svg \
 		fig_SRV-curved/* \
 		fig_SRV-curvedPV/* \
 		fig_SRV-straightenedPV/* \
@@ -73,6 +74,7 @@ clean:
 	@-rmdir -v fig_SRV-curvedPV/ #-: ignore error:  http://stackoverflow.com/questions/2989465/rm-rf-versus-rm-rf  http://stackoverflow.com/questions/2670130/make-how-to-continue-after-a-command-fails#2670143
 	@-rmdir -v fig_SRV-straightenedPV/
 	@-rmdir -v SRV2D/
+	@-rm -v planeVTPs.done
 
 
 %.x3d : %.vtp
@@ -81,9 +83,11 @@ clean:
 
 ##Begin bg
 
-$(SRV_G).mha: ../../processing/h3d.mha ../../processing/demo-path.vtp
-	$(ITKVTKDIR)/straighten $^  $@  0 500 500 0.331662 2   $(basename $@)  0   $(z-slice_num)
+$(SRV_G)%mha planeVTPs%done : ../../processing/h3d.mha ../../processing/demo-path.vtp
+	$(ITKVTKDIR)/straighten $^  $(SRV_G).mha  0 500 500 0.331662 2  xy-plane   0   $(z-slice_num)
+	touch planeVTPs.done
 
+$(plane_VTPs) : planeVTPs.done # merely a trick to crate a pseudo dependence with a dot to use with % in rule above
 
 
 
@@ -177,7 +181,7 @@ vis_SRV-curved.blend : $(planes-G) $(planes-A) $(planes-B) $(plane_X3Ds)
 extent.mha : $(SRV_G).mha
 	ln -fs $< $@
 
-fig_SRV-straightenedPV/%.png fig_SRV-straightenedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) extent.mha fig_SRV-curvedPV/vis_SRV-curved.png | fig_SRV-straightenedPV/ #vis_SRV-curved.pvsm added to avoid multiple renders at the same time which can cause missing OVs in ss
+fig_SRV-straightenedPV/%.png fig_SRV-straightenedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) extent.mha | fig_SRV-straightenedPV/ #vis_SRV-curved.pvsm added to avoid multiple renders at the same time which can cause missing OVs in ss
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-straightened.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
@@ -216,14 +220,16 @@ fig_SRV2D.svg : $(planes-SRV2D)
 	touch $@ # https://www.gnu.org/software/make/manual/html_node/Empty-Targets.html#Empty-Targets
 
 
-%.gv :
-	$(MAKE) -Bnd $* | ~/programme/makefile2graph/make2graph | sed 's/label=".*_\([^_\.]\+\)\.[^\.]*"/label="\1"/g' > $@ # gets executed even with -n! use $(MAKE) or +make:  http://stackoverflow.com/questions/2942465/cmake-and-parallel-building-with-make-jn#4238592
+## below a rule with "make", a very special case for NOT using $(MAKE) or +make
+### lines that contain "$(MAKE)" even in a comment get exectued even with -n|--dry-run !!!
+%.gv : % Makefile $(MAKEFILES) # put % to get executed after target has been made to avoid make2graph error due to missing files; http://www.gnu.org/software/make/manual/make.html#MAKEFILES-Variable
+	$(GVmake) -Bnd $* | ~/programme/makefile2graph/make2graph | sed 's/label=".*_\([^_\.]\+\)\.[^\.]*"/label="\1"/g' > $@ # DO NOT PUT a comment with make-var here
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 #.SECONDARY: # $(SRV_G)_[xyz]@[0-9]*.png #not working
 .PRECIOUS:  %.gv # $(SRV_G)_%.png not working because $(SRV_G) is a list, $(addsuffix _%.png,$(SRV_G)) does not work because of %-eval, %.gv works
 
-.SERIAL: fig_SRV-curvedPV/vis_SRV-curved.png
+.SERIAL: fig_SRV-curvedPV/vis_SRV-curved.png fig_SRV-straightenedPV/vis_SRV-straightened.png
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
 

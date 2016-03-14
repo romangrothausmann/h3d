@@ -75,7 +75,7 @@ fig_histo_3D-sliced+seg/ :
 	mkdir -p $@
 
 fig_histo_3D-sliced+seg/%.png : %.png | fig_histo_3D-sliced+seg/
-	mv $*.png $@ ; \
+	mv $*.png $@
 
 fig_histo_3D-sliced+seg.svg : $(fig_histo_3D-sliced+seg_PNGs)
 	sed 's$$xlink:href="file:///myURL/$$xlink:href="fig_histo_3D-sliced+seg/$$g' < fig_base.svg > $@
