@@ -33,9 +33,9 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 
 all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha # main targets
-all : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
-all : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
-all : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz.blend Arz_dec.blend # manual/SRV/
+all : slices.done # manual/slices/
+all : ana.done # processing/ana/
+all : SRV.done # manual/SRV/
 
 
 clean :
@@ -44,6 +44,12 @@ clean :
 #	@-rm -v $(BASENAME)_seg_A+B+T.mha # not (yet) covered by make
 
 gv : all.dot.svg all.fdp.svg all.neato.svg all.twopi.svg
+
+
+slices.done : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
+ana.done : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
+SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz.blend Arz_dec.blend # manual/SRV/
+	touch $@
 
 
 % :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon
