@@ -35,7 +35,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha # main targets
 all : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
 all : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
-all : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz.blend # manual/SRV/
+all : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz.blend Arz_dec.blend # manual/SRV/
 
 
 clean :
@@ -260,6 +260,21 @@ Arz.blend : Arz.stl.blend
 	ln -sf $< $@
 
 ### END Arz.blend
+
+
+
+### BEGIN Arz_dec.blend
+
+%_dec.vtp : %.vtp
+	$(VTKDIR)/decimate-QC $< $@ 0 64
+
+Arz_dec.stl : $(BASENAME)_seg_Arz@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1_dec.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
+	ln -sf $< $@
+
+Arz_dec.blend : Arz_dec.stl.blend
+	ln -sf $< $@
+
+### END Arz_dec.blend
 
 
 

@@ -198,7 +198,7 @@ SRV2D/%.png : %.png | SRV2D/ # https://www.gnu.org/software/make/manual/html_nod
 %.blend : ../../processing/%.blend
 	ln -fs $< $@
 
-fig_SRV-curved.blend : vis_SRV-curved.blend $(planes-G) $(planes-A) $(planes-B) Bt.blend Arz.blend A.blend V.blend ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend # Arz_dec.blend # vis_SRV-curved.blend does not include texture PNGs
+fig_SRV-curved.blend : vis_SRV-curved.blend $(planes-G) $(planes-A) $(planes-B) Bt.blend Arz.blend A.blend V.blend ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend Arz_dec.blend # vis_SRV-curved.blend does not include texture PNGs
 
 fig_SRV-curved/fig_SRV-curved_%.png : fig_SRV-curved.blend | fig_SRV-curved/
 	~/programme/blender/blender -b $< -o //fig_SRV-curved/$(basename $<)_#.png -noaudio -F PNG -f $* # -o $@ does not work
