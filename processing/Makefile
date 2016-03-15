@@ -10,6 +10,11 @@
 
 #### Done:
 
+
+SHELL:= /bin/bash
+GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
+
+
 BASENAME = h3d
 
 # DATE = ` date +"%y%m%d" `
@@ -20,17 +25,25 @@ ITKDIR = ~/itk/simple/build_itk4_iana0
 ITKDIRWG = ~/itk/simple_without-git/build_itk4_iana0
 VTKDIR = ~/vtk/simple/build_vtk6_iana0
 
+SPACE := $(eval) $(eval)
+base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))
+base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,$1)))
 
-.PHONY : all clean
+.PHONY : all clean gv
 
 
-all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha $(BASENAME)_seg_A+B+T.mha $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha
+all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha # main targets
+all : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
+all : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
+all : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz.blend # manual/SRV/
 
 
 clean :
 	@-rm -v $(BASENAME)_rsi+1+1.0.mha $(BASENAME)_hull_00.vtp $(BASENAME)_hull_00.mha
 #	@-rm -v $(BASENAME).mha $(BASENAME)_seg_A+B.mha # not (yet) covered by make
 #	@-rm -v $(BASENAME)_seg_A+B+T.mha # not (yet) covered by make
+
+gv : all.dot.svg all.fdp.svg all.neato.svg all.twopi.svg
 
 
 % :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon
@@ -42,7 +55,7 @@ clean :
 
 
 $(BASENAME)_rsi+1+1.0.mha : $(BASENAME).mha
-	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
+	$(ITKDIR)/resample $< $@ 1 1 1.0 1.0 1.0
 
 $(BASENAME)_hull_00%vtp $(BASENAME)_hull_00%mha : $(BASENAME).mha # % only to force single execution of rule ($@ will only contain one of the targets!): http://stackoverflow.com/questions/2973445/gnu-makefile-rule-generating-a-few-targets-from-a-single-source-file#3077254
 ## upper "lit" needs to be above 342.332 as voxelizer seems to voxelize only below!
@@ -52,8 +65,28 @@ $(BASENAME)_hull_00%vtp $(BASENAME)_hull_00%mha : $(BASENAME).mha # % only to fo
 		-61.0851  221.929  -32.7672328973014  0.051673   -0.924611  -0.377391  \
 		-67.1372  976.193  -34.2000006437302  0.214026   0.905051   -0.367525  \
 		0         0        0                  0          0          -1         \
-		0         0        342.332            0          0          1          \
+		0         0        342.332            0          0          1
 
+$(BASENAME)_hull_02%vtp $(BASENAME)_hull_02%mha : $(BASENAME).mha 
+## move all sides slidly further in (~2-3µm) normal directions: 1.: +x; 2.: -x; 3.: -y; 4.: +y
+	$(VTKDIR)/hull $(BASENAME)_hull_02.vtp 0 0  $<  $(BASENAME)_hull_02.mha  0 \
+		820       574.062  -34                1.2191     -0.140661  -0.536829398293234  \
+		37        655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
+		-61.0851  224      -32.7672328973014  0.051673   -0.924611  -0.377391  \
+		-67.1372  974      -34.2000006437302  0.214026   0.905051   -0.367525  \
+		0         0        0                  0          0          -1         \
+		0         0        342.332            0          0          1
+
+
+%_lcc-8b.mha : %.mha
+	$(ITKDIR)/label_connected_components $< $@ 0 0
+	$(ITKDIR)/toUInt8 $@ $@ 0
+
+$(BASENAME)_seg_A@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 2 2 1
+
+$(BASENAME)_seg_V@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
 
 ## BEGIN blood vessel profile speed map and path extraction in ROI900
 
@@ -79,6 +112,9 @@ $(BASENAME)_seg_B.mha : $(BASENAME)_seg_A+B+T.mha
 
 $(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_A+B+T.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
+
+%@1.mha : %.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 1 max 1
 
 %_obp+10+0.mha : %.mha
 	$(ITKDIR)/open_bin_para $< $@ 0 10 0
@@ -168,49 +204,26 @@ $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha : $(BASENAME)_seg_B_
 
 ### BEGIN make the vene all blue
 
-$(BASENAME)_seg_V@700.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha
-	$(ITKDIR)/label_connected_components $< $@ 0 0
-	$(ITKDIR)/toUInt16 $@ $@ 0
+$(BASENAME)_seg_V@700.mha : $(BASENAME)_seg_V@1.mha
+	$(ITKDIR)/toUInt16 $< $@ 0
 	$(ITKDIR)/thresh-glob $@ $@ 0 1 1 700 # works only if input can hold 700
 
 $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha $(BASENAME)_seg_V@700.mha # first input defines output type
 	$(ITKDIR)/max $^ $@ 0
 
-##End make the vene all blue
+### END make the vene all blue
 
 
-%_th+1+1.mha : %.mha
-	$(ITKDIR)/thresh-glob $< $@ 0 1 1 
+### BEGIN *.blend
 
-%_m+1.mha : %.mha
-	$(ITKDIRWG)/mean-BOX_01 $< $@ +1 0
-
-%_m+3.mha : %.mha
-	$(ITKDIRWG)/mean-BOX_01 $< $@ +3 0
-
-%_th+127@1.mha : %.mha
-	$(ITKDIR)/thresh-glob $< $@  0 127 max 1
+%_rsi+0+1.0.mha : %.mha
+	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
 
 %_add+1.mha : %.mha
-	/opt/convert3d/bin/c3d  $<  -shift 1 -type uchar -o $@
+	$(ITKDIR)/add_const $< $@ 0 +1
 
-%_ed+10+0.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 10 0
-
-%_ed+30+0.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 30 0
-
-%_ed+60+0.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 60 0
-
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Arz_ed+30.mha : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_add+1.mha  $(BASENAME)_A+B_wsmXm_Arz_m+3_th+127@5_ed+30+0.mha
+%+mask.mha : %_add+1.mha h3d_hull_02.mha
 	$(ITKDIR)/mask $^ $@ 0
-
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Arz_ed+30_masked.mha : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Arz_ed+30.mha kap-net_histo_reg_8bit_mask_hull_02.mha
-	$(ITKDIR)/mask $^ $@ 0
-
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Arz_ed+30_masked_mask+A+V.mha : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Arz_ed+30_masked.mha $(BASENAME)_A+B_wsmXm_A+B_rep10_B_obp+10+0_kNo+2_ed+10+0.mha
-	$(ITKDIR)/mask-negated $^ $@ 0
 
 %_raw.vtp %_sws.vtp : %.mha
 	$(VTKDIR)/discrete_marching-cubes $< $(basename $<)  2 2 0
@@ -218,11 +231,109 @@ $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Arz_ed+30_masked_mask+A+V.m
 %_th+0+0+1+1+1.vtp : %.vtp
 	$(VTKDIR)/threshold  $< $@  0 0 Scalars_ 1 1 1
 
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B_mask_Arz.vtp : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Arz_ed+30_masked_mask+A+V_sws_th+0+0+1+1+1.vtp
+%.stl : %.vtp
+	~/vtk/simple/build_vtk6_iana0/vtp2stl  $^ $@ 1
+
+%.stl.blend : %.stl
+	~/programme/blender/blender -b   -P ~/blender/scripts/stl2blend.py -- -i $< -o $@
+
+### END *.blend
+
+
+### BEGIN Bt.blend
+
+Bt.stl : $(BASENAME)_seg_Bt@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
 	ln -sf $< $@
 
+Bt.blend : Bt.stl.blend
+	ln -sf $< $@
 
-##Begin B_mask_Bt.vtp
+### END Bt.blend
+
+
+### BEGIN Arz.blend
+
+Arz.stl : $(BASENAME)_seg_Arz@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
+	ln -sf $< $@
+
+Arz.blend : Arz.stl.blend
+	ln -sf $< $@
+
+### END Arz.blend
+
+
+
+### BEGIN ACN-Arz_*.blend
+
+# %_m+1.mha : %.mha
+# 	$(ITKDIRWG)/mean-BOX_01 $< $@ +1 0
+
+# %_m+3.mha : %.mha
+# 	$(ITKDIRWG)/mean-BOX_01 $< $@ +3 0
+
+# %_th+127@1.mha : %.mha
+# 	$(ITKDIR)/thresh-glob $< $@  0 127 max 1
+
+%_ed+10.mha : %.mha
+	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 10 0
+
+%_ed+30.mha : %.mha
+	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 30 0
+
+$(BASENAME)_seg_B@Arz.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_Arz@1_ed+30.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+$(BASENAME)_seg_B@Arz-A-V.mha : $(BASENAME)_seg_B@Arz.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha
+	$(ITKDIR)/mask-negated $^ $@ 0
+
+ACN-Arz.vtp : $(BASENAME)_seg_B@Arz-A-V+mask_sws_th+0+0+1+1+1.vtp
+	ln -sf $< $@
+
+%.pvtp : %.vtp
+	$(VTKDIR)/vtp2pvtp $< $@ 0 4
+
+ACN-Arz_0.vtp ACN-Arz_1.vtp ACN-Arz_2.vtp ACN-Arz_3.vtp : ACN-Arz.pvtp
+#ACN-Arz_%.vtp : ACN-Arz.pvtp #does not work
+
+ACN-Arz_%.stl : ACN-Arz_%.vtp
+	~/vtk/simple/build_vtk6_iana0/vtp2stl  $^ $@ 1
+
+ACN-Arz_%.blend : ACN-Arz_%.stl.blend
+	ln -sf $< $@
+
+.PHONY : ACN-Arz.blend
+ACN-Arz.blend : ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend
+
+### END ACN-Arz_*.blend
+
+
+### BEGIN Arz_dec+0.blend
+### END Arz_dec+0.blend
+
+
+### BEGIN A.blend
+
+A.stl : $(BASENAME)_seg_A@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
+	ln -sf $< $@
+
+A.blend : A.stl.blend
+	ln -sf $< $@
+
+### END V.blend
+
+
+### BEGIN V.blend
+
+V.stl : $(BASENAME)_seg_V@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
+	ln -sf $< $@
+
+V.blend : V.stl.blend
+	ln -sf $< $@
+
+### END V.blend
+
+
+### BEGIN ACN-Bt_sws.vtp
 
 $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60.mha : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_add+1.mha  $(BASENAME)_A+B_wsmXm_Bt_m+3_th+127@1_ed+60+0.mha
 	$(ITKDIR)/mask $^ $@ 0
@@ -236,8 +347,19 @@ $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60_masked_mask+A+V.mh
 $(BASENAME)_A+B_wsmXm_A+B+tissue_B_mask_Bt.vtp : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60_masked_mask+A+V_sws_th+0+0+1+1+1.vtp
 	ln -sf $< $@
 
-##End B_mask_Bt.vtp
+### END ACN-Bt_sws.vtp
 
+
+
+
+## below a rule with "make", a very special case for NOT using $(MAKE) or +make
+### lines that contain "$(MAKE)" even in a comment get exectued even with -n|--dry-run !!!
+%.gv : % Makefile $(MAKEFILES) # put % to get executed after target has been made to avoid make2graph error due to missing files; http://www.gnu.org/software/make/manual/make.html#MAKEFILES-Variable
+	$(GVmake) -Bnd $* | ~/programme/makefile2graph/make2graph | sed 's/label=".*_\([^_\.]\+\)\.[^\.]*"/label="\1"/g' > $@ # DO NOT PUT a comment with make-var here
+
+#prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
+#.SECONDARY: # $(SRV_G)_[xyz]@[0-9]*.png #not working
+.PRECIOUS:  %.gv
 
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
@@ -246,3 +368,12 @@ $(BASENAME)_A+B_wsmXm_A+B+tissue_B_mask_Bt.vtp : $(BASENAME)_A+B_wsmXm_A+B+tissu
 
 
 .SERIAL : $(BASENAME)_seg_B_fm.mha %_fm.mha %_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
+
+
+.SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
+
+%.svg : $$(call base.,%).gv # %.svg : $(suffix $*).gv does not work, needs SECONDEXPANSION
+	$(eval pos= $(subst $(basename $+),,$*))
+	$(eval pos= $(subst .,,$(pos)))
+
+	$(pos) -Tsvg -o $@ $<

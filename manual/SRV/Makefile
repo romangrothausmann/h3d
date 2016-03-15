@@ -53,7 +53,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 all: fig_SRV-curvedPV.svg fig_SRV-straightenedPV.svg fig_SRV2D.svg \
   fig_SRV2D.svg.neato.svg fig_SRV2D.svg.fdp.svg fig_SRV2D.svg.dot.svg \
-#  $(fig_SRV-curved_PNGs) fig_SRV-curved.svg.neato.svg \
+  $(fig_SRV-curved_PNGs) fig_SRV-curved.svg.neato.svg \
 #  all.dot.svg all.neato.svg all.twopi.svg # in all: does not work with restructured makefile
 #	@rm -vf $(planes-g) $(planes-G) $(planes-A) $(planes-B) # do not clean up for later reruns of make
 
@@ -181,7 +181,7 @@ vis_SRV-curved.blend : $(planes-G) $(planes-A) $(planes-B) $(plane_X3Ds)
 extent.mha : $(SRV_G).mha
 	ln -fs $< $@
 
-fig_SRV-straightenedPV/%.png fig_SRV-straightenedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) extent.mha | fig_SRV-straightenedPV/ #vis_SRV-curved.pvsm added to avoid multiple renders at the same time which can cause missing OVs in ss
+fig_SRV-straightenedPV/%.png fig_SRV-straightenedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) extent.mha vis_SRV-curved.pvsm | fig_SRV-straightenedPV/ #vis_SRV-curved.pvsm added to avoid multiple renders at the same time which can cause missing OVs in ss
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-straightened.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
@@ -195,7 +195,10 @@ SRV2D/%.png : %.png | SRV2D/ # https://www.gnu.org/software/make/manual/html_nod
 	ln -sf $@ . # for later use of make targets that might not yet be build
 #	ln -sf ../$* $@
 
-fig_SRV-curved.blend : vis_SRV-curved.blend $(planes-G) $(planes-A) $(planes-B) ../A.blend ../V.blend ../Bt.blend ../Arz.blend ../Arz_dec+0.blend # vis_SRV-curved.blend does not include texture PNGs
+%.blend : ../../processing/%.blend
+	ln -fs $< $@
+
+fig_SRV-curved.blend : vis_SRV-curved.blend $(planes-G) $(planes-A) $(planes-B) Bt.blend Arz.blend A.blend V.blend ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend # Arz_dec.blend # vis_SRV-curved.blend does not include texture PNGs
 
 fig_SRV-curved/fig_SRV-curved_%.png : fig_SRV-curved.blend | fig_SRV-curved/
 	~/programme/blender/blender -b $< -o //fig_SRV-curved/$(basename $<)_#.png -noaudio -F PNG -f $* # -o $@ does not work
@@ -229,7 +232,7 @@ fig_SRV2D.svg : $(planes-SRV2D)
 #.SECONDARY: # $(SRV_G)_[xyz]@[0-9]*.png #not working
 .PRECIOUS:  %.gv # $(SRV_G)_%.png not working because $(SRV_G) is a list, $(addsuffix _%.png,$(SRV_G)) does not work because of %-eval, %.gv works
 
-.SERIAL: fig_SRV-curvedPV/vis_SRV-curved.png fig_SRV-straightenedPV/vis_SRV-straightened.png
+#.SERIAL: # not fig_SRV-curvedPV/vis_SRV-curved.png fig_SRV-straightenedPV/vis_SRV-straightened.png because non-PV-render processes are OK
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
 
