@@ -75,6 +75,7 @@ clean:
 	@-rmdir -v fig_SRV-straightenedPV/
 	@-rmdir -v SRV2D/
 	@-rm -v planeVTPs.done
+	@-rm -v Bt.blend Arz.blend A.blend V.blend ACN-Arz_?.blend Arz_dec.blend fig_SRV-curved.svg
 
 
 %.x3d : %.vtp

@@ -39,9 +39,12 @@ all : SRV.done # manual/SRV/
 
 
 clean :
+	@-rm -v slices.done ana.done SRV.done
 	@-rm -v $(BASENAME)_rsi+1+1.0.mha $(BASENAME)_hull_00.vtp $(BASENAME)_hull_00.mha
 #	@-rm -v $(BASENAME).mha $(BASENAME)_seg_A+B.mha # not (yet) covered by make
 #	@-rm -v $(BASENAME)_seg_A+B+T.mha # not (yet) covered by make
+	@-rm -v demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz_?.blend Arz_dec.blend
+	@-rm -v $(BASENAME)_hull_02.vtp $(BASENAME)_hull_02.mha
 
 gv : all.dot.svg all.fdp.svg all.neato.svg all.twopi.svg
 
