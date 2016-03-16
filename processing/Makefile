@@ -166,6 +166,9 @@ demo-path.vtp : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI9
 $(BASENAME)_seg_Bt.mha : ../manual/processing/$(BASENAME)_seg_Bt.mha
 	ln -sf $< $@
 
+$(BASENAME)_seg_Bt_mask.mha : ../manual/processing/$(BASENAME)_seg_Bt_mask.mha
+	ln -sf $< $@
+
 $(BASENAME)_seg_Arz.mha : ../manual/processing/$(BASENAME)_seg_Arz.mha
 	ln -sf $< $@
 
@@ -251,6 +254,9 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 
 
 ### BEGIN Bt.blend
+
+$(BASENAME)_seg_Bt@1+mask.mha : $(BASENAME)_seg_Bt@1_add+1.mha $(BASENAME)_seg_Bt_mask.mha
+	$(ITKDIR)/mask $^ $@ 0
 
 Bt.stl : $(BASENAME)_seg_Bt@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
 	ln -sf $< $@
