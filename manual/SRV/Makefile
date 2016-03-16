@@ -51,11 +51,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 .PHONY: all clean
 
-all: fig_SRV-curvedPV.svg fig_SRV-straightenedPV.svg fig_SRV2D.svg \
-  fig_SRV2D.svg.neato.svg fig_SRV2D.svg.fdp.svg fig_SRV2D.svg.dot.svg \
-  $(fig_SRV-curved_PNGs) fig_SRV-curved.svg.neato.svg \
-#  all.dot.svg all.neato.svg all.twopi.svg # in all: does not work with restructured makefile
-#	@rm -vf $(planes-g) $(planes-G) $(planes-A) $(planes-B) # do not clean up for later reruns of make
+all: fig_SRV-curvedPV.svg fig_SRV-straightenedPV.svg fig_SRV2D.svg $(fig_SRV-curved_PNGs) 
 
 clean:
 	@rm -vf $(planes-G) $(planes-A) $(planes-B) $(plane_VTPs) $(plane_X3Ds) \
@@ -76,6 +72,11 @@ clean:
 	@-rmdir -v SRV2D/
 	@-rm -v planeVTPs.done
 	@-rm -v Bt.blend Arz.blend A.blend V.blend ACN-Arz_?.blend Arz_dec.blend fig_SRV-curved.svg
+
+
+gv-fig_SRV2D : fig_SRV2D.svg.neato.svg fig_SRV2D.svg.fdp.svg fig_SRV2D.svg.dot.svg
+
+gv-fig_SRV2D : fig_SRV-curved.svg.neato.svg fig_SRV-curved.svg.fdp.svg fig_SRV-curved.svg.dot.svg
 
 
 %.x3d : %.vtp
