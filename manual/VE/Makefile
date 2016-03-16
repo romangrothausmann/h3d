@@ -91,7 +91,7 @@ Bt2A45/render_000000.png : Bt2A45.blend # 000000 not replaced by % to avoid mult
 	rm divx2pass.log divx2pass.log.mbtree
 
 fig_ov01/ :
-	mkdir $@
+	+mkdir -p $@
 
 fig_ov01/fig_ov01_%.png : fig_ov01.blend \
   ../A.blend ../V.blend ../Bt.blend ../Arz.blend ../Arz_dec+0.blend \

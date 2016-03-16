@@ -16,7 +16,20 @@ processing/ana/: eval V,S @0.33um and @1.0um for tab:V tab:S
 processing/vid:sliced/: creation of vid:sliced
 
 
-Actual build should be done outside source-tree, e.g.
+Actual build should be done outside source-tree:
+
 rsync -avP cap-net/ cap-net_build/
 cd cap-net_build/
 make -j12
+
+
+To merely create graphs of dependencies defined by the Makefiles:
+
+rsync -avP cap-net/ cap-net_graphs/
+cd cap-net_graphs/
+make -n # creates directories (due to +mkdir)
+make -t # creates dummy files to avoid: https://github.com/lindenb/makefile2graph/issues/12
+
+make all.dot.svg all.neato.svg all.twopi.svg all.fdp.svg # total project
+cd manual/SRV/ && make all.dot.svg all.neato.svg all.twopi.svg all.fdp.svg # SRV sub-project
+

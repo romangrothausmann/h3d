@@ -72,10 +72,10 @@ OV1_LUT_%.png : OV1_%.png LUT.png
 	$(convertIM) -rotate 180 -stroke white -strokewidth 30 -draw "line $(SBx),$(SBy),$(SBw+x),$(SBy)" -rotate -180 $< $@ # double rotate to mimic -gravity SouthEast, which is not used by line: http://www.imagemagick.org/Usage/annotating/#gravity
 
 fig_histo_3D-sliced+seg/ :
-	mkdir -p $@
+	+mkdir -p $@
 
 fig_histo_3D-sliced+seg/%.png : %.png | fig_histo_3D-sliced+seg/
-	mv $*.png $@
+	cp $*.png $@
 
 fig_histo_3D-sliced+seg.svg : $(fig_histo_3D-sliced+seg_PNGs)
 	sed 's$$xlink:href="file:///myURL/$$xlink:href="fig_histo_3D-sliced+seg/$$g' < fig_base.svg > $@

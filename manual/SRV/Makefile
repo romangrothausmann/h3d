@@ -92,7 +92,6 @@ $(plane_VTPs) : planeVTPs.done # merely a trick to crate a pseudo dependence wit
 	touch $@
 
 
-
 plane-G_%.png : $(SRV_G)_%.tif
 	$(eval sep=$(subst @, ,$*))
 	$(eval normal= $(word 1, $(sep)))
@@ -187,12 +186,10 @@ fig_SRV-straightenedPV/%.png fig_SRV-straightenedPV/%_ori-axes.png %.pvsm : $(pl
 	mv $*.png $*_ori-axes.png fig_SRV-straightenedPV/
 
 fig_SRV-curved/ fig_SRV-curvedPV/ fig_SRV-straightenedPV/ SRV2D/ :
-	mkdir $@
+	+mkdir -p $@
 
 SRV2D/%.png : %.png | SRV2D/ # https://www.gnu.org/software/make/manual/html_node/Prerequisite-Types.html
-	mv $*.png $@ # better for production, just cp dir to latex-image-dir
-	ln -sf $@ . # for later use of make targets that might not yet be build
-#	ln -sf ../$* $@
+	cp $< $@
 
 %.blend : ../../processing/%.blend
 	ln -fs $< $@

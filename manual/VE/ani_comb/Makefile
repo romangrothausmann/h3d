@@ -35,31 +35,31 @@ clean:
 
 
 # %/ :
-# 	mkdir $@
+# 	+mkdir -p $@
 
 
 Bt2Arz/render%.png : $(BASEDIR)/virt_endo2/ani04/render%.png
-	@mkdir -p $(dir $@)
+	@+mkdir -p $(dir $@)
 	@cp -av $< $(dir $@)
 
 Arz2A45/render%.png : $(BASEDIR)/virt_endo3/ani03/render%.png
-	@mkdir -p $(dir $@) # http://stackoverflow.com/questions/99132/how-to-prevent-directory-already-exists-error-in-a-makefile-when-using-mkdir
+	@+mkdir -p $(dir $@) # http://stackoverflow.com/questions/99132/how-to-prevent-directory-already-exists-error-in-a-makefile-when-using-+mkdir -p
 	@cp -av $< $(dir $@)
 
 A452V/render%.png : $(BASEDIR)/virt_endo/A2V_37/render%.png
-	@mkdir -p $(dir $@)
+	@+mkdir -p $(dir $@)
 	@cp -av $< $(dir $@)
 
 V2A/render%.png : $(BASEDIR)/virt_endo3/V2A_ov2_15/render%.png
-	@mkdir -p $(dir $@)
+	@+mkdir -p $(dir $@)
 	@cp -av $< $(dir $@)
 
 A2A45/render%.png : $(BASEDIR)/virt_endo/A2V_37/render%.png
-	@mkdir -p $(dir $@)
+	@+mkdir -p $(dir $@)
 	@cp -av $< $(dir $@)
 
 A452Bt/render%.png : $(BASEDIR)/virt_endo3/Arz_CO2_ov3_10/render%.png
-	@mkdir -p $(dir $@)
+	@+mkdir -p $(dir $@)
 	@cp -av $< $(dir $@)
 
 %.flist: $(Fall)
@@ -89,7 +89,7 @@ A452Bt/render%.png : $(BASEDIR)/virt_endo3/Arz_CO2_ov3_10/render%.png
 # popA452V : $(FA452V)
 
 # mkDIRs :
-# 	mkdir $(DIRs)
+# 	+mkdir -p $(DIRs)
 
 # rmDIRs :
 # 	rmdir $(DIRs)
