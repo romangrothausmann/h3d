@@ -35,10 +35,10 @@ planes-SRV2D:= $(planes-g) $(planes-A) $(planes-B)
 planes-SRV2D:= $(planes-SRV2D:%=SRV2D/%)
 
 planes:= $(z-slice_num:%=xy-plane_%)
+plane_VTPs:= $(planes:%=%.vtp) # should not inclued yz- and xz-plane
 planes+= yz-plane
 planes+= xz-plane
-plane_VTPs:= $(planes:%=%.vtp)
-plane_X3Ds:= $(planes:%=%.x3d)
+plane_X3Ds:= $(planes:%=%.x3d) # should inclued yz- and xz-plane
 
 fig_SRV-curved_PNGs= $(shell echo fig_SRV-curved_{0..4}.png)
 fig_SRV-curved_PNGs:= $(addprefix fig_SRV-curved/,$(fig_SRV-curved_PNGs))
@@ -89,6 +89,7 @@ $(SRV_G)%mha planeVTPs%done : ../../processing/h3d.mha ../../processing/demo-pat
 	touch planeVTPs.done
 
 $(plane_VTPs) : planeVTPs.done # merely a trick to crate a pseudo dependence with a dot to use with % in rule above
+	touch $@
 
 
 
@@ -158,9 +159,6 @@ plane-B_%.png: $(SRV_B)_%.tif LUT_B.png # order matters to IM
 
 ##End ov-B
 
-xy-plane_%.vtp : h3d_srv+500+500+0.331662+2_%.vtp
-	ln -sf $< $@
-
 xz-plane.vtp : ../../processing/demo-path.vtp
 	$(VTKDIR)/ribbon_FrenetSerret $< $@ 0 82.9155 0
 
@@ -168,7 +166,7 @@ yz-plane.vtp : ../../processing/demo-path.vtp
 	$(VTKDIR)/ribbon_FrenetSerret $< $@ 0 82.9155 90
 
 
-fig_SRV-curvedPV/%.png fig_SRV-curvedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) $(plane_VTPs) | fig_SRV-curvedPV/
+fig_SRV-curvedPV/%.png fig_SRV-curvedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) $(plane_VTPs) xz-plane.vtp yz-plane.vtp | fig_SRV-curvedPV/
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-curved.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
