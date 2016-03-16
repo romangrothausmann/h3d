@@ -7,6 +7,7 @@
 #### ToDo:
 
 ## Replace A+B+T by T+B+A as done in processing/low_upp-bounds/Makefile for %_T-mask.mha
+## check which .SERIAL prereq. can be done with less mem-usg e.g. SDI or other filter, e.g. paste, erode-dilate_dm
 
 #### Done:
 
@@ -391,7 +392,7 @@ $(BASENAME)_A+B_wsmXm_A+B+tissue_B_mask_Bt.vtp : $(BASENAME)_A+B_wsmXm_A+B+tissu
 
 
 
-.SERIAL : $(BASENAME)_seg_B_fm.mha %_fm.mha %_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
+.SERIAL : $(BASENAME)_seg_B_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
 
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html

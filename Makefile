@@ -31,3 +31,4 @@ $(SUBDIRS) :
 	   $(MAKE) -C $@
 
 
+.SERIAL : processing/slices.done processing/ana.done processing/SRV.done
