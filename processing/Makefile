@@ -25,6 +25,8 @@ BASENAME = h3d
 ITKDIR = ~/itk/simple/build_itk4_iana0
 ITKDIRWG = ~/itk/simple_without-git/build_itk4_iana0
 VTKDIR = ~/vtk/simple/build_vtk6_iana0
+VTKDIRWG = ~/vtk/simple_without_git/build_itk4_iana0
+
 
 SPACE := $(eval) $(eval)
 base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))
@@ -55,7 +57,7 @@ slices.done : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
 ana.done : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
 SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend
 SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha # manual/SRV/
-VE.done : ACN-Bt.blend # A+V+ACN-path.blend # manual/VE/
+VE.done : ACN-Bt.blend A+V+ACN-path.blend # manual/VE/
 	touch $@
 
 
@@ -159,6 +161,9 @@ $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : 
 	$(VTKDIR)/vtk2vtp $< $@ 1
 
 demo-path.vtp : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtp
+	ln -s $< $@
+
+demo-path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662_max-sphere.mha
 	ln -s $< $@
 
 ## END blood vessel profile speed map and path extraction
@@ -384,6 +389,33 @@ ACN-Bt.blend : ACN-Bt.stl.blend
 ### END ACN-Bt.blend
 
 
+### BEGIN A+V+ACN-path.blend
+
+A+V+path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha demo-path@1.mha
+	$(ITKDIR)/max $^ $@ 0
+
+%_lmp.vtp : %.vtp
+	$(VTKDIRWG)/largest_mesh-part_02 $< $@
+
+A+V+ACN-path.vtp : A+V+path_ed+100+mask_sws_lmp_th+0+0+1+1+1.vtp
+	ln -sf $< $@
+
+A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_kNo+1@255_ed+3.mha
+	$(ITKDIR)/fast-marching_f32 $^ $@ 0
+	$(ITKDIR)/toUInt16 $@ $@ 0
+
+%.wrl : %.vtp  %_fm.mha
+	$(VTKDIR)/probe-surf2vrml  $^ $@  270 0 0
+
+%.wrl.blend : %.wrl
+	~/programme/blender/blender -b   -P ~/blender/scripts/x3d2blend.py -- -i $< -o $@
+
+A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
+	ln -sf $< $@
+
+### END A+V+ACN-path.blend
+
+
 ## below a rule with "make", a very special case for NOT using $(MAKE) or +make
 ### lines that contain "$(MAKE)" even in a comment get exectued even with -n|--dry-run !!!
 %.gv : % Makefile $(MAKEFILES) # put % to get executed after target has been made to avoid make2graph error due to missing files; http://www.gnu.org/software/make/manual/make.html#MAKEFILES-Variable
@@ -399,7 +431,7 @@ ACN-Bt.blend : ACN-Bt.stl.blend
 
 
 
-.SERIAL : $(BASENAME)_seg_B_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
+.SERIAL : $(BASENAME)_seg_B_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mha # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
 
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
