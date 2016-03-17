@@ -400,10 +400,13 @@ A+V+path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha demo-path@1.mha
 %_lmp.vtp : %.vtp
 	$(VTKDIRWG)/largest_mesh-part_02 $< $@
 
-A+V+ACN-path.vtp : A+V+path_ed+100+mask_sws_lmp_th+0+0+1+1+1.vtp
+$(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B@1.mha A+V+path_ed+100.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path+mask_sws_lmp_th+0+0+1+1+1.vtp
 	ln -sf $< $@
 
-A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_kNo+1@255_ed+3.mha
+A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path_ed+3.mha
 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
 	$(ITKDIR)/toUInt16 $@ $@ 0
 

@@ -36,7 +36,7 @@ all : fig_ov01.svg # Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4
 .PHONY : ACN-Arz.blend
 ACN-Arz.blend : ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend
 
-fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend ACN-Bt.blend # A+V+ACN-path.blend
+fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend ACN-Bt.blend A+V+ACN-path.blend
 Bt2A45.blend A452Bt.blend : ACN_A45.blend
 
 V2A_ov/render_000000.png : V2A_ov.blend # 000000 not replaced by % to avoid multiple execution of rule
