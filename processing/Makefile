@@ -210,9 +210,12 @@ $(BASENAME)_seg_Bt+Arz-fm.mha : $(BASENAME)_seg_Bt_fm.mha  $(BASENAME)_seg_Arz_f
 %_ed+3.mha : %.mha
 	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 3 0
 
-$(BASENAME)_seg_B_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B_kNo+1@255_ed+3.mha
+$(BASENAME)_seg_B_ed+3_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B_ed+3_kNo+1@255.mha
 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
 	$(ITKDIR)/toUInt16 $@ $@ 0
+
+$(BASENAME)_seg_B_fm.mha : $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_B.mha
+	$(ITKDIR)/mask $^ $@ 0
 
 $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mha : $(BASENAME)_seg_B_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha # first input defines output type
 	$(ITKDIR)/add $^ $@ 0
@@ -431,7 +434,7 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 
 
 
-.SERIAL : $(BASENAME)_seg_B_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mha # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
+.SERIAL : $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mha # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
 
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
