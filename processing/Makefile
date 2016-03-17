@@ -37,6 +37,7 @@ all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha # main targets
 all : slices.done # manual/slices/
 all : ana.done # processing/ana/
 all : SRV.done # manual/SRV/
+all : VE.done # manual/VE/
 
 
 clean :
@@ -52,7 +53,9 @@ gv : all.dot.svg all.fdp.svg all.neato.svg all.twopi.svg
 
 slices.done : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
 ana.done : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
-SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz.blend Arz_dec.blend # manual/SRV/
+SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend
+SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha # manual/SRV/
+VE.done : ACN-Bt.blend # A+V+ACN-path.blend # manual/VE/
 	touch $@
 
 
@@ -326,9 +329,6 @@ ACN-Arz.vtp : $(BASENAME)_seg_B@Arz-A-V+mask_sws_th+0+0+1+1+1.vtp
 ACN-Arz_0.vtp ACN-Arz_1.vtp ACN-Arz_2.vtp ACN-Arz_3.vtp : ACN-Arz.pvtp
 #ACN-Arz_%.vtp : ACN-Arz.pvtp #does not work
 
-ACN-Arz_%.stl : ACN-Arz_%.vtp
-	~/vtk/simple/build_vtk6_iana0/vtp2stl  $^ $@ 1
-
 ACN-Arz_%.blend : ACN-Arz_%.stl.blend
 	ln -sf $< $@
 
@@ -364,23 +364,24 @@ V.blend : V.stl.blend
 ### END V.blend
 
 
-### BEGIN ACN-Bt_sws.vtp
+### BEGIN ACN-Bt.blend
 
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60.mha : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_add+1.mha  $(BASENAME)_A+B_wsmXm_Bt_m+3_th+127@1_ed+60+0.mha
+%_ed+60.mha : %.mha
+	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 60 0
+
+$(BASENAME)_seg_B@Bt.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_Bt@1_ed+60.mha
 	$(ITKDIR)/mask $^ $@ 0
 
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60_masked.mha : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60.mha kap-net_histo_reg_8bit_mask_hull_02.mha
-	$(ITKDIR)/mask $^ $@ 0
-
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60_masked_mask+A+V.mha : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60_masked.mha $(BASENAME)_A+B_wsmXm_A+B_rep10_B_obp+10+0_kNo+2_ed+10+0.mha
+$(BASENAME)_seg_B@Bt-A-V.mha : $(BASENAME)_seg_B@Bt.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha
 	$(ITKDIR)/mask-negated $^ $@ 0
 
-$(BASENAME)_A+B_wsmXm_A+B+tissue_B_mask_Bt.vtp : $(BASENAME)_A+B_wsmXm_A+B+tissue_B_m+1_th+127@1_mask_Bt_ed+60_masked_mask+A+V_sws_th+0+0+1+1+1.vtp
+ACN-Bt.vtp : $(BASENAME)_seg_B@Bt-A-V+mask_sws_th+0+0+1+1+1.vtp
 	ln -sf $< $@
 
-### END ACN-Bt_sws.vtp
+ACN-Bt.blend : ACN-Bt.stl.blend
+	ln -sf $< $@
 
-
+### END ACN-Bt.blend
 
 
 ## below a rule with "make", a very special case for NOT using $(MAKE) or +make

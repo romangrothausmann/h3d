@@ -9,7 +9,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 
 
-SUBDIRS:= processing/ana/ manual/slices/ manual/SRV/
+SUBDIRS:= processing/ana/ manual/slices/ manual/SRV/ manual/VE/
 
 
 .PHONY: all clean $(SUBDIRS)
@@ -30,6 +30,8 @@ manual/slices/ : processing/slices.done
 processing/ana/ : processing/ana.done
 
 manual/SRV/ : processing/SRV.done
+
+manual/VE/ : processing/VE.done
 
 
 $(SUBDIRS) :
