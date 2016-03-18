@@ -8,6 +8,7 @@
 
 ## Replace A+B+T by T+B+A as done in processing/low_upp-bounds/Makefile for %_T-mask.mha
 ## check which .SERIAL prereq. can be done with less mem-usg e.g. SDI or other filter, e.g. paste, erode-dilate_dm
+## split _raw and _sws dmc
 
 #### Done:
 
@@ -249,8 +250,9 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 %+mask.mha : %_add+1.mha h3d_hull_02.mha
 	$(ITKDIR)/mask $^ $@ 0
 
-%_raw.vtp %_sws.vtp : %.mha
+%_sws.vtp : %.mha
 	$(VTKDIR)/discrete_marching-cubes $< $(basename $<)  2 2 0
+	rm $*_raw.vtp
 
 %_th+0+0+1+1+1.vtp : %.vtp
 	$(VTKDIR)/threshold  $< $@  0 0 Scalars_ 1 1 1
