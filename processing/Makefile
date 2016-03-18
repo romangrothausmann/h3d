@@ -73,7 +73,7 @@ VE.done : ACN-Bt.blend A+V+ACN-path.blend # manual/VE/
 $(BASENAME)_rsi+1+1.0.mha : $(BASENAME).mha
 	$(ITKDIR)/resample $< $@ 1 1 1.0 1.0 1.0
 
-$(BASENAME)_hull_00%vtp $(BASENAME)_hull_00%mha : $(BASENAME).mha # % only to force single execution of rule ($@ will only contain one of the targets!): http://stackoverflow.com/questions/2973445/gnu-makefile-rule-generating-a-few-targets-from-a-single-source-file#3077254
+$(BASENAME)_hu%_00.vtp $(BASENAME)_hu%_00.mha : $(BASENAME).mha # % only to force single execution of rule ($@ will only contain one of the targets!): http://stackoverflow.com/questions/2973445/gnu-makefile-rule-generating-a-few-targets-from-a-single-source-file#3077254
 ## upper "lit" needs to be above 342.332 as voxelizer seems to voxelize only below!
 	$(VTKDIR)/hull $(BASENAME)_hull_00.vtp 0 0  $<  $(BASENAME)_hull_00.mha  0 \
 		822.25    574.062  -34                1.2191     -0.140661  -0.536829398293234  \
@@ -83,7 +83,7 @@ $(BASENAME)_hull_00%vtp $(BASENAME)_hull_00%mha : $(BASENAME).mha # % only to fo
 		0         0        0                  0          0          -1         \
 		0         0        342.332            0          0          1
 
-$(BASENAME)_hull_02%vtp $(BASENAME)_hull_02%mha : $(BASENAME).mha 
+$(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mha : $(BASENAME).mha 
 ## move all sides slidly further in (~2-3µm) normal directions: 1.: +x; 2.: -x; 3.: -y; 4.: +y
 	$(VTKDIR)/hull $(BASENAME)_hull_02.vtp 0 0  $<  $(BASENAME)_hull_02.mha  0 \
 		820       574.062  -34                1.2191     -0.140661  -0.536829398293234  \
