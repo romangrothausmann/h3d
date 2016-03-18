@@ -247,7 +247,13 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 %_add+1.mha : %.mha
 	$(ITKDIR)/add_const $< $@ 0 +1
 
-%+mask.mha : %_add+1.mha h3d_hull_02.mha
+%+seg.mha : %.mha ../manual/processing/mask+seg.mha
+	$(ITKDIR)/max $^ $@ 0
+
+%-seg.mha : %.mha ../manual/processing/mask-seg.mha
+	$(ITKDIR)/mask-negated $^ $@ 0
+
+%+mask.mha : %_add+1.mha h3d_hull_02-seg.mha
 	$(ITKDIR)/mask $^ $@ 0
 
 %_sws.vtp : %.mha
@@ -268,7 +274,7 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 
 ### BEGIN Bt.blend
 
-$(BASENAME)_seg_Bt@1+mask.mha : $(BASENAME)_seg_Bt@1_add+1.mha $(BASENAME)_seg_Bt_mask.mha
+$(BASENAME)_seg_Bt@1+mask.mha : $(BASENAME)_seg_Bt@1_add+1.mha h3d_hull_02-seg+seg.mha
 	$(ITKDIR)/mask $^ $@ 0
 
 Bt.stl : $(BASENAME)_seg_Bt@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
