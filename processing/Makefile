@@ -400,10 +400,10 @@ A+V+path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha demo-path@1.mha
 %_lmp.vtp : %.vtp
 	$(VTKDIRWG)/largest_mesh-part_02 $< $@
 
-$(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B@1.mha A+V+path_ed+100.mha
+$(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B.mha A+V+path_ed+100.mha # use B (@255) for m+1 or otherwise B@1
 	$(ITKDIR)/mask $^ $@ 0
 
-A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path+mask_m+1_th+127@1_sws_lmp_th+0+0+1+1+1.vtp
+A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1.vtp
 	ln -sf $< $@
 
 A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path_ed+3.mha
