@@ -307,14 +307,14 @@ Arz_dec.blend : Arz_dec.stl.blend
 
 ### BEGIN ACN-Arz_*.blend
 
-# %_m+1.mha : %.mha
-# 	$(ITKDIRWG)/mean-BOX_01 $< $@ +1 0
+%_m+1.mha : %.mha
+	$(ITKDIRWG)/mean-BOX_01 $< $@ +1 0
 
-# %_m+3.mha : %.mha
-# 	$(ITKDIRWG)/mean-BOX_01 $< $@ +3 0
+%_m+3.mha : %.mha
+	$(ITKDIRWG)/mean-BOX_01 $< $@ +3 0
 
-# %_th+127@1.mha : %.mha
-# 	$(ITKDIR)/thresh-glob $< $@  0 127 max 1
+%_th+127@1.mha : %.mha
+	$(ITKDIR)/thresh-glob $< $@  0 127 max 1
 
 %_ed+10.mha : %.mha
 	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 10 0
@@ -403,7 +403,7 @@ A+V+path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha demo-path@1.mha
 $(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B@1.mha A+V+path_ed+100.mha
 	$(ITKDIR)/mask $^ $@ 0
 
-A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path+mask_sws_lmp_th+0+0+1+1+1.vtp
+A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path+mask_m+1_th+127@1_sws_lmp_th+0+0+1+1+1.vtp
 	ln -sf $< $@
 
 A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path_ed+3.mha
