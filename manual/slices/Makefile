@@ -42,14 +42,14 @@ clean:
 # %.mhd : ../%.mhd
 # 	ln -sf ../$@ .
 
-BG.mhd : ../../processing/h3d.mhd
-	ln -sf $< $@
+BG.mhd : ../../processing/h3d.mhd ../../processing/h3d.raw
+	ln -sf $^ .
 
-OV1.mhd : ../../processing/h3d_seg_A+B.mhd
-	ln -sf $< $@
+OV1.mhd : ../../processing/h3d_seg_A+B.mhd ../../processing/h3d_seg_A+B.raw
+	ln -sf $^ .
 
-h3d_rsi+1+1.0.mhd : ../../processing/h3d_rsi+1+1.0.mhd
-	ln -sf $< $@
+h3d_rsi+1+1.0.mhd : ../../processing/h3d_rsi+1+1.0.mhd ../../processing/h3d_rsi+1+1.0.raw
+	ln -sf $^ .
 
 h3d_hull_00.vtp : ../../processing/h3d_hull_00.vtp
 	ln -sf $< $@

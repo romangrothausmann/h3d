@@ -34,8 +34,8 @@ clean :
 	pigz -v -- $< 
 
 
-$(BNseg).mhd : ../h3d_seg_A+B+T.mhd
-	ln -sf $< $@
+$(BNseg).mhd : ../h3d_seg_A+B+T.mhd ../h3d_seg_A+B+T.raw
+	ln -sf $^ .
 
 %_rs+1.0.mhd : %.mhd
 	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0

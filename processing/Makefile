@@ -172,14 +172,14 @@ demo-path.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI9
 
 ## BEGIN fm map for LUT coloring of Bt+Arz
 
-$(BASENAME)_seg_Bt.mhd : ../manual/processing/$(BASENAME)_seg_Bt.mhd
-	ln -sf $< $@
+$(BASENAME)_seg_Bt.mhd : ../manual/processing/$(BASENAME)_seg_Bt.mhd ../manual/processing/$(BASENAME)_seg_Bt.raw
+	ln -sf $^ .
 
-$(BASENAME)_seg_Bt_mask.mhd : ../manual/processing/$(BASENAME)_seg_Bt_mask.mhd
-	ln -sf $< $@
+$(BASENAME)_seg_Bt_mask.mhd : ../manual/processing/$(BASENAME)_seg_Bt_mask.mhd ../manual/processing/$(BASENAME)_seg_Bt_mask.raw
+	ln -sf $^ .
 
-$(BASENAME)_seg_Arz.mhd : ../manual/processing/$(BASENAME)_seg_Arz.mhd
-	ln -sf $< $@
+$(BASENAME)_seg_Arz.mhd : ../manual/processing/$(BASENAME)_seg_Arz.mhd ../manual/processing/$(BASENAME)_seg_Arz.raw
+	ln -sf $^ .
 
 $(BASENAME)_seg_Bt+Arz_fm-seeds.mhd : ../manual/processing/$(BASENAME)_seg_Bt+Arz_fm-seeds.mhd
 	ln -sf $< $@
@@ -257,7 +257,7 @@ $(BASENAME)_seg_B-fm.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 	$(ITKDIR)/mask $^ $@ 0
 
 %_sws.vtp : %.mhd
-	$(VTKDIR)/discrete_marching-cubes $< $(basename $<)  2 2 0
+	$(VTKDIR)/discrete_marching-cubes $< $*  2 2 0
 	rm $*_raw.vtp
 
 %_th+0+0+1+1+1.vtp : %.vtp
