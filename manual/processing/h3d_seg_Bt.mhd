@@ -1,0 +1,14 @@
+ObjectType = Image
+NDims = 3
+BinaryData = True
+BinaryDataByteOrderMSB = False
+CompressedData = False
+TransformMatrix = 1 0 0 0 1 0 0 0 1
+Offset = 0 0 0
+CenterOfRotation = 0 0 0
+AnatomicalOrientation = RAI
+ElementSpacing = 0.331662 0.331662 0.331662
+ITK_InputFilterName = MetaImageIO
+DimSize = 3048 3279 1033
+ElementType = MET_UCHAR
+ElementDataFile = h3d_seg_Bt.raw
