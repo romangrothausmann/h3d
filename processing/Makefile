@@ -110,7 +110,7 @@ $(BASENAME)_seg_V@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
 	$(ITKDIR)/min-path_seg_f32  $< $*_mps+5.5+1+0.3  0 5.5 1 10000 .3   p277.7 p548.6 p276.7   p466.7 p588.0 p126.0 | tee $*_mps+5.5+1+0.3.out
 
 %_ed+100.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 100 0
+	$(ITKDIR)/dilate_bin $< $@ 0 100
 
 $(BASENAME)_seg_B@1+mps+ROI900.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_B_ROI900_mps+5.5+1+0.3_max-sphere_ed+100.mha
 	$(ITKDIR)/mask $^ $@ 1
@@ -209,7 +209,7 @@ $(BASENAME)_seg_Bt+Arz-fm.mha : $(BASENAME)_seg_Bt_fm.mha  $(BASENAME)_seg_Arz_f
 	$(ITKDIRWG)/keep_N_objects_01 $< $@ 255 0 1 0 0 NumberOfPixels
 
 %_ed+3.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 3 0
+	$(ITKDIR)/dilate_bin $< $@ 0 3
 
 $(BASENAME)_seg_B_ed+3_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B_ed+3_kNo+1@255.mha
 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
@@ -325,10 +325,10 @@ Arz_dec.blend : Arz_dec.stl.blend
 	$(ITKDIR)/thresh-glob $< $@  0 127 max 1
 
 %_ed+10.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 10 0
+	$(ITKDIR)/dilate_bin $< $@ 0 10
 
 %_ed+30.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 30 0
+	$(ITKDIR)/dilate_bin $< $@ 0 30
 
 $(BASENAME)_seg_B@Arz.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_Arz@1_ed+30.mha
 	$(ITKDIR)/mask $^ $@ 0
@@ -383,7 +383,7 @@ V.blend : V.stl.blend
 ### BEGIN ACN-Bt.blend
 
 %_ed+60.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 60 0
+	$(ITKDIR)/dilate_bin $< $@ 0 60
 
 $(BASENAME)_seg_B@Bt.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_Bt@1_ed+60.mha
 	$(ITKDIR)/mask $^ $@ 0
