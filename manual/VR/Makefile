@@ -26,7 +26,7 @@ fig_v-render_PNGs= fig_v-render_01_trim.png fig_v-render_02_oao_trim.png fig_v-r
 all : $(fig_v-render_PNGs) # all.neato.Make.svg all.fdp.Make.svg
 
 clean :
-	@-rm -v $(fig_v-render_PNGs) h3d_rsi+1+0.331662.mha
+	@-rm -v $(fig_v-render_PNGs) h3d_rsi+1+0.331662.mhd
 	@-rm -v *.png
 
 % :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon
@@ -36,19 +36,19 @@ clean :
 	pigz -v -- $< 
 
 
-h3d_rsi+1+0.331662.mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1+0.331662.mha
+h3d_rsi+1+0.331662.mhd : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1+0.331662.mhd
 	ln -sf $< $@
 
-fig_v-render_%.png : fig_v-render_%.pvsm h3d_rsi+1+0.331662.mha
+fig_v-render_%.png : fig_v-render_%.pvsm h3d_rsi+1+0.331662.mhd
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/render-view.py  -s 1400 1400 -hq -i $< -png $@
 
-fig_v-render_%_oao.png : fig_v-render_%.pvsm h3d_rsi+1+0.331662.mha
+fig_v-render_%_oao.png : fig_v-render_%.pvsm h3d_rsi+1+0.331662.mhd
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/render-view.py  -s 1400 1400 -oao -i $< -png $@
 
-fig_v-render_03_LE.png : fig_v-render_03.pvsm h3d_rsi+1+0.331662.mha
+fig_v-render_03_LE.png : fig_v-render_03.pvsm h3d_rsi+1+0.331662.mhd
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/render-view.py  -s 1400 1024 -hq -oa -i $< -png $@ -LE
 
-fig_v-render_03_RE.png : fig_v-render_03.pvsm h3d_rsi+1+0.331662.mha
+fig_v-render_03_RE.png : fig_v-render_03.pvsm h3d_rsi+1+0.331662.mhd
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/render-view.py  -s 1400 1024 -hq -oa -i $< -png $@ -RE
 
 %_trim.png : %.png

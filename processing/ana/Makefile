@@ -34,28 +34,28 @@ clean :
 	pigz -v -- $< 
 
 
-$(BNseg).mha : ../h3d_seg_A+B+T.mha
+$(BNseg).mhd : ../h3d_seg_A+B+T.mhd
 	ln -sf $< $@
 
-%_rs+1.0.mha : %.mha
+%_rs+1.0.mhd : %.mhd
 	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
 
-%_B_raw.vtp %_B_sws.vtp : %.mha
+%_B_raw.vtp %_B_sws.vtp : %.mhd
 	$(VTKDIR)/discrete_marching-cubes $< $*_B 1 1 1
 
-%_A_raw.vtp %_A_sws.vtp : %.mha
+%_A_raw.vtp %_A_sws.vtp : %.mhd
 	$(VTKDIR)/discrete_marching-cubes $< $*_A 2 2 1
 
-# %_T_raw.vtp %_T_sws.vtp : %.mha # not possible @ 0.33 (crashes during SWS)
+# %_T_raw.vtp %_T_sws.vtp : %.mhd # not possible @ 0.33 (crashes during SWS)
 # 	$(VTKDIR)/discrete_marching-cubes $< $*_T 3 3 1
 
 %_o.vtp : %.vtp
 	$(VTKDIR)/threshold $< $@ 1 0 Scalars_ 1 3 0 # big files need compression OR writer->SetHeaderTypeToUInt64()
 
-%_raw.vtp %_sws.vtp : %.mha # not possible @ 0.33 (crashes during SWS)
+%_raw.vtp %_sws.vtp : %.mhd # not possible @ 0.33 (crashes during SWS)
 	$(VTKDIR)/discrete_marching-cubes $< $* 1 3 1
 
-%.ana : %.mha
+%.ana : %.mhd
 	$(ITKDIR)/analyse_labels $< 1 > $@
 
 %.anaSV : %.vtp
@@ -73,10 +73,10 @@ $(BNseg).mha : ../h3d_seg_A+B+T.mha
 %_sws_o.anaSS : %_B_sws_o.anaSV %_A_sws_o.anaSV # %_T.anaS  not possible @ 0.33
 	sed '3d' $^ > $@
 
-%_dc.mha : %.mha
+%_dc.mhd : %.mhd
 	$(ITKDIR)/file_converter $< $@ 0
 
-%.anaJS : %_dc.mha
+%.anaJS : %_dc.mhd
 	/opt/octave-4.0.0/bin/octave  ~/octave/scripts/jointSurf3D.m  $<  > $@
 
 %.anaJJ : %.ana %.anaJS # need difference 

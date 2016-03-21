@@ -64,7 +64,7 @@ clean :
 	@-rm -v $(BNseg)_lu+1_???_* 
 	@-rm -v $(BNseg)_lu+1_???.ana* 
 	@-rm -v $(BN)_* 
-	@-rm -v mask.mha
+	@-rm -v mask.mhd
 	@-rm -v luBounds.*
 	@-rm -rv fig_luBounds*
 	@-rm -v all.*
@@ -72,7 +72,7 @@ clean :
 #	@-rmdir -v 
 
 clean_all : clean
-	@-rm -v $(BN).mha $(BNseg)* # uncomment for production 
+	@-rm -v $(BN).mhd $(BNseg)* # uncomment for production 
 
 
 % :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon
@@ -82,34 +82,34 @@ clean_all : clean
 	pigz -v -- $< 
 
 
-$(BN).mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1+0.331662.mha
+$(BN).mhd : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1+0.331662.mhd
 	ln -sf $< $@
 
-$(BNseg).mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B.mha
+$(BNseg).mhd : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B.mhd
 	ln -sf $< $@
 
-mask.mha : ../kap-net_histo_reg_8bit_mask+seg01_corrected_inv.mha
+mask.mhd : ../kap-net_histo_reg_8bit_mask+seg01_corrected_inv.mhd
 	ln -sf $< $@
 
-%_lu+1_low.mha %_lu+1_mid.mha %_lu+1_upp.mha : $(BN).mha %.mha
+%_lu+1_low.mhd %_lu+1_mid.mhd %_lu+1_upp.mhd : $(BN).mhd %.mhd
 	$(ITKDIR)/label_uncertainty_float $^ $*_lu+1  0 1
 
-%.ana : %.mha
+%.ana : %.mhd
 	$(ITKDIR)/analyse_labels $< 1 > $@
 
-%_ROI.mha : %.mha
+%_ROI.mhd : %.mhd
 	$(ITKDIR)/extract_subimage  $< $@ $(origin) $(extent)
 
-# %_dc.mha : %.mha
+# %_dc.mhd : %.mhd
 # 	$(ITKDIR)/file_converter $< $@ 0
 
-%_add+1.mha : %.mha
+%_add+1.mhd : %.mhd
 	$(ITKDIR)/add_const  $< $@ 0 +1
 
-%_T-mask.mha : %_add+1.mha mask.mha
+%_T-mask.mhd : %_add+1.mhd mask.mhd
 	$(ITKDIR)/mask $^ $@ 0
 
-%.anaJS : %.mha # %_dc.mha # if label_uncertainty_float saves compressed
+%.anaJS : %.mhd # %_dc.mhd # if label_uncertainty_float saves compressed
 	/opt/octave-4.0.0/bin/octave  ~/octave/scripts/jointSurf3D.m  $<  > $@
 
 %.anaJJ : %.ana %.anaJS # need difference 
@@ -147,7 +147,7 @@ LUT.png :
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
 
-%.png : $$(call base_,%).mha # even though functions are expanded immediately, this needs to be in SECONDEXPANSION for % to be expanded: http://stackoverflow.com/questions/9526295/how-to-call-functions-within-order-only-prerequisites#9533980
+%.png : $$(call base_,%).mhd # even though functions are expanded immediately, this needs to be in SECONDEXPANSION for % to be expanded: http://stackoverflow.com/questions/9526295/how-to-call-functions-within-order-only-prerequisites#9533980
 	@echo "process $+ to $*"
 	$(eval pos= $(subst $(basename $+),,$*))
 	$(eval pos= $(subst _,,$(pos)))

@@ -30,7 +30,7 @@ all: fig_histo_3D-sliced+seg.svg fig_histo_3D-sliced+seg.svg.neato.Make.svg fig_
 
 clean:
 	@-rm -v BG_x@0838.png BG_y@1624.png BG_z@0688.png OV1_LUT_x@0838.png OV1_LUT_y@1624.png OV1_LUT_z@0688.png LUT.png 3D-OV.png
-	@-rm -v h3d_hull_00.vtp h3d_rsi+1+1.0.mha BG.mha OV1.mha
+	@-rm -v h3d_hull_00.vtp h3d_rsi+1+1.0.mhd BG.mhd OV1.mhd
 	@-rm -v fig_histo_3D-sliced+seg.svg fig_histo_3D-sliced+seg/*
 	@-rmdir -v fig_histo_3D-sliced+seg/
 	@-rm -v fig_histo_3D-sliced+seg.svg.gv fig_histo_3D-sliced+seg.svg.neato.Make.svg fig_histo_3D-sliced+seg.svg.fdp.Make.svg
@@ -39,22 +39,22 @@ clean:
 	unpigz -v -k -- $<
 
 
-# %.mha : ../%.mha
+# %.mhd : ../%.mhd
 # 	ln -sf ../$@ .
 
-BG.mha : ../../processing/h3d.mha
+BG.mhd : ../../processing/h3d.mhd
 	ln -sf $< $@
 
-OV1.mha : ../../processing/h3d_seg_A+B.mha
+OV1.mhd : ../../processing/h3d_seg_A+B.mhd
 	ln -sf $< $@
 
-h3d_rsi+1+1.0.mha : ../../processing/h3d_rsi+1+1.0.mha
+h3d_rsi+1+1.0.mhd : ../../processing/h3d_rsi+1+1.0.mhd
 	ln -sf $< $@
 
 h3d_hull_00.vtp : ../../processing/h3d_hull_00.vtp
 	ln -sf $< $@
 
-3D-OV.png : xyz-sliced+hull.pvsm h3d_rsi+1+1.0.mha h3d_hull_00.vtp
+3D-OV.png : xyz-sliced+hull.pvsm h3d_rsi+1+1.0.mhd h3d_hull_00.vtp
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/render-view.py  -s 1024 1024 -oa -i $< -png $@
 
 LUT.png :
@@ -93,7 +93,7 @@ fig_histo_3D-sliced+seg.svg : $(fig_histo_3D-sliced+seg_PNGs)
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
 
-%.png : $$(call base_,%).mha # even though functions are expanded immediately, this needs to be in SECONDEXPANSION for % to be expanded: http://stackoverflow.com/questions/9526295/how-to-call-functions-within-order-only-prerequisites#9533980
+%.png : $$(call base_,%).mhd # even though functions are expanded immediately, this needs to be in SECONDEXPANSION for % to be expanded: http://stackoverflow.com/questions/9526295/how-to-call-functions-within-order-only-prerequisites#9533980
 	@echo "process $+ to $*"
 	$(eval pos= $(subst $(basename $+),,$*))
 	$(eval pos= $(subst _,,$(pos)))

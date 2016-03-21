@@ -6,7 +6,7 @@
 
 #### ToDo:
 
-## Replace A+B+T by T+B+A as done in processing/low_upp-bounds/Makefile for %_T-mask.mha
+## Replace A+B+T by T+B+A as done in processing/low_upp-bounds/Makefile for %_T-mask.mhd
 ## check which .SERIAL prereq. can be done with less mem-usg e.g. SDI or other filter, e.g. paste, erode-dilate_dm
 ## split _raw and _sws dmc
 
@@ -36,7 +36,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 .PHONY : all clean gv
 
 
-all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha # main targets
+all : $(BASENAME).mhd $(BASENAME)_seg_A+B.mhd # main targets
 all : slices.done # manual/slices/
 all : ana.done # processing/ana/
 all : SRV.done # manual/SRV/
@@ -45,19 +45,19 @@ all : VE.done # manual/VE/
 
 clean :
 	@-rm -v slices.done ana.done SRV.done
-	@-rm -v $(BASENAME)_rsi+1+1.0.mha $(BASENAME)_hull_00.vtp $(BASENAME)_hull_00.mha
-#	@-rm -v $(BASENAME).mha $(BASENAME)_seg_A+B.mha # not (yet) covered by make
-#	@-rm -v $(BASENAME)_seg_A+B+T.mha # not (yet) covered by make
-	@-rm -v demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz_?.blend Arz_dec.blend
-	@-rm -v $(BASENAME)_hull_02.vtp $(BASENAME)_hull_02.mha
+	@-rm -v $(BASENAME)_rsi+1+1.0.mhd $(BASENAME)_hull_00.vtp $(BASENAME)_hull_00.mhd
+#	@-rm -v $(BASENAME).mhd $(BASENAME)_seg_A+B.mhd # not (yet) covered by make
+#	@-rm -v $(BASENAME)_seg_A+B+T.mhd # not (yet) covered by make
+	@-rm -v demo-path.vtp h3d_seg_Bt+Arz-fm.mhd h3d_seg_B-fm.mhd Bt.blend Arz.blend A.blend V.blend ACN-Arz_?.blend Arz_dec.blend
+	@-rm -v $(BASENAME)_hull_02.vtp $(BASENAME)_hull_02.mhd
 
 gv : all.dot.svg all.fdp.svg all.neato.svg all.twopi.svg
 
 
-slices.done : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
-ana.done : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
+slices.done : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mhd # manual/slices/
+ana.done : $(BASENAME)_seg_A+B+T.mhd  # processing/ana/
 SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend
-SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha # manual/SRV/
+SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mhd h3d_seg_B-fm.mhd # manual/SRV/
 VE.done : ACN-Bt.blend A+V+ACN-path.blend # manual/VE/
 	touch $@
 
@@ -70,12 +70,12 @@ VE.done : ACN-Bt.blend A+V+ACN-path.blend # manual/VE/
 
 
 
-$(BASENAME)_rsi+1+1.0.mha : $(BASENAME).mha
+$(BASENAME)_rsi+1+1.0.mhd : $(BASENAME).mhd
 	$(ITKDIR)/resample $< $@ 1 1 1.0 1.0 1.0
 
-$(BASENAME)_hu%_00.vtp $(BASENAME)_hu%_00.mha : $(BASENAME).mha # % only to force single execution of rule ($@ will only contain one of the targets!): http://stackoverflow.com/questions/2973445/gnu-makefile-rule-generating-a-few-targets-from-a-single-source-file#3077254
+$(BASENAME)_hu%_00.vtp $(BASENAME)_hu%_00.mhd : $(BASENAME).mhd # % only to force single execution of rule ($@ will only contain one of the targets!): http://stackoverflow.com/questions/2973445/gnu-makefile-rule-generating-a-few-targets-from-a-single-source-file#3077254
 ## upper "lit" needs to be above 342.332 as voxelizer seems to voxelize only below!
-	$(VTKDIR)/hull $(BASENAME)_hull_00.vtp 0 0  $<  $(BASENAME)_hull_00.mha  0 \
+	$(VTKDIR)/hull $(BASENAME)_hull_00.vtp 0 0  $<  $(BASENAME)_hull_00.mhd  0 \
 		822.25    574.062  -34                1.2191     -0.140661  -0.536829398293234  \
 		34.1557   655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
 		-61.0851  221.929  -32.7672328973014  0.051673   -0.924611  -0.377391  \
@@ -83,9 +83,9 @@ $(BASENAME)_hu%_00.vtp $(BASENAME)_hu%_00.mha : $(BASENAME).mha # % only to forc
 		0         0        0                  0          0          -1         \
 		0         0        342.332            0          0          1
 
-$(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mha : $(BASENAME).mha 
+$(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mhd : $(BASENAME).mhd 
 ## move all sides slidly further in (~2-3µm) normal directions: 1.: +x; 2.: -x; 3.: -y; 4.: +y
-	$(VTKDIR)/hull $(BASENAME)_hull_02.vtp 0 0  $<  $(BASENAME)_hull_02.mha  0 \
+	$(VTKDIR)/hull $(BASENAME)_hull_02.vtp 0 0  $<  $(BASENAME)_hull_02.mhd  0 \
 		820       574.062  -34                1.2191     -0.140661  -0.536829398293234  \
 		37        655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
 		-61.0851  224      -32.7672328973014  0.051673   -0.924611  -0.377391  \
@@ -94,25 +94,25 @@ $(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mha : $(BASENAME).mha
 		0         0        342.332            0          0          1
 
 
-%_lcc-8b.mha : %.mha
+%_lcc-8b.mhd : %.mhd
 	$(ITKDIR)/label_connected_components $< $@ 0 0
 	$(ITKDIR)/toUInt8 $@ $@ 0
 
-$(BASENAME)_seg_A@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
+$(BASENAME)_seg_A@1.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mhd
 	$(ITKDIR)/thresh-glob $< $@ 0 2 2 1
 
-$(BASENAME)_seg_V@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
+$(BASENAME)_seg_V@1.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mhd
 	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
 
 ## BEGIN blood vessel profile speed map and path extraction in ROI900
 
-%_mps+5.5+1+0.3.vtk %_mps+5.5+1+0.3_max-sphere.mha : %.mha
+%_mps+5.5+1+0.3.vtk %_mps+5.5+1+0.3_max-sphere.mhd : %.mhd
 	$(ITKDIR)/min-path_seg_f32  $< $*_mps+5.5+1+0.3  0 5.5 1 10000 .3   p277.7 p548.6 p276.7   p466.7 p588.0 p126.0 | tee $*_mps+5.5+1+0.3.out
 
-%_ed+100.mha : %.mha
+%_ed+100.mhd : %.mhd
 	$(ITKDIR)/dilate_bin $< $@ 0 100
 
-$(BASENAME)_seg_B@1+mps+ROI900.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_B_ROI900_mps+5.5+1+0.3_max-sphere_ed+100.mha
+$(BASENAME)_seg_B@1+mps+ROI900.mhd : $(BASENAME)_seg_B@1_ROI900.mhd $(BASENAME)_seg_B_ROI900_mps+5.5+1+0.3_max-sphere_ed+100.mhd
 	$(ITKDIR)/mask $^ $@ 1
 
 ## END blood vessel profile speed map and path extraction in ROI900
@@ -120,42 +120,42 @@ $(BASENAME)_seg_B@1+mps+ROI900.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_
 
 ## BEGIN blood vessel profile speed map and path extraction
 
-black.nii.gz : $(BASENAME).mha
+black.nii.gz : $(BASENAME).mhd
 	$(ITKDIR)/thresh-glob $< $@ 1 0 max 0
 
-$(BASENAME)_seg_B.mha : $(BASENAME)_seg_A+B+T.mha
+$(BASENAME)_seg_B.mhd : $(BASENAME)_seg_A+B+T.mhd
 	$(ITKDIR)/thresh-glob $< $@ 0 1 1
 
-$(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_A+B+T.mha
+$(BASENAME)_seg_B@1.mhd : $(BASENAME)_seg_A+B+T.mhd
 	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
 
-%@1.mha : %.mha
+%@1.mhd : %.mhd
 	$(ITKDIR)/thresh-glob $< $@ 0 1 max 1
 
-%_obp+10+0.mha : %.mha
+%_obp+10+0.mhd : %.mhd
 	$(ITKDIR)/open_bin_para $< $@ 0 10 0
 
-%_kNo+2@1.mha : %.mha
+%_kNo+2@1.mhd : %.mhd
 	$(ITKDIRWG)/keep_N_objects_01 $< $@ 1 0 2 0 0 NumberOfPixels
 
-%_op+500+0.mha : %.mha
+%_op+500+0.mhd : %.mhd
 	$(ITKDIR)/open_parabolic_f32 $< $@ 0 500 0
 
-%_op+5.5+0.mha : %.mha
+%_op+5.5+0.mhd : %.mhd
 	$(ITKDIR)/open_parabolic_f32 $< $@ 0 5.5 0
 
-%_ROI900.mha : %.mha
+%_ROI900.mhd : %.mhd
 	$(ITKDIR)/extract_subimage $< $@  661 1118 263  1000 1000 770
 
-#%-ROI900.mha : %_ROI900.mha black.nii.gz
-$(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900_op+5.5+0.mha black.nii.gz
+#%-ROI900.mhd : %_ROI900.mhd black.nii.gz
+$(BASENAME)_seg_B@1+mps+ROI900-ROI900.mhd : $(BASENAME)_seg_B@1+mps+ROI900_op+5.5+0.mhd black.nii.gz
 	$(ITKDIR)/paste $^ $@ 0
 
-$(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha  $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha # op should be done on segments@255 to avoid parabola "clipping"
+$(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mhd  $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mhd # op should be done on segments@255 to avoid parabola "clipping"
 	$(ITKDIR)/max $^ $@ 0
 
 
-%_mps+0-1+0.331662.vtk %_mps+0-1+0.331662_max-sphere.mha : %.mha
+%_mps+0-1+0.331662.vtk %_mps+0-1+0.331662_max-sphere.mhd : %.mhd
 	$(ITKDIR)/min-path_seg_f32  $< $*_mps+0-1+0.331662  0 0 -1 10000 0.331662    p595 p826 p31    p439 p270 p317    p467.8 p587.9 p125.7  p476.8 p579.6 p124.1 | tee $*_mps+0-1+0.331662.out
 
 %.vtp : %.vtk
@@ -164,7 +164,7 @@ $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : 
 demo-path.vtp : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtp
 	ln -s $< $@
 
-demo-path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662_max-sphere.mha
+demo-path.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662_max-sphere.mhd
 	ln -s $< $@
 
 ## END blood vessel profile speed map and path extraction
@@ -172,29 +172,29 @@ demo-path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI9
 
 ## BEGIN fm map for LUT coloring of Bt+Arz
 
-$(BASENAME)_seg_Bt.mha : ../manual/processing/$(BASENAME)_seg_Bt.mha
+$(BASENAME)_seg_Bt.mhd : ../manual/processing/$(BASENAME)_seg_Bt.mhd
 	ln -sf $< $@
 
-$(BASENAME)_seg_Bt_mask.mha : ../manual/processing/$(BASENAME)_seg_Bt_mask.mha
+$(BASENAME)_seg_Bt_mask.mhd : ../manual/processing/$(BASENAME)_seg_Bt_mask.mhd
 	ln -sf $< $@
 
-$(BASENAME)_seg_Arz.mha : ../manual/processing/$(BASENAME)_seg_Arz.mha
+$(BASENAME)_seg_Arz.mhd : ../manual/processing/$(BASENAME)_seg_Arz.mhd
 	ln -sf $< $@
 
-$(BASENAME)_seg_Bt+Arz_fm-seeds.mha : ../manual/processing/$(BASENAME)_seg_Bt+Arz_fm-seeds.mha
+$(BASENAME)_seg_Bt+Arz_fm-seeds.mhd : ../manual/processing/$(BASENAME)_seg_Bt+Arz_fm-seeds.mhd
 	ln -sf $< $@
 
-%_fm.mha : $(BASENAME)_seg_Bt+Arz_fm-seeds.mha %.mha
+%_fm.mhd : $(BASENAME)_seg_Bt+Arz_fm-seeds.mhd %.mhd
 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
 	$(ITKDIR)/toUInt16 $@ $@ 0
 
-%_add+1360.mha : %.mha
+%_add+1360.mhd : %.mhd
 	$(ITKDIR)/add_const $< $@ 0 +1360
 
-$(BASENAME)_seg_Arz_fm+1360.mha : $(BASENAME)_seg_Arz_fm_add+1360.mha  $(BASENAME)_seg_Arz.mha
+$(BASENAME)_seg_Arz_fm+1360.mhd : $(BASENAME)_seg_Arz_fm_add+1360.mhd  $(BASENAME)_seg_Arz.mhd
 	$(ITKDIR)/mask $^ $@ 0
 
-$(BASENAME)_seg_Bt+Arz-fm.mha : $(BASENAME)_seg_Bt_fm.mha  $(BASENAME)_seg_Arz_fm+1360.mha
+$(BASENAME)_seg_Bt+Arz-fm.mhd : $(BASENAME)_seg_Bt_fm.mhd  $(BASENAME)_seg_Arz_fm+1360.mhd
 	$(ITKDIR)/max $^ $@ 0
 
 ### END fm map for LUT coloring of Bt+Arz
@@ -202,26 +202,26 @@ $(BASENAME)_seg_Bt+Arz-fm.mha : $(BASENAME)_seg_Bt_fm.mha  $(BASENAME)_seg_Arz_f
 
 ### BEGIN fm map for LUT coloring of B
 
-%_kNo+1@1.mha : %.mha
+%_kNo+1@1.mhd : %.mhd
 	$(ITKDIRWG)/keep_N_objects_01 $< $@ 1 0 1 0 0 NumberOfPixels
 
-%_kNo+1@255.mha : %.mha
+%_kNo+1@255.mhd : %.mhd
 	$(ITKDIRWG)/keep_N_objects_01 $< $@ 255 0 1 0 0 NumberOfPixels
 
-%_ed+3.mha : %.mha
+%_ed+3.mhd : %.mhd
 	$(ITKDIR)/dilate_bin $< $@ 0 3
 
-$(BASENAME)_seg_B_ed+3_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B_ed+3_kNo+1@255.mha
+$(BASENAME)_seg_B_ed+3_fm.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mhd $(BASENAME)_seg_B_ed+3_kNo+1@255.mhd
 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
 	$(ITKDIR)/toUInt16 $@ $@ 0
 
-$(BASENAME)_seg_B_fm.mha : $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_B.mha
+$(BASENAME)_seg_B_fm.mhd : $(BASENAME)_seg_B_ed+3_fm.mhd $(BASENAME)_seg_B.mhd
 	$(ITKDIR)/mask $^ $@ 0
 
-$(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mha : $(BASENAME)_seg_B_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha # first input defines output type
+$(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mhd : $(BASENAME)_seg_B_fm.mhd $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mhd # first input defines output type
 	$(ITKDIR)/add $^ $@ 0
 
-$(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mha $(BASENAME)_seg_B@1.mha # first input defines output type
+$(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mhd $(BASENAME)_seg_B@1.mhd # first input defines output type
 	$(ITKDIR)/add $^ $@ 0
 
 ### END fm map for LUT coloring of B
@@ -229,11 +229,11 @@ $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha : $(BASENAME)_seg_B_
 
 ### BEGIN make the vene all blue
 
-$(BASENAME)_seg_V@700.mha : $(BASENAME)_seg_V@1.mha
+$(BASENAME)_seg_V@700.mhd : $(BASENAME)_seg_V@1.mhd
 	$(ITKDIR)/toUInt16 $< $@ 0
 	$(ITKDIR)/thresh-glob $@ $@ 0 1 1 700 # works only if input can hold 700
 
-$(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha $(BASENAME)_seg_V@700.mha # first input defines output type
+$(BASENAME)_seg_B-fm.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mhd $(BASENAME)_seg_V@700.mhd # first input defines output type
 	$(ITKDIR)/max $^ $@ 0
 
 ### END make the vene all blue
@@ -241,22 +241,22 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 
 ### BEGIN *.blend
 
-%_rsi+0+1.0.mha : %.mha
+%_rsi+0+1.0.mhd : %.mhd
 	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
 
-%_add+1.mha : %.mha
+%_add+1.mhd : %.mhd
 	$(ITKDIR)/add_const $< $@ 0 +1
 
-%+seg.mha : %.mha ../manual/processing/mask+seg.mha
+%+seg.mhd : %.mhd ../manual/processing/mask+seg.mhd
 	$(ITKDIR)/max $^ $@ 0
 
-%-seg.mha : %.mha ../manual/processing/mask-seg.mha
+%-seg.mhd : %.mhd ../manual/processing/mask-seg.mhd
 	$(ITKDIR)/mask-negated $^ $@ 0
 
-%+mask.mha : %_add+1.mha h3d_hull_02-seg.mha
+%+mask.mhd : %_add+1.mhd h3d_hull_02-seg.mhd
 	$(ITKDIR)/mask $^ $@ 0
 
-%_sws.vtp : %.mha
+%_sws.vtp : %.mhd
 	$(VTKDIR)/discrete_marching-cubes $< $(basename $<)  2 2 0
 	rm $*_raw.vtp
 
@@ -274,7 +274,7 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 
 ### BEGIN Bt.blend
 
-$(BASENAME)_seg_Bt@1+mask.mha : $(BASENAME)_seg_Bt@1_add+1.mha h3d_hull_02-seg+seg.mha
+$(BASENAME)_seg_Bt@1+mask.mhd : $(BASENAME)_seg_Bt@1_add+1.mhd h3d_hull_02-seg+seg.mhd
 	$(ITKDIR)/mask $^ $@ 0
 
 Bt.stl : $(BASENAME)_seg_Bt@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
@@ -315,25 +315,25 @@ Arz_dec.blend : Arz_dec.stl.blend
 
 ### BEGIN ACN-Arz_*.blend
 
-%_m+1.mha : %.mha
+%_m+1.mhd : %.mhd
 	$(ITKDIRWG)/mean-BOX_01 $< $@ +1 0
 
-%_m+3.mha : %.mha
+%_m+3.mhd : %.mhd
 	$(ITKDIRWG)/mean-BOX_01 $< $@ +3 0
 
-%_th+127@1.mha : %.mha
+%_th+127@1.mhd : %.mhd
 	$(ITKDIR)/thresh-glob $< $@  0 127 max 1
 
-%_ed+10.mha : %.mha
+%_ed+10.mhd : %.mhd
 	$(ITKDIR)/dilate_bin $< $@ 0 10
 
-%_ed+30.mha : %.mha
+%_ed+30.mhd : %.mhd
 	$(ITKDIR)/dilate_bin $< $@ 0 30
 
-$(BASENAME)_seg_B@Arz.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_Arz@1_ed+30.mha
+$(BASENAME)_seg_B@Arz.mhd : $(BASENAME)_seg_B@1.mhd $(BASENAME)_seg_Arz@1_ed+30.mhd
 	$(ITKDIR)/mask $^ $@ 0
 
-$(BASENAME)_seg_B@Arz-A-V.mha : $(BASENAME)_seg_B@Arz.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha
+$(BASENAME)_seg_B@Arz-A-V.mhd : $(BASENAME)_seg_B@Arz.mhd $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mhd
 	$(ITKDIR)/mask-negated $^ $@ 0
 
 ACN-Arz.vtp : $(BASENAME)_seg_B@Arz-A-V+mask_sws_th+0+0+1+1+1.vtp
@@ -382,13 +382,13 @@ V.blend : V.stl.blend
 
 ### BEGIN ACN-Bt.blend
 
-%_ed+60.mha : %.mha
+%_ed+60.mhd : %.mhd
 	$(ITKDIR)/dilate_bin $< $@ 0 60
 
-$(BASENAME)_seg_B@Bt.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_Bt@1_ed+60.mha
+$(BASENAME)_seg_B@Bt.mhd : $(BASENAME)_seg_B@1.mhd $(BASENAME)_seg_Bt@1_ed+60.mhd
 	$(ITKDIR)/mask $^ $@ 0
 
-$(BASENAME)_seg_B@Bt-A-V.mha : $(BASENAME)_seg_B@Bt.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha
+$(BASENAME)_seg_B@Bt-A-V.mhd : $(BASENAME)_seg_B@Bt.mhd $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mhd
 	$(ITKDIR)/mask-negated $^ $@ 0
 
 ACN-Bt.vtp : $(BASENAME)_seg_B@Bt-A-V+mask_sws_th+0+0+1+1+1.vtp
@@ -402,23 +402,23 @@ ACN-Bt.blend : ACN-Bt.stl.blend
 
 ### BEGIN A+V+ACN-path.blend
 
-A+V+path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha demo-path@1.mha
+A+V+path.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mhd demo-path@1.mhd
 	$(ITKDIR)/max $^ $@ 0
 
 %_lmp.vtp : %.vtp
 	$(VTKDIRWG)/largest_mesh-part_02 $< $@
 
-$(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B.mha A+V+path_ed+100.mha # use B (@255) for m+1 or otherwise B@1
+$(BASENAME)_seg_B+A+V+path.mhd : $(BASENAME)_seg_B.mhd A+V+path_ed+100.mhd # use B (@255) for m+1 or otherwise B@1
 	$(ITKDIR)/mask $^ $@ 0
 
 A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1.vtp
 	ln -sf $< $@
 
-A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path_ed+3.mha
+A+V+ACN-path_fm.mhd : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mhd $(BASENAME)_seg_B+A+V+path_ed+3.mhd
 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
 	$(ITKDIR)/toUInt16 $@ $@ 0
 
-%.wrl : %.vtp  %_fm.mha
+%.wrl : %.vtp  %_fm.mhd
 	$(VTKDIR)/probe-surf2vrml  $^ $@  270 0 0
 
 %.wrl.blend : %.wrl
@@ -445,7 +445,7 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 
 
 
-.SERIAL : $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mha # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
+.SERIAL : $(BASENAME)_seg_B_ed+3_fm.mhd $(BASENAME)_seg_Bt_fm.mhd $(BASENAME)_seg_Arz_fm.mhd $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mhd $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mhd $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mhd $(BASENAME)_seg_B_obp+10+0.mhd $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mhd # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
 
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
