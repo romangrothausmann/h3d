@@ -29,6 +29,11 @@ VTKDIR = ~/vtk/simple/build_vtk6_iana0
 VTKDIRWG = ~/vtk/simple_without_git/build_itk4_iana0
 
 
+serialF= $(BASENAME)_seg_Bt@1_ed+60.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha $(BASENAME)_seg_Arz@1_ed+30.mha $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mha
+
+preciousF=  $(serialF:%=%.gz)
+
+
 SPACE := $(eval) $(eval)
 base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))
 base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,$1)))
@@ -58,12 +63,12 @@ slices.done : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
 ana.done : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
 SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend
 SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha # manual/SRV/
-VE.done : ACN-Bt.blend A+V+ACN-path.blend # manual/VE/
+VE.done : ACN-Bt.blend A+V+ACN-path.blend ACN-a45.blend # manual/VE/
 	touch $@
 
 
 % :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon
-	unpigz -v -k -- $<
+	unpigz -v -- $<
 
 %.gz : %
 	pigz -v -- $< 
@@ -272,6 +277,13 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 ### END *.blend
 
 
+$(BASENAME)_seg_a.mha : $(BASENAME)_seg_A+B+T.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 2 2
+
+$(BASENAME)_seg_a@1.mha : $(BASENAME)_seg_A+B+T.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 2 2 1
+
+
 ### BEGIN Bt.blend
 
 $(BASENAME)_seg_Bt@1+mask.mha : $(BASENAME)_seg_Bt@1_add+1.mha h3d_hull_02-seg+seg.mha
@@ -429,6 +441,55 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 
 ### END A+V+ACN-path.blend
 
+### BEGIN ACN-a45.blend
+
+%_ed+15.mha : %.mha
+	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 15 0
+
+%_dmsm+0+0.mha : %.mha
+	$(ITKDIR)/distance_map_signed_maurer_f32 $< $@ 1 0 0
+
+%_wsm+15+1+0.mha : %.mha
+	$(ITKDIR)/watershed_morph $< $@ 1 15 1 0
+	$(ITKDIR)/toUInt8 $@ $@ 1
+
+%_ols.mha : %.mha
+	$(ITKDIRWG)/opening_by_label-shape_01 $< $@ 0 0 1 NumberOfPixelsOnBorder
+
+$(BASENAME)_seg_Alv.mha : $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0_ols.mha $(BASENAME)_seg_a@1_ROI900.mha 
+	$(ITKDIR)/mask $^ $@ 0
+
+$(BASENAME)_seg_a45.mha : $(BASENAME)_seg_Alv.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 46 46 1
+
+$(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_a45_ed+15.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+$(BASENAME)_seg_B@a45+mask.mha : $(BASENAME)_seg_B@a45_add+1.mha $(BASENAME)_seg_a45_ed+15.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+ACN-a45.mha : $(BASENAME)_seg_B@a45+mask.mha
+#ACN-A45.mha : ../manual/correction/ACN-A45.mha
+	ln -sf $< $@
+
+ACN-a45.vtp : ACN-a45_sws_th+0+0+1+1+1.vtp
+	ln -sf $< $@
+
+# $(BASENAME)_seg_B+A+V+path+d200.mha : $(BASENAME)_seg_B.mha A+V+path_ed+200.mha # use B (@255) for m+1 or otherwise B@1
+# 	$(ITKDIR)/mask $^ $@ 0
+
+# ACN-A45_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path+d200_ed+3.mha
+# 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
+# 	$(ITKDIR)/toUInt16 $@ $@ 0
+
+ACN-a45_fm.mha : A+V+ACN-path_fm.mha
+	ln -sf $< $@
+
+ACN-a45.blend : ACN-a45.wrl.blend
+	ln -sf $< $@
+
+### END ACN-a45.blend
+
 
 ## below a rule with "make", a very special case for NOT using $(MAKE) or +make
 ### lines that contain "$(MAKE)" even in a comment get exectued even with -n|--dry-run !!!
@@ -437,7 +498,7 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 #.SECONDARY: # $(SRV_G)_[xyz]@[0-9]*.png #not working
-.PRECIOUS:  %.gv
+.PRECIOUS:  %.gv $(preciousF)
 
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
@@ -445,7 +506,7 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 
 
 
-.SERIAL : $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mha # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
+.SERIAL : $(serialF) # for gnu-make compiled with patch from: http://savannah.gnu.org/patch/index.php?5108
 
 
 .SECONDEXPANSION: # https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html

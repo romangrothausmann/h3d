@@ -16,7 +16,7 @@ fig_ov01_PNGs= $(shell echo fig_ov01_{1..6}.png)
 fig_ov01_PNGs:= $(addprefix fig_ov01/,$(fig_ov01_PNGs))
 
 
-.PHONY: all clean init cleanArz cleanBt cleanBlendPre
+.PHONY: all clean
 
 all : fig_ov01.svg Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4
 
@@ -37,7 +37,7 @@ all : fig_ov01.svg Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4
 ACN-Arz.blend : ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend
 
 fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend ACN-Bt.blend A+V+ACN-path.blend
-Bt2A45.blend A452Bt.blend : ACN-A45.blend
+Bt2A45.blend V2A_ov.blend A452Bt.blend : ACN-a45.blend
 
 V2A_ov/render_000000.png : V2A_ov.blend # 000000 not replaced by % to avoid multiple execution of rule
 #	~/skripte/blender-multi $< $(dir $@)/ 500 501 1
