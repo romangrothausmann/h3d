@@ -446,6 +446,9 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 %_ed+15.mha : %.mha
 	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 15 0
 
+%_ed+230.mha : %.mha
+	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 230 0
+
 %_dmsm+0+0.mha : %.mha
 	$(ITKDIR)/distance_map_signed_maurer_f32 $< $@ 1 0 0
 
@@ -469,21 +472,21 @@ $(BASENAME)_seg_B@a45+mask.mha : $(BASENAME)_seg_B@a45_add+1.mha $(BASENAME)_seg
 	$(ITKDIR)/mask $^ $@ 0
 
 ACN-a45.mha : $(BASENAME)_seg_B@a45+mask.mha
-#ACN-A45.mha : ../manual/correction/ACN-A45.mha
+#ACN-a45.mha : ../manual/correction/ACN-a45.mha
 	ln -sf $< $@
 
 ACN-a45.vtp : ACN-a45_sws_th+0+0+1+1+1.vtp
 	ln -sf $< $@
 
-# $(BASENAME)_seg_B+A+V+path+d200.mha : $(BASENAME)_seg_B.mha A+V+path_ed+200.mha # use B (@255) for m+1 or otherwise B@1
-# 	$(ITKDIR)/mask $^ $@ 0
+$(BASENAME)_seg_B+A+V+path+d230.mha : $(BASENAME)_seg_B.mha A+V+path_ed+230.mha # use B (@255) for m+1 or otherwise B@1
+	$(ITKDIR)/mask $^ $@ 0
 
-# ACN-A45_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path+d200_ed+3.mha
-# 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
-# 	$(ITKDIR)/toUInt16 $@ $@ 0
+ACN-a45_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path+d230_ed+3.mha
+	$(ITKDIR)/fast-marching_f32 $^ $@ 0
+	$(ITKDIR)/toUInt16 $@ $@ 0
 
-ACN-a45_fm.mha : A+V+ACN-path_fm.mha
-	ln -sf $< $@
+# ACN-a45_fm.mha : A+V+ACN-path_fm.mha
+# 	ln -sf $< $@
 
 ACN-a45.blend : ACN-a45.wrl.blend
 	ln -sf $< $@
