@@ -468,14 +468,15 @@ $(BASENAME)_seg_Alv.mha : $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0_ols.mha $
 $(BASENAME)_seg_a45.mha : $(BASENAME)_seg_Alv.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 46 46 1
 
-$(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_a45_ed+15.mha
-	$(ITKDIR)/mask $^ $@ 0
+# $(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_a45_ed+15.mha
+# 	$(ITKDIR)/mask $^ $@ 0
+$(BASENAME)_seg_B@a45.mha : ../manual/correction/$(BASENAME)_seg_B@a45.mha
+	ln -sf $< $@
 
 $(BASENAME)_seg_B@a45+mask.mha : $(BASENAME)_seg_B@a45_add+1.mha $(BASENAME)_seg_a45_ed+15.mha
 	$(ITKDIR)/mask $^ $@ 0
 
 ACN-a45.mha : $(BASENAME)_seg_B@a45+mask.mha
-#ACN-a45.mha : ../manual/correction/ACN-a45.mha
 	ln -sf $< $@
 
 ACN-a45.vtp : ACN-a45_sws_th+0+0+1+1+1.vtp
