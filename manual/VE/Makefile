@@ -43,6 +43,7 @@ fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend A2V.blend fig_A2V.blend : 
 fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend ACN-Bt.blend
 Bt2A45.blend V2A_ov.blend A452Bt.blend : ACN-a45.blend
 
+A2V-reversed.mp4 : A2V.mp4 Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4 # make A2V-reversed.mp4 after all others
 
 A2V/render_000000.png : A2V.blend # 000000 not replaced by % to avoid multiple execution of rule
 	~/skripte/blender-multi $< $(dir $@)    0 5000 4
@@ -62,21 +63,18 @@ A2V-reversed/render_000000.png : A2V-reversed.blend # 000000 not replaced by % t
 
 
 V2A_ov/render_000000.png : V2A_ov.blend # 000000 not replaced by % to avoid multiple execution of rule
-#	~/skripte/blender-multi $< $(dir $@)/ 500 501 1
-	# ~/skripte/blender-multi $< $(dir $@)/ 0 1550 3
-	~/skripte/blender-multi $< $(dir $@)/    0  499 3 # V exit till ACN-Bt appearance
-	~/skripte/blender-multi $< $(dir $@)/ 1510 1550 3 # A entry
-	~/skripte/blender-multi $< $(dir $@)/  800 1509 3 # all there (~3min per frame)
-	~/skripte/blender-multi $< $(dir $@)/  500  599 5 # ACN-Bt appearance (~37GB RAM 14%, ~7min per frame)
-	~/skripte/blender-multi $< $(dir $@)/  600  699 3 # ACN-Arz appearance (~72GB RAM 27%, ~40min per frame)
-	~/skripte/blender-multi $< $(dir $@)/  700  799 5 # Arz appearance (~41GB RAM 16%, ~1h per frame)
+	~/skripte/blender-multi $< $(dir $@)    0 1550 3
+#	~/skripte/blender-multi $< $(dir $@)    0  499 3 # V exit till ACN-Bt appearance
+#	~/skripte/blender-multi $< $(dir $@) 1510 1550 3 # A entry
+#	~/skripte/blender-multi $< $(dir $@)  800 1509 3 # all there (~3min per frame)
+#	~/skripte/blender-multi $< $(dir $@)  500  599 5 # ACN-Bt appearance (~37GB RAM 14%, ~7min per frame)
+#	~/skripte/blender-multi $< $(dir $@)  600  699 3 # ACN-Arz appearance (~72GB RAM 27%, ~40min per frame)
+#	~/skripte/blender-multi $< $(dir $@)  700  799 5 # Arz appearance (~41GB RAM 16%, ~1h per frame)
 
 A452Bt/render_000000.png : A452Bt.blend # 000000 not replaced by % to avoid multiple execution of rule
-#	~/skripte/blender-multi $< $(dir $@)/ 500 501 1
-	~/skripte/blender-multi $< $(dir $@)/    0 3000 4
+	~/skripte/blender-multi $< $(dir $@)    0 3000 4
 
 Bt2A45/render_000000.png : Bt2A45.blend # 000000 not replaced by % to avoid multiple execution of rule
-#	~/skripte/blender-multi $< $(dir $@)/ 2000 2001 1
 	~/skripte/blender-multi $< $(dir $@)    0 4600 4
 
 %.mp4 : %/render_000000.png
@@ -117,5 +115,5 @@ fig_A2V.svg : $(fig_A2V_PNGs)
 .SECONDARY: 
 
 
-.SERIAL: Bt2A45/render_000000.png V2A_ov/render_000000.png A452Bt/render_000000.png
+.SERIAL: Bt2A45/render_000000.png V2A_ov/render_000000.png A452Bt/render_000000.png A2V/render_000000.png A2V-reversed/render_000000.png
 
