@@ -117,7 +117,13 @@ $(BASENAME)_seg_V@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
 %_ed+100.mha : %.mha
 	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 100 0
 
+%_ed+300.mha : %.mha
+	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 300 0
+
 $(BASENAME)_seg_B@1+mps+ROI900.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_B_ROI900_mps+5.5+1+0.3_max-sphere_ed+100.mha
+	$(ITKDIR)/mask $^ $@ 1
+
+$(BASENAME)_seg_B@1+mps+ROI900+d300.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_B_ROI900_mps+5.5+1+0.3_max-sphere_ed+300.mha
 	$(ITKDIR)/mask $^ $@ 1
 
 ## END blood vessel profile speed map and path extraction in ROI900
@@ -446,9 +452,6 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 %_ed+15.mha : %.mha
 	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 15 0
 
-%_ed+230.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 230 0
-
 %_dmsm+0+0.mha : %.mha
 	$(ITKDIR)/distance_map_signed_maurer_f32 $< $@ 1 0 0
 
@@ -478,10 +481,7 @@ ACN-a45.mha : $(BASENAME)_seg_B@a45+mask.mha
 ACN-a45.vtp : ACN-a45_sws_th+0+0+1+1+1.vtp
 	ln -sf $< $@
 
-$(BASENAME)_seg_B+A+V+path+d230.mha : $(BASENAME)_seg_B.mha A+V+path_ed+230.mha # use B (@255) for m+1 or otherwise B@1
-	$(ITKDIR)/mask $^ $@ 0
-
-ACN-a45_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path+d230_ed+3.mha
+ACN-a45_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ROI900.mha $(BASENAME)_seg_B@1+mps+ROI900+d300_ed+3.mha
 	$(ITKDIR)/fast-marching_f32 $^ $@ 0
 	$(ITKDIR)/toUInt16 $@ $@ 0
 
