@@ -68,6 +68,16 @@ A452Bt/render%.png : ../A452Bt/render%.png
 	mencoder mf://@$< -o $@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=3000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log
 
 
+# %.mpg : %.flist
+# 	mencoder -ovc lavc -of mpeg -mpegopts format=dvd:tsaf -vf-clr -srate 48000 -ofps 25 -lavcopts vcodec=mpeg2video:vpass=1:vrc_buf_size=1835:vrc_maxrate=8264:vbitrate=4500:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=2:predia=2:o=mpv_flags=+cbp_rd+mv0:lmin=1:dc=10:acodec=ac3:abitrate=384:vstrict=0:aspect=16/9 -o $@  mf://@$<
+
+# Bt2A45/ol_001550.png : Bt2A45/ol_001550.png
+# #	mogrify -type Bilevel -alpha copy Bt2A45/ol_001550.png
+# 	mogrify -colors 4 -type Palette -alpha copy  Bt2A45/ol_001550.png
+
+# h3d_full_OL.mp4 : spumux.xml Bt2A45/ol_001550.png h3d_full.mp4
+# # %_OL.mpg : %.xml %.ol-list %.mpg
+# 	spumux -m svcd -s 0 -P $< < $(lastword $^) > $@
 
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
