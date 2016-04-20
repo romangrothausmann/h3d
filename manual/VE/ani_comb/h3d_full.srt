@@ -1,0 +1,132 @@
+#subtitles for h3d_full video
+
+
+00:00:00,100 --> 00:00:01,000
+Introduction of objects of interest,
+starting outside sampled region.
+
+00:00:01,100 --> 00:00:04,000
+Connected arteries (red) and veines (blue) with capillaries up to a proximity of about 30 µm together with adjacent terminal bronchiolus (<i>Bt</i>, grey) and beginning of its arzinus.
+
+00:00:04,100 --> 00:00:08,000
+Largest part of an arzinus (<i>Arz</i>, light grey) contained within sampled region.
+
+00:00:08,100 --> 00:00:10,000
+Cappillary network (<i>ACN-Arz</i> magenta) in proximity of <i>Arz</i> up to about 10 µm.
+
+00:00:10,100 --> 00:00:13,000
+View along a ductus that extents beyond the z-depth of the sampled region, see arrow.
+
+00:00:14,100 --> 00:00:16,000
+Note: no tissue is rendered. This leads to the gaps between e.g. <i>Bt</i> and <i>Arz</i>, see arrow.
+
+00:00:17,100 --> 00:00:19,000
+Beginning to follow a possible path of an <b>O2</b> molecule.
+
+00:00:20,100 --> 00:00:22,000
+Camera now enters sampled region.
+Right side of Bt is just about contained in the sampled region.
+
+00:00:22,100 --> 00:00:24,000
+Multiple airway bifurcations appear nearly at the same position, see arrow.
+
+00:00:25,100 --> 00:00:28,000
+Bumps in the surface of <i>Bt</i> are no artefacts,
+but apperent terraces are, see arrow.
+
+00:00:28,100 --> 00:00:30,000
+About to enter a connected arzinus (not <i>Arz</i>),
+which mostly lies outside the sampled region.
+
+00:00:30,100 --> 00:00:32,000
+# Reaching the Broncho Alveolar Duct Junction (BADJ), where a minimal constriction of the airway exists, indicated by the yellow surface/membrane.
+
+00:00:32,100 --> 00:00:34,000
+# or the surface covering the rim of the tubular ending of non-parenchymal tissue about x µm further on.
+
+00:00:34,100 --> 00:00:36,000
+Artefacts originating from fragmented tissue are present in this region of the dataset, see arrow.
+
+00:00:36,100 --> 00:00:38,000
+The first alveoli are about reached. These are significantly smaller than the average.
+
+00:00:38,100 --> 00:00:40,000
+Camera now exits sampled region.
+
+00:00:40,100 --> 00:00:44,000
+Start of the transition from <i>Bt</i> to <i>Arz</i>, used to outline further details from an over view.
+
+00:00:44,100 --> 00:00:46,000
+An unobscured view of the ACN contained within the septa is given at the opened surfaces at the borders of the dataset, see arrow.
+
+00:00:46,100 --> 00:00:48,000
+As the vessel system is incomplete, the ACN is coloured magenta except in the proximity of the arteries and veines.
+
+00:00:48,100 --> 00:00:50,000
+There a distance gradient is colored from red to blue.
+
+00:00:50,100 --> 00:00:52,000
+Vessel connection outside the dataset can lead to false colouring at the borders of the datast, see arrow.
+
+00:00:52,100 --> 00:00:54,000
+Visible alveoli now have their standard size.
+The increased transparency of <i>Bt</i> reveals the underlying capillaries.
+
+00:00:54,100 --> 00:00:56,000
+The vessel segments are smoothed less in order to preserve their finer details in comparison to the air segment.
+
+00:00:56,100 --> 00:00:58,000
+Parts of <i>Arz</i> (light grey) are now in view.
+
+00:01:00,100 --> 00:01:02,000
+As the ACN is only rendered in near proximity, vizual distinction between inner and outer side of <i>Arz, Bt</i> is easy.
+
+00:01:02,100 --> 00:01:04,000
+Some regions of the ACN do not suffer from missing connections, see marks.
+
+00:01:04,100 --> 00:01:06,000
+Most missing connection in the ACN originate from remaining erythrocytes and not from reconstruction artefacts.
+
+00:01:40,100 --> 00:01:42,000
+Beginning to close up on the largest duct entry of <i>Arz</i>.
+
+00:01:45,100 --> 00:01:47,000
+Many ducts branching off can be observed, a particular ordering is not obvious.
+
+00:01:50,100 --> 00:01:52,000
+Small, outward bumps on the alveolar surface likely originate from macrophages, see arrows.
+
+00:02:00,100 --> 00:02:02,000
+Camera now enters sampled region again.
+
+00:02:02,100 --> 00:02:04,000
+An arteriole (red) embedded in septa comes into view.
+
+00:02:06,100 --> 00:02:08,000
+Further inside the dataset, the ACN is more complete.
+
+00:02:14,100 --> 00:02:16,000
+Removing transparency to allow focosing on the arragement of alveoli.
+A particular ordering is not obvious.
+
+00:02:16,100 --> 00:02:18,000
+Viewing along the open duct towads the camera position when it was first pointed out.
+
+00:02:22,100 --> 00:02:24,000
+Closing up on an alveolar cluster referred to as <i>A45</i>.
+
+00:02:30,100 --> 00:02:32,000
+The ACN sourrounding <i>A45</i> (<i>ACN-A45</i>) was manually refined to also include erythrocytes (red segments).
+
+00:02:32,100 --> 00:02:38,000
+The white line within the ACN indicates the path we are going to follow.
+
+00:02:48,100 --> 00:02:52,000
+Transitioning from the air lumen throught the gas diffusion area into the blood lumen.
+
+00:02:56,100 --> 00:02:58,000
+A cylinder with a length of 5 µm to indicate the scale.
+
+00:03:00,100 --> 00:03:04,000
+About to pass through the tightest constriction (about 1 to 2 µm) along the whole path taken.
+
