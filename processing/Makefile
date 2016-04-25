@@ -449,9 +449,6 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 
 ### BEGIN ACN-a45.blend
 
-%_ed+15.mha : %.mha
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 15 0
-
 %_dmsm+0+0.mha : %.mha
 	$(ITKDIR)/distance_map_signed_maurer_f32 $< $@ 1 0 0
 
@@ -473,7 +470,7 @@ $(BASENAME)_seg_a45.mha : $(BASENAME)_seg_Alv.mha
 $(BASENAME)_seg_B@a45.mha : ../manual/correction/$(BASENAME)_seg_B@a45.mha
 	ln -sf $< $@
 
-$(BASENAME)_seg_B@a45+mask.mha : $(BASENAME)_seg_B@a45_add+1.mha $(BASENAME)_seg_a45_ed+15.mha
+$(BASENAME)_seg_B@a45+mask.mha : $(BASENAME)_seg_B@a45_add+1.mha $(BASENAME)_seg_a45_ed+60.mha
 	$(ITKDIR)/mask $^ $@ 0
 
 ACN-a45.mha : $(BASENAME)_seg_B@a45+mask.mha
