@@ -48,7 +48,9 @@ all : SRV.done # manual/SRV/
 all : VE.done # manual/VE/
 
 
+.PHONY : optional
 optional : demo-path.blend # base for cam-along-path ani, included in e.g. A2V.blend
+optional : a-wsm+30.mha # as input to CnJ of ITKSnap to select labels for creation of ../manual/processing/h3d_seg_1+Bt+Arz-map.mha
 
 clean :
 	@-rm -v slices.done ana.done SRV.done
@@ -110,6 +112,26 @@ $(BASENAME)_seg_A@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
 
 $(BASENAME)_seg_V@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
+
+
+## BEGIN a@wsm+30.mha
+
+%_th+127.mha : %.mha
+	$(ITKDIR)/thresh-glob $< $@  0 127 max
+
+$(BASENAME)_seg_a_m+3_th+127_dmsm+0+0_wsm+30+1+0.mha : %_wsm+30+1+0.mha : %.mha
+	$(ITKDIR)/watershed_morph $< $@ 0 30 1 0 # fully connected in case spatial separation is desired in future but here no lines to avoid separation
+	$(ITKDIR)/toUInt8 $@ $@ 1 # only contains around 183 labels
+
+a-wsm+30.mha : $(BASENAME)_seg_a_m+3_th+127_dmsm+0+0_wsm+30+1+0.mha
+	ln -s $< $@
+
+a@wsm+30.mha : $(BASENAME)_seg_a_m+3_th+127_dmsm+0+0_wsm+30+1+0.mha $(BASENAME)_seg_a.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+## END a@wsm+30.mha
+
+
 
 ## BEGIN blood vessel profile speed map and path extraction in ROI900
 
@@ -178,7 +200,7 @@ demo-path.vtp : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI9
 	ln -s $< $@
 
 demo-path.txt : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.txt
-	awk '{print $1, $2, $3, $4, 1, $6}' $< > $@ # replace path-number by bifurcation-number as expected by path2blend_ng.py
+	awk '{print $$1, $$2, $$3, $$4, 1, $$6}' $< > $@ # replace path-number by bifurcation-number as expected by path2blend_ng.py
 
 demo-path.blend : demo-path.txt
 	~/programme/blender/blender -b   -P ~/blender/scripts/path2blend_ng.py -- -i $< -o $@  | tee $(basename $@).out
@@ -460,9 +482,9 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 %_dmsm+0+0.mha : %.mha
 	$(ITKDIR)/distance_map_signed_maurer_f32 $< $@ 1 0 0
 
-%_wsm+15+1+0.mha : %.mha
+$(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0.mha : %_wsm+15+1+0.mha : %.mha
 	$(ITKDIR)/watershed_morph $< $@ 1 15 1 0
-	$(ITKDIR)/toUInt8 $@ $@ 1
+	$(ITKDIR)/toUInt8 $@ $@ 1 # only contains about 78 labels
 
 %_ols.mha : %.mha
 	$(ITKDIRWG)/opening_by_label-shape_01 $< $@ 0 0 1 NumberOfPixelsOnBorder
