@@ -48,6 +48,8 @@ all : SRV.done # manual/SRV/
 all : VE.done # manual/VE/
 
 
+optional : demo-path.blend # base for cam-along-path ani, included in e.g. A2V.blend
+
 clean :
 	@-rm -v slices.done ana.done SRV.done
 	@-rm -v $(BASENAME)_rsi+1+1.0.mha $(BASENAME)_hull_00.vtp $(BASENAME)_hull_00.mha
@@ -111,7 +113,7 @@ $(BASENAME)_seg_V@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
 
 ## BEGIN blood vessel profile speed map and path extraction in ROI900
 
-%_mps+5.5+1+0.3.vtk %_mps+5.5+1+0.3_max-sphere.mha : %.mha
+%_mps+5.5+1+0.3.vtk %_mps+5.5+1+0.3_max-sphere.mha %_mps+5.5+1+0.3.txt : %.mha
 	$(ITKDIR)/min-path_seg_f32  $< $*_mps+5.5+1+0.3  0 5.5 1 10000 .3   p277.7 p548.6 p276.7   p466.7 p588.0 p126.0 | tee $*_mps+5.5+1+0.3.out
 
 %_ed+100.mha : %.mha
@@ -166,7 +168,7 @@ $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : 
 	$(ITKDIR)/max $^ $@ 0
 
 
-%_mps+0-1+0.331662.vtk %_mps+0-1+0.331662_max-sphere.mha : %.mha
+%_mps+0-1+0.331662.vtk %_mps+0-1+0.331662_max-sphere.mha %_mps+0-1+0.331662.txt : %.mha
 	$(ITKDIR)/min-path_seg_f32  $< $*_mps+0-1+0.331662  0 0 -1 10000 0.331662    p595 p826 p31    p439 p270 p317    p467.8 p587.9 p125.7  p476.8 p579.6 p124.1 | tee $*_mps+0-1+0.331662.out
 
 %.vtp : %.vtk
@@ -174,6 +176,12 @@ $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : 
 
 demo-path.vtp : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtp
 	ln -s $< $@
+
+demo-path.txt : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.txt
+	awk '{print $1, $2, $3, $4, 1, $6}' $< > $@ # replace path-number by bifurcation-number as expected by path2blend_ng.py
+
+demo-path.blend : demo-path.txt
+	~/programme/blender/blender -b   -P ~/blender/scripts/path2blend_ng.py -- -i $< -o $@  | tee $(basename $@).out
 
 demo-path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662_max-sphere.mha
 	ln -s $< $@
