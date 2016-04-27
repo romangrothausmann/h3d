@@ -131,7 +131,26 @@ a@wsm+30.mha : $(BASENAME)_seg_a_m+3_th+127_dmsm+0+0_wsm+30+1+0.mha $(BASENAME)_
 
 ## END a@wsm+30.mha
 
+## BEGIN Bt and Arz
 
+$(BASENAME)_seg_1+Bt+Arz-map.mha :  ../manual/processing/$(BASENAME)_seg_1+Bt+Arz-map.mha
+# $(BASENAME)_seg_1+Bt+Arz-map.mha : $(BASENAME)_seg_a.mha  a-wsm+30.mha
+#	vglrun +xcb $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^)  # use CnJ of ITKSnap v3.3.0+gdWS to select labels and save as: $(BASENAME)_seg_1+Bt+Arz-map.mha
+	ln -sf $< $@
+
+%_th+2+2.mha : %.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 2 2
+
+%_th+3+3.mha : %.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 3 3
+
+$(BASENAME)_seg_Bt.mha : $(BASENAME)_seg_a.mha $(BASENAME)_seg_1+Bt+Arz-map_th+2+2.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+$(BASENAME)_seg_Arz.mha : $(BASENAME)_seg_a.mha $(BASENAME)_seg_1+Bt+Arz-map_th+3+3.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+## END Bt and Arz
 
 ## BEGIN blood vessel profile speed map and path extraction in ROI900
 
@@ -212,15 +231,6 @@ demo-path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI9
 
 
 ## BEGIN fm map for LUT coloring of Bt+Arz
-
-$(BASENAME)_seg_Bt.mha : ../manual/processing/$(BASENAME)_seg_Bt.mha
-	ln -sf $< $@
-
-$(BASENAME)_seg_Bt_mask.mha : ../manual/processing/$(BASENAME)_seg_Bt_mask.mha
-	ln -sf $< $@
-
-$(BASENAME)_seg_Arz.mha : ../manual/processing/$(BASENAME)_seg_Arz.mha
-	ln -sf $< $@
 
 $(BASENAME)_seg_Bt+Arz_fm-seeds.mha : ../manual/processing/$(BASENAME)_seg_Bt+Arz_fm-seeds.mha
 	ln -sf $< $@
