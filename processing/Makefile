@@ -144,11 +144,17 @@ $(BASENAME)_seg_1+Bt+Arz-map.mha :  ../manual/processing/$(BASENAME)_seg_1+Bt+Ar
 %_th+3+3.mha : %.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 3 3
 
-$(BASENAME)_seg_Bt.mha : $(BASENAME)_seg_a.mha $(BASENAME)_seg_1+Bt+Arz-map_th+2+2.mha
+$(BASENAME)_seg_a@Bt-map.mha : $(BASENAME)_seg_a.mha $(BASENAME)_seg_1+Bt+Arz-map_th+2+2.mha
 	$(ITKDIR)/mask $^ $@ 0
 
-$(BASENAME)_seg_Arz.mha : $(BASENAME)_seg_a.mha $(BASENAME)_seg_1+Bt+Arz-map_th+3+3.mha
+$(BASENAME)_seg_Bt.mha : $(BASENAME)_seg_a@Bt-map_kNo+1@255.mha
+	ln -s $< $@
+
+$(BASENAME)_seg_a@Arz-map.mha : $(BASENAME)_seg_a.mha $(BASENAME)_seg_1+Bt+Arz-map_th+3+3.mha
 	$(ITKDIR)/mask $^ $@ 0
+
+$(BASENAME)_seg_Arz.mha : $(BASENAME)_seg_a@Arz-map_kNo+1@255.mha
+	ln -s $< $@
 
 ## END Bt and Arz
 
