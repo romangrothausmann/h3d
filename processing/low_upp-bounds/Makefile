@@ -15,12 +15,12 @@ SPACE := $(eval) $(eval)
 base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))
 base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,$1)))
 
+BASENAME = h3d
 
 BN:= acn_hs3D
 BNseg:= acn_seg_A+B
 
 ITKDIR:= ~/itk/simple/build_itk4_iana0
-ITKDIRWG:= ~/itk/simple_without-git/build_itk4_iana0
 VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 
 include gmsl
@@ -82,13 +82,13 @@ clean_all : clean
 	pigz -v -- $< 
 
 
-$(BN).mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1+0.331662.mha
+$(BN).mha : ../$(BASENAME).mha
 	ln -sf $< $@
 
-$(BNseg).mha : ../kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B.mha
+$(BNseg).mha : ../$(BASENAME)_seg_A+B.mha
 	ln -sf $< $@
 
-mask.mha : ../kap-net_histo_reg_8bit_mask+seg01_corrected_inv.mha
+mask.mha : ../h3d_hull_02-seg.mha
 	ln -sf $< $@
 
 %_lu+1_low.mha %_lu+1_mid.mha %_lu+1_upp.mha : $(BN).mha %.mha
@@ -142,6 +142,8 @@ LUT.png :
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 #.SECONDARY: 
+
+.SERIAL: $(BNseg)_lu+1_low.mha $(BNseg)_lu+1_mid.mha $(BNseg)_lu+1_upp.mha $(BNseg)_lu+1_low_T-mask.anaJS $(BNseg)_lu+1_mid_T-mask.anaJS $(BNseg)_lu+1_upp_T-mask.anaJS
 
 .PRECIOUS: %.anaJS
 
