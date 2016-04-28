@@ -44,6 +44,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha # main targets
 all : slices.done # manual/slices/
 all : ana.done # processing/ana/
+all : VR.done # manual/VR/
 all : SRV.done # manual/SRV/
 all : VE.done # manual/VE/
 
@@ -65,6 +66,7 @@ gv : all.dot.svg all.fdp.svg all.neato.svg all.twopi.svg
 
 slices.done : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
 ana.done : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
+VR.done : $(BASENAME).mha # manual/VR/
 SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend
 SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha # manual/SRV/
 VE.done : ACN-Bt.blend A+V+ACN-path.blend ACN-a45.blend # manual/VE/
