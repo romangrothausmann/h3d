@@ -110,7 +110,7 @@ mask.mha : ../h3d_hull_02-seg.mha
 	$(ITKDIR)/mask $^ $@ 0
 
 %.anaJS : %.mha # %_dc.mha # if label_uncertainty_float saves compressed
-	/opt/octave-4.0.0/bin/octave  ~/octave/scripts/jointSurf3D.m  $<  > $@
+	/opt/octave-4.0.0/bin/octave  ~/octave/scripts/jointSurf3D.m  $<  > $@ # each needs about 40GB of RAM (~5h) => can run in parallel
 
 %.anaJJ : %.ana %.anaJS # need difference 
 	paste $^ | awk '{if($$27==0){print $$25 - $$29}}' | sed '1i\\S' > $@
@@ -143,7 +143,7 @@ LUT.png :
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 #.SECONDARY: 
 
-.SERIAL: $(BNseg)_lu+1_low.mha $(BNseg)_lu+1_mid.mha $(BNseg)_lu+1_upp.mha $(BNseg)_lu+1_low_T-mask.anaJS $(BNseg)_lu+1_mid_T-mask.anaJS $(BNseg)_lu+1_upp_T-mask.anaJS
+.SERIAL: $(BNseg)_lu+1_low.mha $(BNseg)_lu+1_mid.mha $(BNseg)_lu+1_upp.mha # $(BNseg)_lu+1_low_T-mask.anaJS $(BNseg)_lu+1_mid_T-mask.anaJS $(BNseg)_lu+1_upp_T-mask.anaJS
 
 .PRECIOUS: %.anaJS
 
