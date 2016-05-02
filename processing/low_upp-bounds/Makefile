@@ -163,9 +163,9 @@ LUT.png :
 fig_luBounds_%_RGB.png : $$(wordlist 2,4,$$(fig_luBounds_$$*_PNGs))
 	$(convertIM) $^ -threshold 1 -channel RGB -combine $@
 
-fig_luBounds_%.svg : $$(fig_luBounds_$$*_PNGs) fig_luBounds_%_RGB.png
+fig_luBounds_%.svg : $$(fig_luBounds_$$*_PNGs) fig_luBounds_%_RGB.png fig_base.svg
 	+mkdir -p $(basename $@) # doing this in its own rule becomes very tricky
-	mv $^ $(basename $@) # doing this in its own rule becomes very tricky
+	mv $(filter-out fig_base.svg,$^) $(basename $@) # doing this in its own rule becomes very tricky
 	sed 's$$xlink:href="file:///myURL/$$xlink:href="$(basename $@)/$$g;s/XYZ@/$*@/g' < fig_base.svg > $@
 	@echo "changed files: " $?
 	touch $@
