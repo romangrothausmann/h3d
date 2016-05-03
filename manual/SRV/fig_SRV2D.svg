@@ -9,12 +9,12 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="770.8125"
-   height="410.3125"
-   viewBox="0 0 770.81249 410.31251"
+   height="407.65625"
+   viewBox="0 0 770.81249 407.65626"
    id="svg4856"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="h3d_srv+500+500+0.331662+2_08.svg">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="fig_SRV2D.svg">
   <metadata
      id="metadata5141">
     <rdf:RDF>
@@ -315,18 +315,18 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1060"
+     inkscape:window-height="1057"
      id="namedview5137"
      showgrid="false"
      inkscape:snap-bbox="true"
-     inkscape:bbox-nodes="true"
-     inkscape:zoom="1.3989626"
-     inkscape:cx="490.64147"
-     inkscape:cy="213.87656"
+     inkscape:bbox-nodes="false"
+     inkscape:zoom="1.5734068"
+     inkscape:cx="380.50207"
+     inkscape:cy="176.30441"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer5"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -343,774 +343,835 @@
      inkscape:groupmode="layer"
      id="layer7"
      inkscape:label="border"
-     transform="translate(36.374991,0.0625)"
+     transform="translate(36.374986,-0.3125)"
      style="display:none">
     <rect
        style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect10350"
        width="770.72699"
-       height="410.19431"
-       x="-36.326935"
-       y="8.4961302e-06"
-       inkscape:transform-center-x="367.01284"
-       inkscape:transform-center-y="-205.09714" />
+       height="407.55154"
+       x="-36.326939"
+       y="0.37435222"
+       inkscape:transform-center-x="367.01277"
+       inkscape:transform-center-y="-203.77579" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="conn"
-     style="display:inline"
-     transform="translate(35.874984,206.80494)">
-    <g
-       id="g4918">
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path3324"
-         d="M 0.50000004,-121.32134 22.3,-97.489902 86,-121.32134"
-         style="opacity:0.5;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path3326"
-         d="M 93.287029,-121.32134 108.8,-97.489902 178.78703,-121.32134"
-         style="opacity:0.5;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path3328"
-         d="M 186.07405,-121.32134 191.8,-97.489902 271.57405,-121.32134"
-         style="opacity:0.5;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path3330"
-         d="M 278.86107,-121.32134 259.8,-97.489902 364.36107,-121.32134"
-         style="opacity:0.5;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path3332"
-         d="M 371.64808,-121.32134 271.3,-97.489902 457.14808,-121.32134"
-         style="opacity:0.5;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path3334"
-         d="M 464.4351,-121.32134 422.8,-97.489902 549.9351,-121.32134"
-         style="opacity:0.5;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path3336"
-         d="M 557.22212,-121.32134 436.5,-97.489902 642.72212,-121.32134"
-         style="opacity:0.5;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path3338"
-         d="M 649.40008,-121.24244 684.8,-97.489902 734.90008,-121.24244"
-         style="opacity:0.5;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g4908"
-       style="opacity:0.5;stroke:#000000;stroke-width:1;stroke-opacity:1">
-      <path
-         transform="translate(-3.0405095e-6,-98.233573)"
-         inkscape:connector-curvature="0"
-         id="path4874"
-         d="M 0.50000308,214.29142 300.4,190.44989 86.000003,214.29143"
-         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         transform="translate(-3.0405095e-6,-98.233573)"
-         inkscape:connector-curvature="0"
-         id="path4876"
-         d="M 93.28703,214.29142 365.2,190.44989 178.78703,214.29143"
-         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         transform="translate(-3.0405095e-6,-98.233573)"
-         inkscape:connector-curvature="0"
-         id="path4878"
-         d="M 186.07405,214.29142 370.9,190.44989 271.57405,214.29143"
-         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         transform="translate(-3.0405095e-6,-98.233573)"
-         inkscape:connector-curvature="0"
-         id="path4880"
-         d="M 278.86106,214.29142 404.6,190.44989 364.36107,214.29143"
-         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         transform="translate(-3.0405095e-6,-98.233573)"
-         inkscape:connector-curvature="0"
-         id="path4882"
-         d="M 371.64808,214.29142 455.8,190.44989 l 1.34809,23.84154"
-         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         transform="translate(-3.0405095e-6,-98.233573)"
-         inkscape:connector-curvature="0"
-         id="path4884"
-         d="M 464.4351,214.29142 498.6,190.44989 549.9351,214.29143"
-         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         transform="translate(-3.0405095e-6,-98.233573)"
-         inkscape:connector-curvature="0"
-         id="path4886"
-         d="M 557.22211,214.29142 514.9,190.44989 642.72212,214.29143"
-         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         transform="translate(-3.0405095e-6,-98.233573)"
-         inkscape:connector-curvature="0"
-         id="path4888"
-         d="M 649.40003,214.29143 550.2,190.44989 734.90003,214.29143"
-         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
+     style="display:inline;opacity:0.5"
+     transform="translate(35.874979,206.42994)">
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 0.50000004,-121.32134 22.3,-97.489902 86,-121.32134"
+       id="path3324"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 93.287029,-121.32134 108.8,-97.489902 178.78703,-121.32134"
+       id="path3326"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 186.07405,-121.32134 191.8,-97.489902 271.57405,-121.32134"
+       id="path3328"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 278.86107,-121.32134 259.8,-97.489902 364.36107,-121.32134"
+       id="path3330"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 371.64808,-121.32134 271.3,-97.489902 457.14808,-121.32134"
+       id="path3332"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 464.00011,-121.68173 300.4,-97.489902 549.50011,-121.68172"
+       id="path4874"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 556.78714,-121.68173 365.2,-97.489902 642.28714,-121.68172"
+       id="path4876"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 649.57416,-121.68173 370.9,-97.489902 735.07416,-121.68172"
+       id="path4878"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 0.49988523,116.87149 404.6,92.216317 85.186248,116.87149"
+       id="path4880"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 278.97443,116.87148 455.8,92.216317 363.66081,116.87148"
+       id="path4882"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 371.67444,116.87148 498.6,92.216317 456.36082,116.87148"
+       id="path4884"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 464.81375,116.87148 514.9,92.216317 549.50011,116.87148"
+       id="path4886"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 557.51367,116.87148 550.2,92.216317 642.20005,116.87148"
+       id="path4888"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       transform="translate(4.8134044e-7,-4.9598189e-6)"
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="M 93.574379,116.87148 422.8,92.216316 178.26068,116.87148"
+       id="path3334"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       transform="translate(4.8134044e-7,-4.9598189e-6)"
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="M 186.27437,116.87148 436.5,92.216316 270.96067,116.87149"
+       id="path3336"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       transform="translate(4.8134044e-7,-4.9598189e-6)"
+       style="opacity:0.75000000000000000;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="M 650.21368,116.49712 684.8,92.216316 734.90006,116.49712"
+       id="path3338"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer1"
      inkscape:label="bg"
      style="opacity:0.75;display:inline"
-     transform="translate(35.874984,206.80494)">
+     transform="translate(35.874979,206.42994)">
     <g
        id="g4870"
        transform="translate(-5.0008297e-5,17.584581)" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_x@0250.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_x@0250.png"
        transform="translate(4.8134044e-7,-4.9598189e-6)"
        style="opacity:0.9;display:inline"
        y="-91.242348"
        x="0.49981689"
        id="image3589"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_x@0250.png"
        height="84.686363"
        width="734.40027" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_y@0250.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_y@0250.png"
        style="opacity:0.9;display:inline"
        y="1.371384"
        x="0.49988645"
        id="image3600"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_y@0250.png"
        height="84.686363"
        width="734.40027"
        transform="translate(4.8134044e-7,-4.9598189e-6)" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@0129.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@0129.png"
        transform="translate(4.8134044e-7,-4.9598189e-6)"
        style="opacity:0.9;display:inline"
        y="-206.36809"
        x="0.87436676"
        id="image3611"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@0129.png"
        height="84.686363"
        width="84.686363" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@0640.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@0640.png"
        transform="translate(4.8134044e-7,-4.9598189e-6)"
        style="opacity:0.9;display:inline"
        y="-206.36809"
        x="93.574379"
        id="image3622"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@0640.png"
        height="84.686363"
        width="84.686363" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@1131.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1131.png"
        transform="translate(4.8134044e-7,-4.9598189e-6)"
        style="opacity:0.9;display:inline"
        y="-206.36809"
        x="186.27437"
        id="image3633"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1131.png"
        height="84.686363"
        width="84.686363" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@1533.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1533.png"
        transform="translate(4.8134044e-7,-4.9598189e-6)"
        style="opacity:0.9;display:inline"
        y="-206.36809"
        x="278.97443"
        id="image3644"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1533.png"
        height="84.686363"
        width="84.686363" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@1601.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1601.png"
        transform="translate(4.8134044e-7,-4.9598189e-6)"
        style="opacity:0.9;display:inline"
        y="-206.36809"
        x="371.67444"
        id="image3655"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1601.png"
        height="84.686363"
        width="84.686363" />
     <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="116.8715"
-       x="0.87436682"
-       id="image3666"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1773.png"
-       height="84.686363"
-       width="84.686363" />
-    <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="116.8715"
-       x="93.574356"
-       id="image3677"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2156.png"
-       height="84.686363"
-       width="84.686363" />
-    <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="116.8715"
-       x="186.27437"
-       id="image3688"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2190.png"
-       height="84.686363"
-       width="84.686363" />
-    <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="116.8715"
-       x="278.97437"
-       id="image3699"
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@2389.png"
        xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2389.png"
+       style="opacity:0.9;display:inline"
+       y="116.87149"
+       x="0.49988523"
+       id="image3699"
        height="84.686363"
        width="84.686363" />
     <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@1773.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@1773.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
        y="-206.36809"
-       x="464.37445"
-       id="image3710"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2497.png"
+       x="464.81375"
+       id="image3666"
        height="84.686363"
        width="84.686363" />
     <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="-206.36807"
-       x="557.0744"
-       id="image3721"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2578.png"
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@2156.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2156.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-206.36809"
+       x="557.51367"
+       id="image3677"
        height="84.686363"
        width="84.686363" />
     <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="116.8715"
-       x="371.67438"
-       id="image3732"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2692.png"
-       height="84.686363"
-       width="84.686363" />
-    <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="116.8715"
-       x="464.37439"
-       id="image3743"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2945.png"
-       height="84.686363"
-       width="84.686363" />
-    <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="116.8715"
-       x="557.07434"
-       id="image3754"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@3041.png"
-       height="84.686363"
-       width="84.686363" />
-    <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="116.8715"
-       x="650.21362"
-       id="image3765"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@3250.png"
-       height="84.686363"
-       width="84.686363" />
-    <image
-       transform="translate(4.8134044e-7,-4.9598189e-6)"
-       style="opacity:0.9;display:inline"
-       y="-206.74243"
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@2190.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2190.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-206.36809"
        x="650.21368"
-       id="image3776"
-       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@4046.png"
+       id="image3688"
        height="84.686363"
        width="84.686363" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@2497.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2497.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="93.574318"
+       id="image3710"
+       height="84.686363"
+       width="84.686363"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@2578.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2578.png"
+       style="opacity:0.9;display:inline"
+       y="116.87149"
+       x="186.27431"
+       id="image3721"
+       height="84.686363"
+       width="84.686363"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@2692.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2692.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="278.97443"
+       id="image3732"
+       height="84.686363"
+       width="84.686363"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@2945.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@2945.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="371.67444"
+       id="image3743"
+       height="84.686363"
+       width="84.686363"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@3041.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@3041.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="464.81375"
+       id="image3754"
+       height="84.686363"
+       width="84.686363"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@3250.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@3250.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="557.51367"
+       id="image3765"
+       height="84.686363"
+       width="84.686363"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/h3d_srv+500+500+0.331662+2_z@4046.png"
+       xlink:href="SRV2D/h3d_srv+500+500+0.331662+2_z@4046.png"
+       style="opacity:0.9;display:inline"
+       y="116.49713"
+       x="650.21362"
+       id="image3776"
+       height="84.686363"
+       width="84.686363"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="seg"
      style="opacity:0.9;display:inline"
-     transform="translate(35.874984,206.80494)">
+     transform="translate(35.874979,206.42994)">
     <image
-       y="-206.74243"
-       x="650.21368"
-       id="image3805"
-       xlink:href="SRV2D/plane-B_z@4046.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="650.21362"
-       id="image3816"
-       xlink:href="SRV2D/plane-B_z@3250.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="557.07434"
-       id="image3827"
-       xlink:href="SRV2D/plane-B_z@3041.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="464.37439"
-       id="image3838"
-       xlink:href="SRV2D/plane-B_z@2945.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="371.67438"
-       id="image3849"
-       xlink:href="SRV2D/plane-B_z@2692.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="-206.36807"
-       x="557.0744"
-       id="image3860"
-       xlink:href="SRV2D/plane-B_z@2578.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="-206.36809"
-       x="464.37445"
-       id="image3871"
-       xlink:href="SRV2D/plane-B_z@2497.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="278.97437"
-       id="image3882"
-       xlink:href="SRV2D/plane-B_z@2389.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="186.27437"
-       id="image3893"
-       xlink:href="SRV2D/plane-B_z@2190.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="93.574356"
-       id="image3904"
-       xlink:href="SRV2D/plane-B_z@2156.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="0.8743673"
-       id="image3915"
-       xlink:href="SRV2D/plane-B_z@1773.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@1601.png"
+       xlink:href="SRV2D/plane-B_z@1601.png"
        y="-206.36809"
        x="371.67444"
        id="image3926"
-       xlink:href="SRV2D/plane-B_z@1601.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@1533.png"
+       xlink:href="SRV2D/plane-B_z@1533.png"
        y="-206.36809"
        x="278.97443"
        id="image3937"
-       xlink:href="SRV2D/plane-B_z@1533.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@1131.png"
+       xlink:href="SRV2D/plane-B_z@1131.png"
        y="-206.36809"
        x="186.27437"
        id="image3948"
-       xlink:href="SRV2D/plane-B_z@1131.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@0640.png"
+       xlink:href="SRV2D/plane-B_z@0640.png"
        y="-206.36809"
        x="93.574379"
        id="image3959"
-       xlink:href="SRV2D/plane-B_z@0640.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@0129.png"
+       xlink:href="SRV2D/plane-B_z@0129.png"
        y="-206.36809"
        x="0.87436724"
        id="image3970"
-       xlink:href="SRV2D/plane-B_z@0129.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_y@0250.png"
+       xlink:href="SRV2D/plane-B_y@0250.png"
        y="1.371379"
        x="0.49988693"
        id="image3981"
-       xlink:href="SRV2D/plane-B_y@0250.png"
        height="84.686363"
        width="734.40027" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_x@0250.png"
+       xlink:href="SRV2D/plane-B_x@0250.png"
        y="-91.242355"
        x="0.49981737"
        id="image3992"
-       xlink:href="SRV2D/plane-B_x@0250.png"
        height="84.686363"
        width="734.40027" />
     <image
-       y="-206.74243"
-       x="650.21368"
-       id="image4003"
-       xlink:href="SRV2D/plane-A_z@4046.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@2389.png"
+       xlink:href="SRV2D/plane-B_z@2389.png"
        y="116.87149"
-       x="650.21362"
-       id="image4014"
-       xlink:href="SRV2D/plane-A_z@3250.png"
+       x="0.49988523"
+       id="image3882"
        height="84.686363"
        width="84.686378" />
     <image
-       y="116.87149"
-       x="557.07434"
-       id="image4025"
-       xlink:href="SRV2D/plane-A_z@3041.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="464.37439"
-       id="image4036"
-       xlink:href="SRV2D/plane-A_z@2945.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="371.67438"
-       id="image4047"
-       xlink:href="SRV2D/plane-A_z@2692.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="-206.36807"
-       x="557.0744"
-       id="image4058"
-       xlink:href="SRV2D/plane-A_z@2578.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="-206.36809"
-       x="464.37445"
-       id="image4069"
-       xlink:href="SRV2D/plane-A_z@2497.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="278.97437"
-       id="image4080"
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@2389.png"
        xlink:href="SRV2D/plane-A_z@2389.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
        y="116.87149"
-       x="186.27437"
-       id="image4091"
-       xlink:href="SRV2D/plane-A_z@2190.png"
+       x="0.49988523"
+       id="image4080"
        height="84.686363"
        width="84.686378" />
     <image
-       y="116.87149"
-       x="93.574356"
-       id="image4102"
-       xlink:href="SRV2D/plane-A_z@2156.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
-       y="116.87149"
-       x="0.8743673"
-       id="image4113"
-       xlink:href="SRV2D/plane-A_z@1773.png"
-       height="84.686363"
-       width="84.686378" />
-    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@1601.png"
+       xlink:href="SRV2D/plane-A_z@1601.png"
        y="-206.36809"
        x="371.67444"
        id="image4124"
-       xlink:href="SRV2D/plane-A_z@1601.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@1533.png"
+       xlink:href="SRV2D/plane-A_z@1533.png"
        y="-206.36809"
        x="278.97443"
        id="image4135"
-       xlink:href="SRV2D/plane-A_z@1533.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@1131.png"
+       xlink:href="SRV2D/plane-A_z@1131.png"
        y="-206.36809"
        x="186.27437"
        id="image4146"
-       xlink:href="SRV2D/plane-A_z@1131.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@0640.png"
+       xlink:href="SRV2D/plane-A_z@0640.png"
        y="-206.36809"
        x="93.574379"
        id="image4157"
-       xlink:href="SRV2D/plane-A_z@0640.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@0129.png"
+       xlink:href="SRV2D/plane-A_z@0129.png"
        y="-206.36809"
        x="0.87436724"
        id="image4168"
-       xlink:href="SRV2D/plane-A_z@0129.png"
        height="84.686363"
        width="84.686378" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_y@0250.png"
+       xlink:href="SRV2D/plane-A_y@0250.png"
        y="1.371379"
        x="0.49988693"
        id="image4179"
-       xlink:href="SRV2D/plane-A_y@0250.png"
        height="84.686363"
        width="734.40027" />
     <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_x@0250.png"
+       xlink:href="SRV2D/plane-A_x@0250.png"
        y="-91.242355"
        x="0.49981737"
        id="image4190"
-       xlink:href="SRV2D/plane-A_x@0250.png"
        height="84.686363"
        width="734.40027" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@2190.png"
+       xlink:href="SRV2D/plane-A_z@2190.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-206.36809"
+       x="650.21368"
+       id="image4091"
+       height="84.686363"
+       width="84.686378" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@2156.png"
+       xlink:href="SRV2D/plane-A_z@2156.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-206.36809"
+       x="557.51367"
+       id="image4102"
+       height="84.686363"
+       width="84.686378" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@1773.png"
+       xlink:href="SRV2D/plane-A_z@1773.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-206.36809"
+       x="464.81375"
+       id="image4113"
+       height="84.686363"
+       width="84.686378" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@2190.png"
+       xlink:href="SRV2D/plane-B_z@2190.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-206.36809"
+       x="650.21368"
+       id="image3893"
+       height="84.686363"
+       width="84.686378" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@2156.png"
+       xlink:href="SRV2D/plane-B_z@2156.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-206.36809"
+       x="557.51367"
+       id="image3904"
+       height="84.686363"
+       width="84.686378" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@1773.png"
+       xlink:href="SRV2D/plane-B_z@1773.png"
+       style="font-size:medium;text-anchor:middle;opacity:0.9;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-206.36809"
+       x="464.81375"
+       id="image3915"
+       height="84.686363"
+       width="84.686378" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@2692.png"
+       xlink:href="SRV2D/plane-B_z@2692.png"
+       y="116.87148"
+       x="278.97443"
+       id="image3849"
+       height="84.686363"
+       width="84.686378"
+       style="opacity:0.9;display:inline"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@2692.png"
+       xlink:href="SRV2D/plane-A_z@2692.png"
+       y="116.87148"
+       x="278.97443"
+       id="image4047"
+       height="84.686363"
+       width="84.686378"
+       style="opacity:0.9;display:inline"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@2945.png"
+       xlink:href="SRV2D/plane-B_z@2945.png"
+       y="116.87148"
+       x="371.67444"
+       id="image3838"
+       height="84.686363"
+       width="84.686378"
+       style="opacity:0.9;display:inline"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@2945.png"
+       xlink:href="SRV2D/plane-A_z@2945.png"
+       y="116.87148"
+       x="371.67444"
+       id="image4036"
+       height="84.686363"
+       width="84.686378"
+       style="opacity:0.9;display:inline"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@3041.png"
+       xlink:href="SRV2D/plane-B_z@3041.png"
+       y="116.87148"
+       x="464.81375"
+       id="image3827"
+       height="84.686363"
+       width="84.686378"
+       style="opacity:0.9;display:inline"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@3041.png"
+       xlink:href="SRV2D/plane-A_z@3041.png"
+       y="116.87148"
+       x="464.81375"
+       id="image4025"
+       height="84.686363"
+       width="84.686378"
+       style="opacity:0.9;display:inline"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@3250.png"
+       xlink:href="SRV2D/plane-B_z@3250.png"
+       y="116.87148"
+       x="557.51367"
+       id="image3816"
+       height="84.686363"
+       width="84.686378"
+       style="opacity:0.9;display:inline"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@3250.png"
+       xlink:href="SRV2D/plane-A_z@3250.png"
+       y="116.87148"
+       x="557.51367"
+       id="image4014"
+       height="84.686363"
+       width="84.686378"
+       style="opacity:0.9;display:inline"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@2497.png"
+       xlink:href="SRV2D/plane-A_z@2497.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="93.574379"
+       id="image4069"
+       height="84.686363"
+       width="84.686378"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@2497.png"
+       xlink:href="SRV2D/plane-B_z@2497.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="93.574379"
+       id="image3871"
+       height="84.686363"
+       width="84.686378"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@2578.png"
+       xlink:href="SRV2D/plane-A_z@2578.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="186.27437"
+       id="image4058"
+       height="84.686363"
+       width="84.686378"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@2578.png"
+       xlink:href="SRV2D/plane-B_z@2578.png"
+       style="opacity:0.9;display:inline"
+       y="116.87148"
+       x="186.27437"
+       id="image3860"
+       height="84.686363"
+       width="84.686378"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-A_z@4046.png"
+       xlink:href="SRV2D/plane-A_z@4046.png"
+       style="opacity:0.9;display:inline"
+       y="116.49712"
+       x="650.21368"
+       id="image4003"
+       height="84.686363"
+       width="84.686378"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
+    <image
+       sodipodi:absref="/net/home/grothama/publications/ACN3D/latex/images/SRV2D/plane-B_z@4046.png"
+       xlink:href="SRV2D/plane-B_z@4046.png"
+       style="opacity:0.9;display:inline"
+       y="116.49712"
+       x="650.21368"
+       id="image3805"
+       height="84.686363"
+       width="84.686378"
+       transform="translate(4.8134044e-7,-4.9598189e-6)" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="anno"
      style="display:inline"
-     transform="translate(35.874984,206.80494)">
+     transform="translate(35.874979,206.42994)">
     <g
        style="color:#008000;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter"
        id="g179"
        transform="translate(-45,-335.3125)" />
     <g
-       id="g4789"
-       transform="translate(0,450)">
-      <g
-         transform="translate(300.4,102.6875)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g213">
-        <text
-           x="-258.21332"
-           style="font-size:12.5px"
-           y="-338"
-           id="text215">
-          <tspan
-             id="tspan217">588.04</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(365.2,102.6875)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g219">
-        <text
-           x="-230.27815"
-           style="font-size:12.5px"
-           y="-338"
-           id="text221">
-          <tspan
-             id="tspan223">715.06</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(370.9,102.6875)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g225">
-        <text
-           x="-143.17587"
-           style="font-size:12.5px"
-           y="-338"
-           id="text227">
-          <tspan
-             id="tspan229">726.34</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(404.6,102.6875)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g231">
-        <text
-           x="-84.08886"
-           style="font-size:12.5px"
-           y="-338"
-           id="text233">
-          <tspan
-             id="tspan235">792.34</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(455.8,102.6875)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g249">
-        <text
-           x="-42.477428"
-           style="font-size:12.5px"
-           y="-338"
-           id="text251">
-          <tspan
-             id="tspan253">892.83</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(498.6,102.6875)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g255">
-        <text
-           x="7.5217957"
-           style="font-size:12.5px"
-           y="-338"
-           id="text257">
-          <tspan
-             id="tspan259">976.74</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(514.9,102.6875)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g261">
-        <text
-           x="83.560204"
-           style="font-size:12.5px"
-           y="-338"
-           id="text263">
-          <tspan
-             id="tspan265">1008.58</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(550.2,102.6875)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g267">
-        <text
-           x="141.07167"
-           style="font-size:12.5px"
-           y="-338"
-           id="text269">
-          <tspan
-             id="tspan271">1077.90</tspan>
-        </text>
-      </g>
+       id="g213"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(300.4,552.6875)" />
+    <g
+       id="g219"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(365.2,552.6875)" />
+    <text
+       x="506.12604"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-212.18542"
+       id="text215">
+      <tspan
+         id="tspan217">588.04</tspan>
+    </text>
+    <text
+       x="598.86121"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;display:inline;font-family:arial"
+       y="-212.18542"
+       id="text221">
+      <tspan
+         id="tspan223">715.06</tspan>
+    </text>
+    <text
+       x="691.66351"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       y="-212.18542"
+       id="text227">
+      <tspan
+         id="tspan229">726.34</tspan>
+    </text>
+    <g
+       id="g231"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(126.94108,552.6875)">
+      <text
+         id="text233"
+         y="-338"
+         style="font-size:12.5px"
+         x="-84.08886">
+        <tspan
+           id="tspan235">792.34</tspan>
+      </text>
     </g>
     <g
-       id="g5460"
-       transform="translate(0,10)">
-      <g
-         transform="translate(22.3,-222.18543)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g183">
-        <text
-           id="text185"
-           x="21.148365">
-          <tspan
-             id="tspan187">42.78</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(108.8,-222.18543)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g189">
-        <text
-           id="text191"
-           x="27.256821">
-          <tspan
-             id="tspan193">212.26</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(191.8,-222.18543)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g195">
-        <text
-           id="text197"
-           x="37.738068">
-          <tspan
-             id="tspan199">375.11</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(259.8,-222.18543)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g201">
-        <text
-           id="text203"
-           x="61.59581">
-          <tspan
-             id="tspan205">508.44</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(271.3,-232.18543)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g207">
-        <text
-           y="10"
-           id="text209"
-           x="142.76836">
-          <tspan
-             id="tspan211">530.99</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(422.8,-222.18543)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g237">
-        <text
-           id="text239"
-           x="83.986679">
-          <tspan
-             id="tspan241">828.16</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(436.5,-232.18543)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g243">
-        <text
-           y="10"
-           id="text245"
-           x="163.02942">
-          <tspan
-             id="tspan247">855.02</tspan>
-        </text>
-      </g>
-      <g
-         transform="translate(684.8,-222.18543)"
-         style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
-         id="g273">
-        <text
-           id="text275"
-           x="6.9716654">
-          <tspan
-             id="tspan277">1341.90</tspan>
-        </text>
-      </g>
+       id="g249"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(363.82861,552.6875)">
+      <text
+         id="text251"
+         y="-338"
+         style="font-size:12.5px"
+         x="-42.477428">
+        <tspan
+           id="tspan253">892.83</tspan>
+      </text>
+    </g>
+    <g
+       id="g255"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(406.54158,552.6875)">
+      <text
+         id="text257"
+         y="-338"
+         style="font-size:12.5px"
+         x="7.5217957">
+        <tspan
+           id="tspan259">976.74</tspan>
+      </text>
+    </g>
+    <g
+       id="g261"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(423.19388,552.6875)">
+      <text
+         id="text263"
+         y="-338"
+         style="font-size:12.5px"
+         x="83.560204">
+        <tspan
+           id="tspan265">1008.58</tspan>
+      </text>
+    </g>
+    <g
+       id="g267"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(458.40678,552.6875)">
+      <text
+         id="text269"
+         y="-338"
+         style="font-size:12.5px"
+         x="141.07167">
+        <tspan
+           id="tspan271">1077.90</tspan>
+      </text>
+    </g>
+    <g
+       id="g183"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(22.3,-212.18543)">
+      <text
+         x="21.148365"
+         id="text185">
+        <tspan
+           id="tspan187">42.78</tspan>
+      </text>
+    </g>
+    <g
+       id="g189"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(108.8,-212.18543)">
+      <text
+         x="27.256821"
+         id="text191">
+        <tspan
+           id="tspan193">212.26</tspan>
+      </text>
+    </g>
+    <g
+       id="g195"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(191.8,-212.18543)">
+      <text
+         x="37.738068"
+         id="text197">
+        <tspan
+           id="tspan199">375.11</tspan>
+      </text>
+    </g>
+    <g
+       id="g201"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(259.8,-212.18543)">
+      <text
+         x="61.59581"
+         id="text203">
+        <tspan
+           id="tspan205">508.44</tspan>
+      </text>
+    </g>
+    <g
+       id="g207"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(271.3,-222.18543)">
+      <text
+         x="142.76836"
+         id="text209"
+         y="10">
+        <tspan
+           id="tspan211">530.99</tspan>
+      </text>
+    </g>
+    <g
+       id="g237"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(51.96744,214.6875)">
+      <text
+         x="83.986679"
+         id="text239">
+        <tspan
+           id="tspan241">828.16</tspan>
+      </text>
+    </g>
+    <g
+       id="g243"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(65.667412,204.6875)">
+      <text
+         x="163.02942"
+         id="text245"
+         y="10">
+        <tspan
+           id="tspan247">855.02</tspan>
+      </text>
+    </g>
+    <g
+       id="g273"
+       style="font-size:12.5px;text-anchor:middle;color:#000000;fill:#000000;stroke:none;font-family:arial"
+       transform="translate(685.20672,214.6814)">
+      <text
+         x="6.9716654"
+         id="text275">
+        <tspan
+           id="tspan277">1341.90</tspan>
+      </text>
     </g>
     <g
        id="g4841">
@@ -1162,7 +1223,7 @@
      id="layer4"
      inkscape:label="axes"
      style="display:inline"
-     transform="translate(35.874984,206.80494)">
+     transform="translate(35.874979,206.42994)">
     <g
        id="g9832"
        transform="translate(0,0.47350104)">
@@ -1437,42 +1498,38 @@
          y="-37.988377">x</tspan></text>
     <path
        sodipodi:nodetypes="ccc"
-       d="m 0.499939,-90.242343 0,84.499995 85.302998,0"
+       d="m 0.49981737,-91.055987 0,84.4999949 85.30299763,0"
        id="path167-8-04-7"
        inkscape:connector-curvature="0"
        style="color:#000000;fill:none;stroke:currentColor;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Lstart);marker-mid:none;marker-end:url(#Arrow1Lend);display:inline" />
-    <g
-       id="g10278">
-      <text
-         xml:space="preserve"
-         style="font-size:10px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
-         x="-5.6783714"
-         y="52.721874"
-         id="text9475"
-         sodipodi:linespacing="125%"
-         transform="translate(0,0.47350357)"><tspan
-           sodipodi:role="line"
-           id="tspan9477"
-           x="-5.6783714"
-           y="52.721874">y</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-size:10px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
-         x="34.651207"
+    <text
+       sodipodi:linespacing="125%"
+       id="text9475"
+       y="53.195374"
+       x="-5.67838"
+       style="font-size:10px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="53.195374"
+         x="-5.67838"
+         id="tspan9477"
+         sodipodi:role="line">y</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text9483"
+       y="104.161"
+       x="34.651199"
+       style="font-size:10px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       xml:space="preserve"><tspan
          y="104.161"
-         id="text9483"
-         sodipodi:linespacing="125%"><tspan
-           sodipodi:role="line"
-           id="tspan9485"
-           x="34.651207"
-           y="104.161">z</tspan></text>
-      <path
-         style="color:#000000;fill:none;stroke:currentColor;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Lstart);marker-mid:none;marker-end:url(#Arrow1Lend);display:inline"
-         inkscape:connector-curvature="0"
-         id="path167-8-04-72"
-         d="m 0.50000852,1.5577473 0,84.4999997 85.30300148,0"
-         sodipodi:nodetypes="ccc" />
-    </g>
+         x="34.651199"
+         id="tspan9485"
+         sodipodi:role="line">z</tspan></text>
+    <path
+       sodipodi:nodetypes="ccc"
+       d="m 0.49981737,1.871379 0,84.499999 85.30299363,0"
+       id="path167-8-04-72"
+       inkscape:connector-curvature="0"
+       style="color:#000000;fill:none;stroke:currentColor;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Lstart);marker-mid:none;marker-end:url(#Arrow1Lend);display:inline" />
     <g
        transform="translate(-8.48e-6,-207.37909)"
        style="display:inline"
@@ -1535,7 +1592,7 @@
      id="layer6"
      inkscape:label="unused"
      style="display:none"
-     transform="translate(36.374991,0.0625)">
+     transform="translate(36.374986,-0.3125)">
     <path
        transform="translate(-45.499988,-142.57006)"
        style="color:#000000;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;display:inline"
