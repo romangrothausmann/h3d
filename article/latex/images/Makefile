@@ -24,7 +24,7 @@ Fig_luBounds+= fig_luBounds_z/fig_luBounds_z_RGB.png fig_luBounds_y/fig_luBounds
 Fig_A2V= fig_A2V_1.png fig_A2V_2.png fig_A2V_3.png fig_A2V_4.png fig_A2V_5.png fig_A2V_6.png
 Fig_A2V:= $(addprefix ../../../manual/VE/fig_A2V/,$(Fig_A2V))
 
-Fig_srv-curved= fig_SRV-curved_1.png fig_SRV-curved_2.png fig_SRV-curved_3.png fig_SRV-curved_4.png fig_SRV-curved_4.png
+Fig_srv-curved= fig_SRV-curved_0.png fig_SRV-curved_2.png fig_SRV-curved_3.png fig_SRV-curved_4.png fig_SRV-curved_4.png
 Fig_srv-curved:= $(addprefix ../../../manual/SRV/fig_SRV-curved/,$(Fig_srv-curved))
 
 Fig_SRV2D=   h3d_srv+500+500+0.331662+2_x@0250.png h3d_srv+500+500+0.331662+2_y@0250.png
@@ -78,6 +78,7 @@ fig_A2V : $(Fig_A2V) | fig_A2V/
 
 fig_srv-curved : $(Fig_srv-curved) | fig_SRV-curved/
 	cp -v $^ fig_SRV-curved/
+	mv fig_SRV-curved/fig_SRV-curved_0.png fig_SRV-curved/fig_SRV-curved_1.png
 	touch $@
 
 fig_srv : ../../../manual/SRV/fig_SRV-curvedPV.svg ../../../manual/SRV/fig_SRV-straightenedPV.svg ../../../manual/SRV/fig_SRV2D.svg
