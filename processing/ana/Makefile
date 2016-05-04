@@ -43,8 +43,8 @@ $(BNseg).mha : ../$(BNseg).mha
 %_B_raw.vtp %_B_sws.vtp : %.mha
 	$(VTKDIR)/discrete_marching-cubes $< $*_B 1 1 1
 
-%_A_raw.vtp %_A_sws.vtp : %.mha
-	$(VTKDIR)/discrete_marching-cubes $< $*_A 2 2 1
+%_a_raw.vtp %_a_sws.vtp : %.mha
+	$(VTKDIR)/discrete_marching-cubes $< $*_a 2 2 1
 
 # %_T_raw.vtp %_T_sws.vtp : %.mha # not possible @ 0.33 (crashes during SWS)
 # 	$(VTKDIR)/discrete_marching-cubes $< $*_T 3 3 1
@@ -61,16 +61,16 @@ $(BNseg).mha : ../$(BNseg).mha
 %.anaSV : %.vtp
 	$(VTKDIR)/analyse_S+V $< > $@
 
-%_raw.anaSS : %_B_raw.anaSV %_A_raw.anaSV # %_T.anaS  not possible @ 0.33
+%_raw.anaSS : %_B_raw.anaSV %_a_raw.anaSV # %_T.anaS  not possible @ 0.33
 	sed '3d' $^ > $@
 
-%_sws.anaSS : %_B_sws.anaSV %_A_sws.anaSV # %_T.anaS  not possible @ 0.33
+%_sws.anaSS : %_B_sws.anaSV %_a_sws.anaSV # %_T.anaS  not possible @ 0.33
 	sed '3d' $^ > $@
 
-%_raw_o.anaSS : %_B_raw_o.anaSV %_A_raw_o.anaSV # %_T.anaS  not possible @ 0.33
+%_raw_o.anaSS : %_B_raw_o.anaSV %_a_raw_o.anaSV # %_T.anaS  not possible @ 0.33
 	sed '3d' $^ > $@
 
-%_sws_o.anaSS : %_B_sws_o.anaSV %_A_sws_o.anaSV # %_T.anaS  not possible @ 0.33
+%_sws_o.anaSS : %_B_sws_o.anaSV %_a_sws_o.anaSV # %_T.anaS  not possible @ 0.33
 	sed '3d' $^ > $@
 
 %_dc.mha : %.mha
