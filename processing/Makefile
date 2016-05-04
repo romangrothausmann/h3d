@@ -107,6 +107,10 @@ $(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mha : $(BASENAME).mha
 		0         0        342.332            0          0          1
 
 
+$(BASENAME)_seg_A+B.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_a@2.mha
+	$(ITKDIR)/add $^ $@ 0
+
+
 %_lcc-8b.mha : %.mha
 	$(ITKDIR)/label_connected_components $< $@ 0 0
 	$(ITKDIR)/toUInt8 $@ $@ 0
@@ -338,6 +342,9 @@ $(BASENAME)_seg_a.mha : $(BASENAME)_seg_A+B+T.mha
 
 $(BASENAME)_seg_a@1.mha : $(BASENAME)_seg_A+B+T.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 2 2 1
+
+$(BASENAME)_seg_a@2.mha : $(BASENAME)_seg_A+B+T.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 2 2 2
 
 
 ### BEGIN Bt.blend
