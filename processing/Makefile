@@ -72,6 +72,7 @@ VR.done : $(BASENAME).mha # manual/VR/
 SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend
 SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha # manual/SRV/
 VE.done : ACN-Bt.blend A+V+ACN-path.blend ACN-a45.blend # manual/VE/
+slices.done ana.done luBounds.done VR.done SRV.done VE.done:
 	touch $@
 
 
