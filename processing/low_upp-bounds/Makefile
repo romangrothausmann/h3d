@@ -15,10 +15,8 @@ SPACE := $(eval) $(eval)
 base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))
 base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,$1)))
 
-BASENAME = h3d
-
-BN:= acn_hs3D
-BNseg:= acn_seg_A+B
+BN:= h3d
+BNseg:= $(BN)_seg_B+a
 
 ITKDIR:= ~/itk/simple/build_itk4_iana0
 VTKDIR:= ~/vtk/simple/build_vtk6_iana0
@@ -82,10 +80,10 @@ clean_all : clean
 	pigz -v -- $< 
 
 
-$(BN).mha : ../$(BASENAME).mha
+$(BN).mha : ../$(BN).mha
 	ln -sf $< $@
 
-$(BNseg).mha : ../$(BASENAME)_seg_A+B.mha
+$(BNseg).mha : ../$(BN)_seg_B+a.mha
 	ln -sf $< $@
 
 mask.mha : ../h3d_hull_02-seg.mha

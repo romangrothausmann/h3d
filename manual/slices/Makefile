@@ -45,7 +45,7 @@ clean:
 BG.mha : ../../processing/h3d.mha
 	ln -sf $< $@
 
-OV1.mha : ../../processing/h3d_seg_A+B.mha
+OV1.mha : ../../processing/h3d_seg_B+a.mha
 	ln -sf $< $@
 
 h3d_rsi+1+1.0.mha : ../../processing/h3d_rsi+1+1.0.mha

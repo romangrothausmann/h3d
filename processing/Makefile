@@ -6,12 +6,12 @@
 
 #### ToDo:
 
-## Replace A+B+T by T+B+A as done in processing/low_upp-bounds/Makefile for %_T-mask.mha
 ## check which .SERIAL prereq. can be done with less mem-usg e.g. SDI or other filter, e.g. paste, erode-dilate_dm
 ## split _raw and _sws dmc
 
 #### Done:
 
+## Replaced A+B+T/T+B+A by T+B+a, A+B/B+A by B+a; T = tissue, B = blood, V = veine, A = artery, a = air
 
 SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
@@ -41,7 +41,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 .PHONY : all clean gv
 
 
-all : $(BASENAME).mha $(BASENAME)_seg_A+B.mha # main targets
+all : $(BASENAME).mha $(BASENAME)_seg_T+B+a.mha # main targets
 all : slices.done # manual/slices/
 all : ana.done # processing/ana/
 all : luBounds.done # processing/low_upp-bounds/
@@ -57,8 +57,7 @@ optional : a-wsm+30.mha # as input to CnJ of ITKSnap to select labels for creati
 clean :
 	@-rm -v slices.done ana.done SRV.done
 	@-rm -v $(BASENAME)_rsi+1+1.0.mha $(BASENAME)_hull_00.vtp $(BASENAME)_hull_00.mha
-#	@-rm -v $(BASENAME).mha $(BASENAME)_seg_A+B.mha # not (yet) covered by make
-#	@-rm -v $(BASENAME)_seg_A+B+T.mha # not (yet) covered by make
+#	@-rm -v $(BASENAME).mha $(BASENAME)_seg_T+B+a.mha # not (yet) covered by make
 	@-rm -v demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha Bt.blend Arz.blend A.blend V.blend ACN-Arz_?.blend Arz_dec.blend
 	@-rm -v $(BASENAME)_hull_02.vtp $(BASENAME)_hull_02.mha
 
@@ -66,8 +65,8 @@ gv : all.dot.svg all.fdp.svg all.neato.svg all.twopi.svg
 
 
 slices.done : $(BASENAME)_hull_00.vtp $(BASENAME)_rsi+1+1.0.mha # manual/slices/
-ana.done : $(BASENAME)_seg_A+B+T.mha  # processing/ana/
-luBounds.done : $(BASENAME).mha $(BASENAME)_seg_A+B.mha h3d_hull_02-seg.mha # processing/low_upp-bounds/
+ana.done : $(BASENAME)_seg_T+B+a.mha  # processing/ana/
+luBounds.done : $(BASENAME).mha $(BASENAME)_seg_B+a.mha h3d_hull_02-seg.mha # processing/low_upp-bounds/
 VR.done : $(BASENAME).mha # manual/VR/
 SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend
 SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha # manual/SRV/
@@ -108,7 +107,7 @@ $(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mha : $(BASENAME).mha
 		0         0        342.332            0          0          1
 
 
-$(BASENAME)_seg_A+B.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_a@2.mha
+$(BASENAME)_seg_B+a.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_a@2.mha
 	$(ITKDIR)/add $^ $@ 0
 
 
@@ -192,10 +191,10 @@ $(BASENAME)_seg_B@1+mps+ROI900+d300.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASEN
 black.nii.gz : $(BASENAME).mha
 	$(ITKDIR)/thresh-glob $< $@ 1 0 max 0
 
-$(BASENAME)_seg_B.mha : $(BASENAME)_seg_A+B+T.mha
+$(BASENAME)_seg_B.mha : $(BASENAME)_seg_T+B+a.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 1 1
 
-$(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_A+B+T.mha
+$(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_T+B+a.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
 
 %@1.mha : %.mha
@@ -338,13 +337,13 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 ### END *.blend
 
 
-$(BASENAME)_seg_a.mha : $(BASENAME)_seg_A+B+T.mha
+$(BASENAME)_seg_a.mha : $(BASENAME)_seg_T+B+a.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 2 2
 
-$(BASENAME)_seg_a@1.mha : $(BASENAME)_seg_A+B+T.mha
+$(BASENAME)_seg_a@1.mha : $(BASENAME)_seg_T+B+a.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 2 2 1
 
-$(BASENAME)_seg_a@2.mha : $(BASENAME)_seg_A+B+T.mha
+$(BASENAME)_seg_a@2.mha : $(BASENAME)_seg_T+B+a.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 2 2 2
 
 

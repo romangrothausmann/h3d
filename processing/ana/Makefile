@@ -8,7 +8,7 @@ base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,
 base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,$1)))
 
 
-BNseg:= h3d_seg_A+B+T
+BNseg:= h3d_seg_T+B+a
 
 ITKDIR:= ~/itk/simple/build_itk4_iana0
 VTKDIR:= ~/vtk/simple/build_vtk6_iana0
@@ -34,7 +34,7 @@ clean :
 	pigz -v -- $< 
 
 
-$(BNseg).mha : ../h3d_seg_A+B+T.mha
+$(BNseg).mha : ../$(BNseg).mha
 	ln -sf $< $@
 
 %_rs+1.0.mha : %.mha

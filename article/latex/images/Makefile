@@ -16,8 +16,8 @@ Fig_ov01= fig_ov01_1.png fig_ov01_2.png fig_ov01_3.png fig_ov01_4.png
 Fig_ov01:= $(addprefix ../../../manual/VE/fig_ov01/,$(Fig_ov01))
 
 Fig_luBounds=  fig_luBounds_z/acn_hs3D_ROI_z@150.png fig_luBounds_y/acn_hs3D_ROI_y@150.png fig_luBounds_x/acn_hs3D_ROI_x@150.png
-Fig_luBounds+= fig_luBounds_z/acn_seg_A+B_lu+1_low_ROI_z@150_LUT.png fig_luBounds_y/acn_seg_A+B_lu+1_low_ROI_y@150_LUT.png fig_luBounds_x/acn_seg_A+B_lu+1_low_ROI_x@150_LUT.png
-Fig_luBounds+= fig_luBounds_z/acn_seg_A+B_lu+1_upp_ROI_z@150_LUT.png fig_luBounds_y/acn_seg_A+B_lu+1_upp_ROI_y@150_LUT.png fig_luBounds_x/acn_seg_A+B_lu+1_upp_ROI_x@150_LUT.png
+Fig_luBounds+= fig_luBounds_z/acn_seg_B+a_lu+1_low_ROI_z@150_LUT.png fig_luBounds_y/acn_seg_B+a_lu+1_low_ROI_y@150_LUT.png fig_luBounds_x/acn_seg_B+a_lu+1_low_ROI_x@150_LUT.png
+Fig_luBounds+= fig_luBounds_z/acn_seg_B+a_lu+1_upp_ROI_z@150_LUT.png fig_luBounds_y/acn_seg_B+a_lu+1_upp_ROI_y@150_LUT.png fig_luBounds_x/acn_seg_B+a_lu+1_upp_ROI_x@150_LUT.png
 Fig_luBounds+= fig_luBounds_z/fig_luBounds_z_RGB.png fig_luBounds_y/fig_luBounds_y_RGB.png fig_luBounds_x/fig_luBounds_x_RGB.png
 # Fig_luBounds:= $(addprefix ../../../processing/low_upp-bounds/,$(Fig_luBounds))
 
