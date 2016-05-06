@@ -43,7 +43,10 @@ $(SUBDIRS) :
 	   $(MAKE) -C $@
 
 
-.SERIAL : processing/slices.done processing/ana.done processing/SRV.done processing/VE.done
+.SERIAL : processing/SRV.done # demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha
+.SERIAL : processing/VE.done # ACN-Arz.blend A+V+ACN-path.blend
+.SERIAL : processing/VE/ # multiple blender runs
+.SERIAL : processing/low_upp-bounds/ # label_uncertainty_float
 
 
 
