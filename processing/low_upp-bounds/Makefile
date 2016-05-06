@@ -90,7 +90,7 @@ mask.mha : ../h3d_hull_02-seg.mha
 	ln -sf $< $@
 
 %_lu+1_low.mha %_lu+1_mid.mha %_lu+1_upp.mha : $(BN).mha %.mha
-	$(ITKDIR)/label_uncertainty_float $^ $*_lu+1  0 1
+	$(ITKDIR)/label_uncertainty_float $^ $*_lu+1  0 1 # ~210GB of RAM
 
 %.ana : %.mha
 	$(ITKDIR)/analyse_labels $< 1 > $@

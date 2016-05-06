@@ -20,9 +20,24 @@ all : $(SUBDIRS)
 clean :
 	$(MAKE) -C $(SUBDIRS) clean
 
+# mJOBS = $(shell echo $(MAKEFLAGS) | grep -o j.*) # only works with = empty with :=
+# ifeq ($(mJOBS),) # always true: executed before = is evaluated ???
 
-processing/% :
-	$(MAKE) -C $(dir $@) $(notdir $@)
+# processing/% :
+# 	echo $(MAKEFLAGS)
+# 	echo $(mJOBS)
+# 	$(MAKE) -C $(dir $@) $(notdir $@)
+
+# else
+
+# processing/%.done : # causes rule to execute as many times as there are *.done !!!
+# %.done : | processing/ # as processing/ already exists this will never execute a recipe
+#	touch $@
+%slices.done %ana.done %luBounds.done %VR.done %SRV.done %VE.done : # this way rule will only be executed once for all listed *.done
+	/usr/bin/time -v -o processing/timing \
+	   $(MAKE) -C processing/ all # uses its own .SERIAL
+
+# endif
 
 
 manual/slices/ : processing/slices.done
@@ -43,9 +58,7 @@ $(SUBDIRS) :
 	   $(MAKE) -C $@
 
 
-.SERIAL : processing/SRV.done # demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha
-.SERIAL : processing/VE.done # ACN-Arz.blend A+V+ACN-path.blend
-.SERIAL : processing/VE/ # multiple blender runs
+.SERIAL : manual/VE/ # multiple blender runs
 .SERIAL : processing/low_upp-bounds/ # label_uncertainty_float
 
 
