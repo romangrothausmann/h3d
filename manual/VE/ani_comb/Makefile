@@ -35,26 +35,11 @@ clean:
 	-rm -vf *.2pass.log  *.2pass.log.mbtree *.mp4.1p *.mp4
 	-rm -vr $(DIRs) 
 
-
-Bt2A45/render%.png : ../Bt2A45/render%.png
+$(DIRs) :
 	@+mkdir -p $(dir $@)
-	@cp -av $< $(dir $@)
 
-A452V/render%.png : ../A2V/render%.png
-	@+mkdir -p $(dir $@)
-	@cp -av $< $(dir $@)
-
-V2A_ov/render%.png : ../V2A_ov/render%.png
-	@+mkdir -p $(dir $@)
-	@cp -av $< $(dir $@)
-
-A2A45/render%.png : ../A2V/render%.png
-	@+mkdir -p $(dir $@)
-	@cp -av $< $(dir $@)
-
-A452Bt/render%.png : ../A452Bt/render%.png
-	@+mkdir -p $(dir $@)
-	@cp -av $< $(dir $@)
+%.png : ../%.png | $(DIRs)
+	@ln -s $< $(dir $@)
 
 %.flist: $(Fall)
 	$(file >$@,$^)

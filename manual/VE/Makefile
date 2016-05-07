@@ -18,11 +18,12 @@ fig_ov01_PNGs:= $(addprefix fig_ov01/,$(fig_ov01_PNGs))
 fig_A2V_PNGs= $(shell echo fig_A2V_{1..6}.png)
 fig_A2V_PNGs:= $(addprefix fig_A2V/,$(fig_A2V_PNGs))
 
+.PHONY: all clean video
 
-.PHONY: all clean
+all : fig_ov01.svg fig_A2V.svg 
 
-all : fig_ov01.svg fig_A2V.svg A2V.mp4 Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4 A2V-reversed.mp4
-
+video : A2V.mp4 Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4 A2V-reversed.mp4
+	$(MAKE) -C ani_comb/
 
 
 % :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon

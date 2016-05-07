@@ -15,7 +15,7 @@ SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ m
 .PHONY: all clean $(SUBDIRS)
 
 
-all : $(SUBDIRS)
+all : $(SUBDIRS) video
 
 clean :
 	$(MAKE) -C $(SUBDIRS) clean
@@ -51,6 +51,11 @@ manual/VR/ : processing/VR.done
 manual/SRV/ : processing/SRV.done
 
 manual/VE/ : processing/VE.done
+
+.PHONY: video
+video : processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/ # deps just to ensure video is executed afterwards
+	/usr/bin/time -v -o $@timing \
+	   $(MAKE) -C manual/VE/  video
 
 
 $(SUBDIRS) :
