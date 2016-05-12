@@ -429,10 +429,6 @@ ACN-Arz.blend : ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend
 ### END ACN-Arz_*.blend
 
 
-### BEGIN Arz_dec+0.blend
-### END Arz_dec+0.blend
-
-
 ### BEGIN A.blend
 
 A.stl : $(BASENAME)_seg_A@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
@@ -500,6 +496,18 @@ A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A
 	~/programme/blender/blender -b   -P ~/blender/scripts/x3d2blend.py -- -i $< -o $@
 
 A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
+	ln -sf $< $@
+
+$(BASENAME)_seg_B+A+V+path_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1_dec.vtp : %_dec.vtp : %.vtp
+	$(VTKDIR)/decimate-QC $< $@ 0 256
+
+A+V+ACN-path_dec.vtp : $(BASENAME)_seg_B+A+V+path_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1_dec.vtp # link to simple STL as this defines the mesh name in the *blend that objects link to
+	ln -sf $< $@
+
+A+V+ACN-path_dec.wrl : A+V+ACN-path_dec.vtp  A+V+ACN-path_fm.mha
+	$(VTKDIR)/probe-surf2vrml  $^ $@  270 0 0
+
+A+V+ACN-path_dec.blend : A+V+ACN-path_dec.wrl.blend
 	ln -sf $< $@
 
 ### END A+V+ACN-path.blend

@@ -40,7 +40,8 @@ video : A2V.mp4 Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4 A2V-reversed.mp4
 .PHONY : ACN-Arz.blend
 ACN-Arz.blend : ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend
 
-fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend A2V.blend fig_A2V.blend : A+V+ACN-path.blend
+A2V.blend A2V-reversed.blend : A+V+ACN-path_dec.blend
+fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend A2V.blend A2V-reversed.blend fig_A2V.blend : A+V+ACN-path.blend
 fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend ACN-Bt.blend
 Bt2A45.blend V2A_ov.blend A452Bt.blend : ACN-a45.blend
 
@@ -102,9 +103,29 @@ fig_ov01.svg : $(fig_ov01_PNGs)
 fig_A2V/ :
 	+mkdir -p $@
 
-fig_A2V/fig_A2V_%.png : fig_A2V.blend | fig_A2V/
-	~/programme/blender/blender -b $< -o //fig_A2V/$(basename $<)_#.png -noaudio -F PNG -f 500$* # -o $@ does not work
-	mv -f fig_A2V/fig_A2V_500$*.png $@
+fig_A2V/fig_A2V_1.png : A2V.blend | fig_A2V/
+	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f  555 # -o $@ does not work
+	mv -f $(basename $@)_000555.png $@ # remove frame number ending
+
+fig_A2V/fig_A2V_3.png : A2V.blend | fig_A2V/
+	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 2900 # -o $@ does not work
+	mv -f $(basename $@)_002900.png $@ # remove frame number ending
+
+fig_A2V/fig_A2V_5.png : A2V.blend | fig_A2V/
+	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 4550 # -o $@ does not work
+	mv -f $(basename $@)_004550.png $@ # remove frame number ending
+
+fig_A2V/fig_A2V_2.png : A2V-reversed.blend | fig_A2V/
+	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f  676 # -o $@ does not work
+	mv -f $(basename $@)_000676.png $@ # remove frame number ending
+
+fig_A2V/fig_A2V_4.png : A2V-reversed.blend | fig_A2V/
+	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 2881 # -o $@ does not work
+	mv -f $(basename $@)_002881.png $@ # remove frame number ending
+
+fig_A2V/fig_A2V_6.png : A2V-reversed.blend | fig_A2V/
+	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 4200 # -o $@ does not work
+	mv -f $(basename $@)_004200.png $@ # remove frame number ending
 
 fig_A2V.svg : $(fig_A2V_PNGs)
 	@echo "changed files: " $?
