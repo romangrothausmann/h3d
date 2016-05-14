@@ -9,7 +9,6 @@ mogrifyIM:= mogrify -define png:exclude-chunks=date,time +set date:create +set d
 BASENAME = kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1
 
 ITKDIR = ~/itk/simple/build_itk4_iana0
-ITKDIRWG = ~/itk/simple_without-git/build_itk4_iana0
 VTKDIR = ~/vtk/simple/build_vtk6_iana0
 
 fig_ov01_PNGs= $(shell echo fig_ov01_{1..6}.png)

@@ -24,9 +24,7 @@ BASENAME = h3d
 # BASE = $(BASENAME)-$(DATE)_$(DIRSUFFIX)
 
 ITKDIR = ~/itk/simple/build_itk4_iana0
-ITKDIRWG = ~/itk/simple_without-git/build_itk4_iana0
 VTKDIR = ~/vtk/simple/build_vtk6_iana0
-VTKDIRWG = ~/vtk/simple_without_git/build_itk4_iana0
 
 
 serialF= $(BASENAME)_seg_Bt@1_ed+60.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha $(BASENAME)_seg_Arz@1_ed+30.mha $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mha $(BASENAME)_seg_B_ed+3.mha
@@ -207,7 +205,7 @@ $(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_T+B+a.mha
 	$(ITKDIR)/open_bin_para $< $@ 0 10 0
 
 %_kNo+2@1.mha : %.mha
-	$(ITKDIRWG)/keep_N_objects_01 $< $@ 1 0 2 0 0 NumberOfPixels
+	$(ITKDIR)/keepNobj $< $@ 0   1 0 2 0 0 NumberOfPixels
 
 %_op+500+0.mha : %.mha
 	$(ITKDIR)/open_parabolic_f32 $< $@ 0 500 0
@@ -270,10 +268,10 @@ $(BASENAME)_seg_Bt+Arz-fm.mha : $(BASENAME)_seg_Bt_fm.mha  $(BASENAME)_seg_Arz_f
 ### BEGIN fm map for LUT coloring of B
 
 %_kNo+1@1.mha : %.mha
-	$(ITKDIRWG)/keep_N_objects_01 $< $@ 1 0 1 0 0 NumberOfPixels
+	$(ITKDIR)/keepNobj $< $@ 0   1 0 1 0 0 NumberOfPixels
 
 %_kNo+1@255.mha : %.mha
-	$(ITKDIRWG)/keep_N_objects_01 $< $@ 255 0 1 0 0 NumberOfPixels
+	$(ITKDIR)/keepNobj $< $@ 0 255 0 1 0 0 NumberOfPixels
 
 %_ed+3.mha : %.mha
 	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 3 0
@@ -393,13 +391,13 @@ Arz_dec.blend : Arz_dec.stl.blend
 ### BEGIN ACN-Arz_*.blend
 
 %_m+1.mha : %.mha
-	$(ITKDIRWG)/mean-BOX_01 $< $@ +1 0
+	$(ITKDIR)/mean $< $@ 0 +1
 
 %_m+2.mha : %.mha
-	$(ITKDIRWG)/mean-BOX_01 $< $@ +2 0
+	$(ITKDIR)/mean $< $@ 0 +2
 
 %_m+3.mha : %.mha
-	$(ITKDIRWG)/mean-BOX_01 $< $@ +3 0
+	$(ITKDIR)/mean $< $@ 0 +3
 
 %_th+127@1.mha : %.mha
 	$(ITKDIR)/thresh-glob $< $@  0 127 max 1
@@ -497,7 +495,7 @@ $(BASENAME)_seg_B+A+V+path.mha : A+V+ACN_m+3_th+127@1.mha $(BASENAME)_seg_B@1+mp
 	$(ITKDIR)/max $^ $@ 0
 
 %_lmp.vtp : %.vtp
-	$(VTKDIRWG)/largest_mesh-part_02 $< $@
+	$(VTKDIR)/largest_mesh-part $< $@ 0
 
 A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path@255_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1.vtp #@255 for m+1
 	ln -sf $< $@
@@ -539,7 +537,7 @@ $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0.mha : %_wsm+15+1+0.mha : %.mha
 	$(ITKDIR)/toUInt8 $@ $@ 1 # only contains about 78 labels
 
 %_ols.mha : %.mha
-	$(ITKDIRWG)/opening_by_label-shape_01 $< $@ 0 0 1 NumberOfPixelsOnBorder
+	$(ITKDIR)/open_label-shape $< $@ 0 0 0 1 NumberOfPixelsOnBorder
 
 $(BASENAME)_seg_Alv.mha : $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0_ols.mha $(BASENAME)_seg_a@1_ROI900.mha 
 	$(ITKDIR)/mask $^ $@ 0
