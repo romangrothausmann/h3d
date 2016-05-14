@@ -200,6 +200,9 @@ $(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_T+B+a.mha
 %@1.mha : %.mha
 	$(ITKDIR)/thresh-glob $< $@ 0 1 max 1
 
+%@255.mha : %.mha
+	$(ITKDIR)/thresh-glob $< $@ 0 1 max
+
 %_obp+10+0.mha : %.mha
 	$(ITKDIR)/open_bin_para $< $@ 0 10 0
 
@@ -215,11 +218,10 @@ $(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_T+B+a.mha
 %_ROI900.mha : %.mha
 	$(ITKDIR)/extract_subimage $< $@  661 1118 263  1000 1000 770
 
-#%-ROI900.mha : %_ROI900.mha black.nii.gz
-$(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900_op+5.5+0.mha black.nii.gz
+$(BASENAME)_seg_B@1+mps+ROI900-op-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900_op+5.5+0.mha black.nii.gz
 	$(ITKDIR)/paste $^ $@ 0
 
-$(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha  $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha # op should be done on segments@255 to avoid parabola "clipping"
+$(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha  $(BASENAME)_seg_B@1+mps+ROI900-op-ROI900.mha # op should be done on segments@255 to avoid parabola "clipping"
 	$(ITKDIR)/max $^ $@ 0
 
 
@@ -393,6 +395,9 @@ Arz_dec.blend : Arz_dec.stl.blend
 %_m+1.mha : %.mha
 	$(ITKDIRWG)/mean-BOX_01 $< $@ +1 0
 
+%_m+2.mha : %.mha
+	$(ITKDIRWG)/mean-BOX_01 $< $@ +2 0
+
 %_m+3.mha : %.mha
 	$(ITKDIRWG)/mean-BOX_01 $< $@ +3 0
 
@@ -473,16 +478,28 @@ ACN-Bt.blend : ACN-Bt.stl.blend
 
 ### BEGIN A+V+ACN-path.blend
 
+## A+V+ACN.mha : ACN only around artery and veine (not connecting capillary)
+A+V+ACN.mha : $(BASENAME)_seg_B.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+100.mha
+	$(ITKDIR)/mask $^ $@ 0
+
+## A+V+path.mha : only artery, veine and connecting capillary
 A+V+path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha demo-path@1.mha
+	$(ITKDIR)/max $^ $@ 0
+
+#%-ROI900.mha : %_ROI900.mha black.nii.gz
+$(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900.mha black.nii.gz
+	$(ITKDIR)/paste $^ $@ 0
+
+# $(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B.mha A+V+path_ed+100.mha # A+V not smoothed
+# 	$(ITKDIR)/mask $^ $@ 0
+
+$(BASENAME)_seg_B+A+V+path.mha : A+V+ACN_m+3_th+127@1.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha # A+V smoothed
 	$(ITKDIR)/max $^ $@ 0
 
 %_lmp.vtp : %.vtp
 	$(VTKDIRWG)/largest_mesh-part_02 $< $@
 
-$(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B.mha A+V+path_ed+100.mha # use B (@255) for m+1 or otherwise B@1
-	$(ITKDIR)/mask $^ $@ 0
-
-A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1.vtp
+A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path@255_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1.vtp #@255 for m+1
 	ln -sf $< $@
 
 A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path_ed+3.mha
