@@ -82,41 +82,59 @@ $(BNseg).mha : ../$(BNseg).mha
 %.anaJJ : %.ana %.anaJS # need difference 
 	paste $^ | awk '{if($$27==0){print $$25 - $$29}}' | sed '1i\\S' > $@
 
-V.csv : $(BNseg).ana       $(BNseg)_rs+1.0.ana \
+V.raw.csv : $(BNseg).ana       $(BNseg)_rs+1.0.ana \
         $(BNseg)_raw.anaSS $(BNseg)_rs+1.0_raw.anaSV \
         $(BNseg)_sws.anaSS $(BNseg)_rs+1.0_sws.anaSV
-	paste <(echo -ne '# ANAs combined by paste\nB\nA\nT') \
+	paste \
 	<(awk '{print $$24}' $(word 1,$^)) \
 	<(awk '{print $$24}' $(word 2,$^)) \
 	<(awk '{print $$2}' $(word 3,$^)) \
 	<(awk '{print $$2}' $(word 4,$^)) \
 	<(awk '{print $$2}' $(word 5,$^)) \
 	<(awk '{print $$2}' $(word 6,$^)) \
-	| sed '2i\\tVvox0.3\tVvox1.0\tVraw0.3\tVraw1.0\tVsws0.3\tVsws1.0'> $@ # process substitution;-) http://superuser.com/questions/317819/passing-two-arguments-to-a-command-using-pipes#317855  http://tldp.org/LDP/abs/html/process-sub.html
+	| sed '1d' > $@ # process substitution;-) http://superuser.com/questions/317819/passing-two-arguments-to-a-command-using-pipes#317855  http://tldp.org/LDP/abs/html/process-sub.html
 
-Sc.csv : $(BNseg).ana       $(BNseg)_rs+1.0.ana \
+%.rsum.csv : %.raw.csv
+	awk 'BEGIN{FS=OFS="\t"}{t=0; for(i=1;i<=NF;i++) t+=$$i; print $$0, t}' $< > $@
+
+%.csum.csv : %.raw.csv
+	awk 'BEGIN{FS=OFS="\t"} {for(i=1;i<=NF;i++) a[i]+=$$i; print} END{for (i=1;i<=NF;i++) printf "%d%s", a[i], (i==NF?"\n":OFS)}' $< > $@
+
+%.ravg.csv : %.csum.csv
+	awk 'BEGIN{FS=OFS="\t"}{t=0; for(i=1;i<=NF;i++) t+=$$i; print $$0, t/NF}' $< > $@
+
+V.csv : V.ravg.csv
+	paste <(echo -ne 'B\nA\nT\nsum') $< \
+	| sed '1i\\tVvox0.3\tVvox1.0\tVraw0.3\tVraw1.0\tVsws0.3\tVsws1.0\tavg' > $@
+
+
+Sc.raw.csv : $(BNseg).ana       $(BNseg)_rs+1.0.ana \
          $(BNseg)_raw.anaSS $(BNseg)_rs+1.0_raw.anaSV \
          $(BNseg)_sws.anaSS $(BNseg)_rs+1.0_sws.anaSV
-	paste <(echo -ne '# ANAs combined by paste\nB\nA\nT') \
+	paste \
 	<(awk '{print $$25}' $(word 1,$^)) \
 	<(awk '{print $$25}' $(word 2,$^)) \
 	<(awk '{print $$3}' $(word 3,$^)) \
 	<(awk '{print $$3}' $(word 4,$^)) \
 	<(awk '{print $$3}' $(word 5,$^)) \
 	<(awk '{print $$3}' $(word 6,$^)) \
-	| sed '2i\\tSvox0.3\tSvox1.0\tSraw0.3\tSraw1.0\tSsws0.3\tSsws1.0'> $@
+	| sed '1d' > $@
 
-So.csv : $(BNseg).anaJJ       $(BNseg)_rs+1.0.anaJJ \
+So.raw.csv : $(BNseg).anaJJ       $(BNseg)_rs+1.0.anaJJ \
          $(BNseg)_raw_o.anaSS $(BNseg)_rs+1.0_raw_o.anaSV \
          $(BNseg)_sws_o.anaSS $(BNseg)_rs+1.0_sws_o.anaSV
-	paste <(echo -ne '# ANAs combined by paste\nB\nA\nT') \
+	paste \
 	$(word 1,$^) \
 	$(word 2,$^) \
 	<(awk '{print $$3}' $(word 3,$^)) \
 	<(awk '{print $$3}' $(word 4,$^)) \
 	<(awk '{print $$3}' $(word 5,$^)) \
 	<(awk '{print $$3}' $(word 6,$^)) \
-	| sed '2i\\tSvox0.3\tSvox1.0\tSraw0.3\tSraw1.0\tSsws0.3\tSsws1.0'> $@
+	| sed '1d' > $@
+
+Sc.csv So.csv : %.csv : %.raw.csv
+	paste <(echo -ne 'B\nA\nT') $< \
+	| sed '1i\\tSvox0.3\tSvox1.0\tSraw0.3\tSraw1.0\tSsws0.3\tSsws1.0'> $@
 
 
 ## below a rule with "make", a very special case for NOT using $(MAKE) or +make
