@@ -38,27 +38,35 @@ $(BNseg).mha : ../$(BNseg).mha
 	ln -sf $< $@
 
 %_rs+1.0.mha : %.mha
+	touch $@.stime
 	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
 
 %_B_raw.vtp %_B_sws.vtp : %.mha
+	touch $@.stime
 	$(VTKDIR)/discrete_marching-cubes $< $*_B 1 1 1
 
 %_a_raw.vtp %_a_sws.vtp : %.mha
+	touch $@.stime
 	$(VTKDIR)/discrete_marching-cubes $< $*_a 2 2 1
 
 # %_T_raw.vtp %_T_sws.vtp : %.mha # not possible @ 0.33 (crashes during SWS)
+# 	touch $@.stime
 # 	$(VTKDIR)/discrete_marching-cubes $< $*_T 3 3 1
 
 %_o.vtp : %.vtp
+	touch $@.stime
 	$(VTKDIR)/threshold $< $@ 1 0 Scalars_ 1 3 0 # big files need compression OR writer->SetHeaderTypeToUInt64()
 
 %_raw.vtp %_sws.vtp : %.mha # not possible @ 0.33 (crashes during SWS)
+	touch $@.stime
 	$(VTKDIR)/discrete_marching-cubes $< $* 1 3 1
 
 %.ana : %.mha
+	touch $@.stime
 	$(ITKDIR)/analyse_labels $< 1 > $@
 
 %.anaSV : %.vtp
+	touch $@.stime
 	$(VTKDIR)/analyse_S+V $< > $@
 
 %_raw.anaSS : %_B_raw.anaSV %_a_raw.anaSV # %_T.anaS  not possible @ 0.33
@@ -74,9 +82,11 @@ $(BNseg).mha : ../$(BNseg).mha
 	sed '3d' $^ > $@
 
 %_dc.mha : %.mha
+	touch $@.stime
 	$(ITKDIR)/file_converter $< $@ 0
 
 %.anaJS : %_dc.mha
+	touch $@.stime
 	/opt/octave-4.0.0/bin/octave  ~/octave/scripts/jointSurf3D.m  $<  > $@
 
 %.anaJJ : %.ana %.anaJS # need difference 

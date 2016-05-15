@@ -90,24 +90,31 @@ mask.mha : ../h3d_hull_02-seg.mha
 	ln -sf $< $@
 
 %_lu+1_low.mha %_lu+1_mid.mha %_lu+1_upp.mha : $(BN).mha %.mha
+	touch $@.stime
 	$(ITKDIR)/label_uncertainty_float $^ $*_lu+1  0 1 # ~210GB of RAM
 
 %.ana : %.mha
+	touch $@.stime
 	$(ITKDIR)/analyse_labels $< 1 > $@
 
 %_ROI.mha : %.mha
+	touch $@.stime
 	$(ITKDIR)/extract_subimage  $< $@ $(origin) $(extent)
 
 # %_dc.mha : %.mha
+# 	touch $@.stime
 # 	$(ITKDIR)/file_converter $< $@ 0
 
 %_add+1.mha : %.mha
+	touch $@.stime
 	$(ITKDIR)/add_const  $< $@ 0 +1
 
 %_T-mask.mha : %_add+1.mha mask.mha
+	touch $@.stime
 	$(ITKDIR)/mask $^ $@ 0
 
 %.anaJS : %.mha # %_dc.mha # if label_uncertainty_float saves compressed
+	touch $@.stime
 	/opt/octave-4.0.0/bin/octave  ~/octave/scripts/jointSurf3D.m  $<  > $@ # each needs about 40GB of RAM (~5h) => can run in parallel
 
 %.anaJJ : %.ana %.anaJS # need difference 
@@ -156,6 +163,7 @@ LUT.png :
 	$(eval normal= $(word 1, $(sep)))
 	$(eval sliceN= $(word 2, $(sep)))
 
+	touch $@.stime
 	$(ITKDIR)/slice $+ $@ 0 $(normal) $(sliceN)
 
 fig_luBounds_%_RGB.png : $$(wordlist 2,4,$$(fig_luBounds_$$*_PNGs))

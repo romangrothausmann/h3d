@@ -86,6 +86,7 @@ gv-fig_SRV2D : fig_SRV-curved.svg.neato.svg fig_SRV-curved.svg.fdp.svg fig_SRV-c
 ##Begin bg
 
 $(SRV_G)%mha planeVTPs%done : ../../processing/h3d.mha ../../processing/demo-path.vtp
+	touch $@.stime
 	$(ITKVTKDIR)/straighten $^  $(SRV_G).mha  0 500 500 0.331662 2  xy-plane   0   $(z-slice_num)
 	touch planeVTPs.done
 
@@ -121,6 +122,7 @@ LUT_A.png:
 
 
 $(SRV_A).mha: ../../processing/h3d_seg_Bt+Arz-fm.mha ../../processing/demo-path.vtp
+	touch $@.stime
 	$(ITKVTKDIR)/straighten $^  $@  0 500 500 0.331662 0
 
 
@@ -144,6 +146,7 @@ LUT_B.png:
 	$(convertIM) -size 10x270 gradient:#f00-#00f  -background '#f00' -splice  0x1  -background '#800' -splice  0x1  -background black -splice  0x1 -transparent black  LUT_B.png # add a red and a dark red as extra levels
 
 $(SRV_B).mha: ../../processing/h3d_seg_B-fm.mha ../../processing/demo-path.vtp
+	touch $@.stime
 	$(ITKVTKDIR)/straighten $^  $@  0 500 500 0.331662 0
 
 
@@ -160,19 +163,23 @@ plane-B_%.png: $(SRV_B)_%.tif LUT_B.png # order matters to IM
 ##End ov-B
 
 xz-plane.vtp : ../../processing/demo-path.vtp
+	touch $@.stime
 	$(VTKDIR)/ribbon_FrenetSerret $< $@ 0 82.9155 0
 
 yz-plane.vtp : ../../processing/demo-path.vtp
+	touch $@.stime
 	$(VTKDIR)/ribbon_FrenetSerret $< $@ 0 82.9155 90
 
 
 fig_SRV-curvedPV/%.png fig_SRV-curvedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) $(plane_VTPs) xz-plane.vtp yz-plane.vtp | fig_SRV-curvedPV/
+	touch $@.stime
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-curved.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
 	mv $*.png $*_ori-axes.png fig_SRV-curvedPV/
 
 vis_SRV-curved.blend : $(planes-G) $(planes-A) $(planes-B) $(plane_X3Ds)
+	touch $@.stime
 	~/programme/blender/blender -b   -P ~/blender/scripts/vis_SRV-curved.py -- -o vis_SRV-curved.blend
 	rm vis_SRV-curved.blend1 # not sure what in the blender script causes a backup save
 
@@ -181,6 +188,7 @@ extent.mha : $(SRV_G).mha
 	ln -fs $< $@
 
 fig_SRV-straightenedPV/%.png fig_SRV-straightenedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) extent.mha vis_SRV-curved.pvsm | fig_SRV-straightenedPV/ #vis_SRV-curved.pvsm added to avoid multiple renders at the same time which can cause missing OVs in ss
+	touch $@.stime
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-straightened.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
@@ -198,6 +206,7 @@ SRV2D/%.png : %.png | SRV2D/ # https://www.gnu.org/software/make/manual/html_nod
 fig_SRV-curved.blend : vis_SRV-curved.blend $(planes-G) $(planes-A) $(planes-B) Bt.blend Arz.blend A.blend V.blend ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend Arz_dec.blend # vis_SRV-curved.blend does not include texture PNGs
 
 fig_SRV-curved/fig_SRV-curved_%.png : fig_SRV-curved.blend | fig_SRV-curved/
+	touch $@.stime
 	~/programme/blender/blender -b $< -o //fig_SRV-curved/$(basename $<)_#.png -noaudio -F PNG -f $* # -o $@ does not work
 	$(convertIM) $@ -gravity South -background white -splice 0x1 -background black -splice 0x1 -trim +repage -chop 0x1 -gravity North -background white -splice 0x1 -background black -splice 0x1 -trim +repage -chop 0x1 $@.png # mogrify shoud but does not know -splice : http://www.imagemagick.org/discourse-server/viewtopic.php?t=11344#p36577
 	mv -f $@.png $@

@@ -55,6 +55,7 @@ h3d_hull_00.vtp : ../../processing/h3d_hull_00.vtp
 	ln -sf $< $@
 
 3D-OV.png : xyz-sliced+hull.pvsm h3d_rsi+1+1.0.mha h3d_hull_00.vtp
+	touch $@.stime
 	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/render-view.py  -s 1024 1024 -oa -i $< -png $@
 
 LUT.png :
