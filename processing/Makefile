@@ -63,7 +63,7 @@ gv : all.dot.svg all.fdp.svg all.neato.svg all.twopi.svg
 
 
 slices.done : $(BASENAME).mha $(BASENAME)_seg_B+a.mha $(BASENAME)_rsi+1+1.0.mha $(BASENAME)_hull_00.vtp # manual/slices/
-ana.done : $(BASENAME)_seg_T+B+a.mha  # processing/ana/
+ana.done : $(BASENAME)_seg_T+B+a.mha h3d_hull_02-seg.mha # processing/ana/
 luBounds.done : $(BASENAME).mha $(BASENAME)_seg_B+a.mha h3d_hull_02-seg.mha # processing/low_upp-bounds/
 VR.done : $(BASENAME).mha # manual/VR/
 SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend

@@ -19,7 +19,7 @@ VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 .PHONY: all clean
 
 
-all : V.csv Sc.csv So.csv # all.neato.Make.svg all.fdp.Make.svg
+all : V.csv Sc.csv So.csv mask.csv # all.neato.Make.svg all.fdp.Make.svg
 
 clean :
 	@-rm -v $(BNseg)* 
@@ -33,6 +33,9 @@ clean :
 %.gz : %
 	pigz -v -- $< 
 
+
+mask.mha : ../h3d_hull_02-seg.mha
+	ln -sf $< $@
 
 $(BNseg).mha : ../$(BNseg).mha
 	ln -sf $< $@
@@ -91,6 +94,16 @@ $(BNseg).mha : ../$(BNseg).mha
 
 %.anaJJ : %.ana %.anaJS # need difference 
 	paste $^ | awk '{if($$27==0){print $$25 - $$29}}' | sed '1i\\S' > $@
+
+mask.raw.csv : mask.ana mask_rs+1.0.ana
+	paste \
+	<(awk '{print $$24}' $(word 1,$^)) \
+	<(awk '{print $$24}' $(word 2,$^)) \
+	| sed '1d' > $@ # process substitution;-) http://superuser.com/questions/317819/passing-two-arguments-to-a-command-using-pipes#317855  http://tldp.org/LDP/abs/html/process-sub.html
+
+mask.csv : mask.raw.csv
+	paste <(echo -ne 'mask') $< \
+	| sed '1i\\tVvox0.3\tVvox1.0' > $@
 
 V.raw.csv : $(BNseg).ana       $(BNseg)_rs+1.0.ana \
         $(BNseg)_raw.anaSS $(BNseg)_rs+1.0_raw.anaSV \

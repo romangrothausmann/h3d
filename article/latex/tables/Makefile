@@ -5,10 +5,10 @@ GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should 
 
 
 
-all : Sc.csv  So.csv  V.csv  luBounds.csv
+all : Sc.csv  So.csv  V.csv  luBounds.csv mask.csv
 
 
-Sc.csv So.csv V.csv : %.csv : ../../../processing/ana/%.csv
+Sc.csv So.csv V.csv mask.csv : %.csv : ../../../processing/ana/%.csv
 	cp -v $^ .
 
 luBounds.csv : ../../../processing/low_upp-bounds/luBounds.csv
