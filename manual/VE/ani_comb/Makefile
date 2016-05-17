@@ -49,8 +49,9 @@ A452Bt/render%.png : ../A452Bt/render%.png
 	@echo $@ # we need a recipe
 
 %.flist : $(Fall)
-	$(file >$@,$^) # file-function is even executed with -n
-	sed -i 's/ /\n/g' $@
+#	$(file >$@) $(foreach O,$^,$(file >>$@,$O)) # segfaults with v4.0, works with v4.1
+	$(file >$@,$^) # (file-) functions are even executed with -n
+	+sed -i 's/ /\n/g' $@
 	@echo $@ created
 
 %.mp4.1p %.2pass.log %.2pass.log.mbtree : %.flist
