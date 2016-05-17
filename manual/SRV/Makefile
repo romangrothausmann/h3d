@@ -74,6 +74,10 @@ clean:
 	@-rm -v Bt.blend Arz.blend A.blend V.blend ACN-Arz_?.blend Arz_dec.blend fig_SRV-curved.svg
 
 
+% :: %.gz # try decompress-first rule https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html#Match_002dAnything-Rules  https://www.gnu.org/software/make/manual/html_node/Double_002dColon.html#Double_002dColon
+	unpigz -v -- $<
+
+
 gv-fig_SRV2D : fig_SRV2D.svg.neato.svg fig_SRV2D.svg.fdp.svg fig_SRV2D.svg.dot.svg
 
 gv-fig_SRV2D : fig_SRV-curved.svg.neato.svg fig_SRV-curved.svg.fdp.svg fig_SRV-curved.svg.dot.svg

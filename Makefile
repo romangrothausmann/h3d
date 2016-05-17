@@ -15,7 +15,7 @@ SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ m
 .PHONY: all clean $(SUBDIRS)
 
 
-all : $(SUBDIRS) video
+all : $(SUBDIRS) # video
 
 clean :
 	$(MAKE) -C $(SUBDIRS) clean

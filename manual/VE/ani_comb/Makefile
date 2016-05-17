@@ -33,16 +33,23 @@ all: h3d_full.mp4
 clean:
 	-rm -vf *.flist 
 	-rm -vf *.2pass.log  *.2pass.log.mbtree *.mp4.1p *.mp4
-	-rm -vr $(DIRs) 
+	-rm -v $(DIRs) # DIRs are soft links
 
-$(DIRs) :
-	@+mkdir -p $(dir $@)
+$(DIRs) : % : ../%
+	@ln -s $< .
 
-%.png : ../%.png | $(DIRs)
-	@ln -s $< $(dir $@)
+Bt2A45/render%.png : ../Bt2A45/render%.png
+A452V/render%.png : ../A2V/render%.png
+V2A_ov/render%.png : ../V2A_ov/render%.png
+A2A45/render%.png : ../A2V/render%.png
+A452Bt/render%.png : ../A452Bt/render%.png
 
-%.flist: $(Fall)
-	$(file >$@,$^)
+%.png : | $(DIRs)
+#	@ln -s $^ .
+	@echo $@ # we need a recipe
+
+%.flist : $(Fall)
+	$(file >$@,$^) # file-function is even executed with -n
 	sed -i 's/ /\n/g' $@
 	@echo $@ created
 

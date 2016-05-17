@@ -68,7 +68,7 @@ luBounds.done : $(BASENAME).mha $(BASENAME)_seg_B+a.mha h3d_hull_02-seg.mha # pr
 VR.done : $(BASENAME).mha # manual/VR/
 SRV.done VE.done : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend
 SRV.done : demo-path.vtp h3d_seg_Bt+Arz-fm.mha h3d_seg_B-fm.mha # manual/SRV/
-VE.done : ACN-Bt.blend A+V+ACN-path.blend ACN-a45.blend # manual/VE/
+VE.done : ACN-Bt.blend A+V+ACN-path.blend A+V+ACN-path_dec.blend ACN-a45.blend # manual/VE/
 slices.done ana.done luBounds.done VR.done SRV.done VE.done:
 	touch $@
 
@@ -595,7 +595,7 @@ $(BASENAME)_seg_B+A+V+path_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1_dec.vtp : %_de
 	touch $@.stime
 	$(VTKDIR)/decimate-QC $< $@ 0 256
 
-A+V+ACN-path_dec.vtp : $(BASENAME)_seg_B+A+V+path_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1_dec.vtp # link to simple STL as this defines the mesh name in the *blend that objects link to
+A+V+ACN-path_dec.vtp : $(BASENAME)_seg_B+A+V+path@255_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1_dec.vtp # link to simple STL as this defines the mesh name in the *blend that objects link to
 	ln -sf $< $@
 
 A+V+ACN-path_dec.wrl : A+V+ACN-path_dec.vtp  A+V+ACN-path_fm.mha
