@@ -83,10 +83,10 @@ clean_all : clean
 $(BN).mha : ../$(BN).mha
 	ln -sf $< $@
 
-$(BNseg).mha : ../$(BN)_seg_B+a.mha
-	ln -sf $< $@
+$(BNseg).mha : ../$(BN)_seg_B+a.mha mask.mha # crop to mask to avoid WS wells outside mask
+	$(ITKDIR)/mask $^ $@ 0
 
-mask.mha : ../h3d_hull_02-seg.mha
+mask.mha : ../h3d_hull_02-seg.mha # lu+1 does not necessary reach upto $(BN)_seg_T+B+a@1.mha => use h3d_hull_02-seg
 	ln -sf $< $@
 
 %_lu+1_low.mha %_lu+1_mid.mha %_lu+1_upp.mha : $(BN).mha %.mha

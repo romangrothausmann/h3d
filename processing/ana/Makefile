@@ -8,7 +8,8 @@ base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,
 base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,$1)))
 
 
-BNseg:= h3d_seg_T+B+a
+BN:= h3d
+BNseg:= $(BN)_seg_T+B+a
 
 ITKDIR:= ~/itk/simple/build_itk4_iana0
 VTKDIR:= ~/vtk/simple/build_vtk6_iana0
@@ -19,7 +20,7 @@ VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 .PHONY: all clean
 
 
-all : V.csv Sc.csv So.csv mask.csv # all.neato.Make.svg all.fdp.Make.svg
+all : V.csv Sc.csv So.csv # mask.csv all.neato.Make.svg all.fdp.Make.svg
 
 clean :
 	@-rm -v $(BNseg)* 
@@ -34,11 +35,11 @@ clean :
 	pigz -v -- $< 
 
 
-mask.mha : ../h3d_hull_02-seg.mha
+mask.mha : ../h3d_hull_02-seg.mha # must be the same as for luBounds! => use h3d_hull_02-seg (not $(BN)_seg_T+B+a@1.mha)
 	ln -sf $< $@
 
-$(BNseg).mha : ../$(BNseg).mha
-	ln -sf $< $@
+$(BNseg).mha : ../$(BNseg).mha mask.mha # crop to mask
+	$(ITKDIR)/mask $^ $@ 0
 
 %_rs+1.0.mha : %.mha
 	touch $@.stime
