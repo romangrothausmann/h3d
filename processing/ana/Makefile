@@ -122,13 +122,13 @@ V.raw.csv : $(BNseg).ana       $(BNseg)_rs+1.0.ana \
 	awk 'BEGIN{FS=OFS="\t"}{t=0; for(i=1;i<=NF;i++) t+=$$i; print $$0, t}' $< > $@
 
 %.csum.csv : %.raw.csv
-	awk 'BEGIN{FS=OFS="\t"} {for(i=1;i<=NF;i++) a[i]+=$$i; print} END{for (i=1;i<=NF;i++) printf "%d%s", a[i], (i==NF?"\n":OFS)}' $< > $@
+	octave -q <<< 'v= dlmread("$<", "\t"); s= sum(v); dlmwrite("$@", [v; s;  bsxfun(@rdivide, v, s)], "delimiter", "\t", "precision", 6);' # v./s == bsxfun(@rdivide, v, s); awk is only meant for row-wise eval
 
 %.ravg.csv : %.csum.csv
 	awk 'BEGIN{FS=OFS="\t"}{t=0; for(i=1;i<=NF;i++) t+=$$i; print $$0, t/NF}' $< > $@
 
 V.csv : V.ravg.csv
-	paste <(echo -ne 'B\nA\nT\nsum') $< \
+	paste <(echo -ne 'B\nA\nT\ns\nB/s\nA/s\nT/s') $< \
 	| sed '1i\\tVvox0.3\tVvox1.0\tVraw0.3\tVraw1.0\tVsws0.3\tVsws1.0\tavg' > $@
 
 
