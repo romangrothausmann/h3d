@@ -63,6 +63,16 @@ $(SUBDIRS) :
 	   $(MAKE) -C $@
 
 
+stime.lst : $(SUBDIRS)
+	for i in `find -name '*.stime'`; do \
+	    printf "%s\t%s\t%s\n" \
+		`ls -lgG --time-style='+%Y-%m-%d_%T' $$i | awk '{print $$4}'` \
+		` ( ls -lgG --time-style='+%Y-%m-%d_%T' $${i%.stime} || ls -lgG --time-style='+%Y-%m-%d_%T' $${i%.stime}.gz ) | awk '{print $$4}'` \
+		$${i%.stime} ; \
+	done > $@
+
+
+
 .SERIAL : manual/VE/ # multiple blender runs
 .SERIAL : processing/low_upp-bounds/ # label_uncertainty_float
 
