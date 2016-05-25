@@ -623,13 +623,30 @@ $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0.mha : %_wsm+15+1+0.mha : %.mha
 	touch $@.stime
 	$(ITKDIR)/open_label-shape $< $@ 0 0 0 1 NumberOfPixelsOnBorder
 
-$(BASENAME)_seg_Alv.mha : $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0_ols.mha $(BASENAME)_seg_a@1_ROI900.mha 
+# $(BASENAME)_seg_Alv-comp-cont.mha : $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0_ols.mha $(BASENAME)_seg_a@1_ROI900.mha 
+# 	touch $@.stime
+# 	$(ITKDIR)/mask $^ $@ 0
+
+$(BASENAME)_seg_Alv.mha : $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0.mha $(BASENAME)_seg_a@1_ROI900.mha 
 	touch $@.stime
 	$(ITKDIR)/mask $^ $@ 0
 
 $(BASENAME)_seg_a45.mha : $(BASENAME)_seg_Alv.mha
 	touch $@.stime
 	$(ITKDIR)/thresh-glob $< $@ 0 46 46 1
+
+$(BASENAME)_seg_Alv_sws.vtp : $(BASENAME)_seg_Alv.mha
+	touch $@.stime
+	$(VTKDIR)/discrete_marching-cubes $< $(basename $<)  1 255 0
+	rm $(BASENAME)_seg_Alv_raw.vtp
+
+$(BASENAME)_seg_Alv.vtp : $(BASENAME)_seg_Alv_sws.vtp
+	touch $@.stime
+	$(VTKDIR)/threshold  $< $@  0 0 Scalars_ 0 0 0 # adjecency is stored as point data, AllScalars: 1 leads to gaps, 0 to "scars"
+
+$(BASENAME)_seg_a45.vtp : $(BASENAME)_seg_Alv.vtp
+	touch $@.stime
+	$(VTKDIR)/threshold  $< $@  0 1 Scalars_ 46 46 1 # label is stored as cell data, AllScalars does not matter for cell data
 
 # $(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_a45_ed+15.mha
 # 	touch $@.stime
