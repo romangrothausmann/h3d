@@ -66,8 +66,8 @@ $(SUBDIRS) :
 stime.lst : $(SUBDIRS)
 	for i in `find -name '*.stime'`; do \
 	    printf "%s\t%s\t%s\n" \
-		`ls -lgG --time-style='+%Y-%m-%d_%T' $$i | awk '{print $$4}'` \
-		` ( ls -lgG --time-style='+%Y-%m-%d_%T' $${i%.stime} || ls -lgG --time-style='+%Y-%m-%d_%T' $${i%.stime}.gz ) | awk '{print $$4}'` \
+		`ls -lgG --time-style='+%s' $$i | awk '{print $$4}'` \
+		` ( ls -lgG --time-style='+%s' $${i%.stime} || ls -lgG --time-style='+%s' $${i%.stime}.gz ) | awk '{print $$4}'` \
 		$${i%.stime} ; \
 	done > $@
 
@@ -81,7 +81,7 @@ stime.lst : $(SUBDIRS)
 ## below a rule with "make", a very special case for NOT using $(MAKE) or +make
 ### lines that contain "$(MAKE)" even in a comment get exectued even with -n|--dry-run !!!
 %.gv : % Makefile $(MAKEFILES) # put % to get executed after target has been made to avoid make2graph error due to missing files; http://www.gnu.org/software/make/manual/make.html#MAKEFILES-Variable
-	$(GVmake) -Bnd $* | ~/programme/makefile2graph/make2graph | sed 's/label=".*_\([^_\.]\+\)\.[^\.]*"/label="\1"/g' > $@ # DO NOT PUT a comment with make-var here
+	$(GVmake) -Bnd $* | ~/programme/makefile2graph/make2graph > $@ # DO NOT PUT a comment with make-var here
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 #.SECONDARY: # $(SRV_G)_[xyz]@[0-9]*.png #not working
