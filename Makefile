@@ -1,7 +1,23 @@
 
+### setting default paths of external programs
+PV?=/opt/paraview-4.3.1
+
+
 
 SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
+
+
+export PATH:= $(PV)/bin:$(PATH)
+
+
+### check existance of external programs
+## http://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile#25668869
+EXECUTABLES = pvpython
+K:= $(foreach exec,$(EXECUTABLES),\
+	$(if $(shell PATH=$(PATH) which $(exec)),some string,$(error "No $(exec) in PATH)))
+
+
 
 SPACE := $(eval) $(eval)
 base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))

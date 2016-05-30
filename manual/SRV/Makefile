@@ -177,7 +177,7 @@ yz-plane.vtp : ../../processing/demo-path.vtp
 
 fig_SRV-curvedPV/%.png fig_SRV-curvedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) $(plane_VTPs) xz-plane.vtp yz-plane.vtp | fig_SRV-curvedPV/
 	touch $@.stime
-	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-curved.py -s $* -o $*.pvsm
+	vglrun pvpython ~/paraview/scripts/vis_SRV-curved.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
 	mv $*.png $*_ori-axes.png fig_SRV-curvedPV/
@@ -193,7 +193,7 @@ extent.mha : $(SRV_G).mha
 
 fig_SRV-straightenedPV/%.png fig_SRV-straightenedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) extent.mha vis_SRV-curved.pvsm | fig_SRV-straightenedPV/ #vis_SRV-curved.pvsm added to avoid multiple renders at the same time which can cause missing OVs in ss
 	touch $@.stime
-	vglrun /opt/paraview-git/bin/pvpython ~/paraview/scripts/vis_SRV-straightened.py -s $* -o $*.pvsm
+	vglrun pvpython ~/paraview/scripts/vis_SRV-straightened.py -s $* -o $*.pvsm
 	$(mogrifyIM) -trim -level ,70% $*.png
 	$(mogrifyIM) -trim -transparent white $*_ori-axes.png
 	mv $*.png $*_ori-axes.png fig_SRV-straightenedPV/
