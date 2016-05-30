@@ -165,6 +165,7 @@ LUT.png :
 
 	touch $@.stime
 	$(ITKDIR)/slice $+ $@ 0 $(normal) $(sliceN)
+	$(mogrifyIM) $@
 
 fig_luBounds_%_RGB.png : $$(wordlist 2,4,$$(fig_luBounds_$$*_PNGs))
 	$(convertIM) $^ -threshold 1 -channel RGB -combine $@
