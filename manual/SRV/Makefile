@@ -107,7 +107,7 @@ plane-G_%.png : $(SRV_G)_%.tif
 
 	$(convertIM) $< -level ,60% $(opts) $@
 
-SRV2D/$(SRV_G)_%.png : $(SRV_G)_%.tif
+SRV2D/$(SRV_G)_%.png : $(SRV_G)_%.tif | SRV2D/
 	$(eval sep=$(subst @, ,$*))
 	$(eval normal= $(word 1, $(sep)))
 	$(eval sliceN= $(word 2, $(sep)))

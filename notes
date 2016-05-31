@@ -20,7 +20,17 @@ Actual build should be done outside source-tree:
 
 rsync -avP cap-net/ cap-net_build/
 cd cap-net_build/
-make -j12
+
+
+worked:
+make PV=/opt/paraview-5.0.1_GL2/ -j6
+make PV=/opt/paraview-5.0.1_GL1/ -j6
+make PV=/opt/paraview-4.4.0/ -j6
+
+not working:
+# make PV=/opt/paraview-4.3.1/ -j6 # works for SRV but not for VR
+# make PV=/opt/paraview-4.1.0/ -j6 # neither SRV nor VR
+
 
 
 To merely create graphs of dependencies defined by the Makefiles:

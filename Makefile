@@ -1,6 +1,6 @@
 
 ### setting default paths of external programs
-PV?=/opt/paraview-4.3.1
+PV?=/opt/paraview-4.4.0
 ## 64-bit enabled octave:
 OCTAVE?=/opt/octave-4.0.0
 
