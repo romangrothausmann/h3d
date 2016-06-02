@@ -24,7 +24,6 @@ BASENAME = h3d
 
 # BASE = $(BASENAME)-$(DATE)_$(DIRSUFFIX)
 
-ITKDIR = ~/itk/simple/build_itk4_iana0
 VTKDIR = ~/vtk/simple/build_vtk6_iana0
 
 
@@ -84,7 +83,7 @@ slices.done ana.done luBounds.done VR.done SRV.done VE.done:
 
 $(BASENAME)_rsi+1+1.0.mha : $(BASENAME).mha
 	touch $@.stime
-	$(ITKDIR)/resample $< $@ 1 1 1.0 1.0 1.0
+	resample $< $@ 1 1 1.0 1.0 1.0
 
 $(BASENAME)_hu%_00.vtp $(BASENAME)_hu%_00.mha : $(BASENAME).mha # % only to force single execution of rule ($@ will only contain one of the targets!): http://stackoverflow.com/questions/2973445/gnu-makefile-rule-generating-a-few-targets-from-a-single-source-file#3077254
 ## upper "lit" needs to be above 342.332 as voxelizer seems to voxelize only below!
@@ -111,40 +110,40 @@ $(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mha : $(BASENAME).mha
 
 $(BASENAME)_seg_B+a.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_a@2.mha
 	touch $@.stime
-	$(ITKDIR)/add $^ $@ 0
+	add $^ $@ 0
 
 
 %_lcc-8b.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/label_connected_components $< $@ 0 0
-	$(ITKDIR)/toUInt8 $@ $@ 0
+	label_connected_components $< $@ 0 0
+	toUInt8 $@ $@ 0
 
 $(BASENAME)_seg_A@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 2 2 1
+	thresh-glob $< $@ 0 2 2 1
 
 $(BASENAME)_seg_V@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
+	thresh-glob $< $@ 0 1 1 1
 
 
 ## BEGIN a@wsm+30.mha
 
 %_th+127.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@  0 127 max
+	thresh-glob $< $@  0 127 max
 
 $(BASENAME)_seg_a_m+3_th+127_dmsm+0+0_wsm+30+1+0.mha : %_wsm+30+1+0.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/watershed_morph $< $@ 0 30 1 0 # fully connected in case spatial separation is desired in future but here no lines to avoid separation
-	$(ITKDIR)/toUInt8 $@ $@ 1 # only contains around 183 labels
+	watershed_morph $< $@ 0 30 1 0 # fully connected in case spatial separation is desired in future but here no lines to avoid separation
+	toUInt8 $@ $@ 1 # only contains around 183 labels
 
 a-wsm+30.mha : $(BASENAME)_seg_a_m+3_th+127_dmsm+0+0_wsm+30+1+0.mha
 	ln -s $< $@
 
 a@wsm+30.mha : $(BASENAME)_seg_a_m+3_th+127_dmsm+0+0_wsm+30+1+0.mha $(BASENAME)_seg_a.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 ## END a@wsm+30.mha
 
@@ -157,22 +156,22 @@ $(BASENAME)_seg_1+Bt+Arz-map.mha :  ../manual/processing/$(BASENAME)_seg_1+Bt+Ar
 
 %_th+2+2.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 2 2
+	thresh-glob $< $@ 0 2 2
 
 %_th+3+3.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 3 3
+	thresh-glob $< $@ 0 3 3
 
 $(BASENAME)_seg_a@Bt-map.mha : $(BASENAME)_seg_a.mha $(BASENAME)_seg_1+Bt+Arz-map_th+2+2.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 $(BASENAME)_seg_Bt.mha : $(BASENAME)_seg_a@Bt-map_kNo+1@255.mha
 	ln -s $< $@
 
 $(BASENAME)_seg_a@Arz-map.mha : $(BASENAME)_seg_a.mha $(BASENAME)_seg_1+Bt+Arz-map_th+3+3.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 $(BASENAME)_seg_Arz.mha : $(BASENAME)_seg_a@Arz-map_kNo+1@255.mha
 	ln -s $< $@
@@ -183,23 +182,23 @@ $(BASENAME)_seg_Arz.mha : $(BASENAME)_seg_a@Arz-map_kNo+1@255.mha
 
 %_mps+5.5+1+0.3.vtk %_mps+5.5+1+0.3_max-sphere.mha %_mps+5.5+1+0.3.txt : %.mha
 	touch $@.stime
-	$(ITKDIR)/min-path_seg_f32  $< $*_mps+5.5+1+0.3  0 5.5 1 10000 .3   p277.7 p548.6 p276.7   p466.7 p588.0 p126.0 | tee $*_mps+5.5+1+0.3.out
+	min-path_seg_f32  $< $*_mps+5.5+1+0.3  0 5.5 1 10000 .3   p277.7 p548.6 p276.7   p466.7 p588.0 p126.0 | tee $*_mps+5.5+1+0.3.out
 
 %_ed+100.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 100 0
+	erode-dilate_dm_f32 $< $@ 0 100 0
 
 %_ed+300.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 300 0
+	erode-dilate_dm_f32 $< $@ 0 300 0
 
 $(BASENAME)_seg_B@1+mps+ROI900.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_B_ROI900_mps+5.5+1+0.3_max-sphere_ed+100.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 1
+	mask $^ $@ 1
 
 $(BASENAME)_seg_B@1+mps+ROI900+d300.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_B_ROI900_mps+5.5+1+0.3_max-sphere_ed+300.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 1
+	mask $^ $@ 1
 
 ## END blood vessel profile speed map and path extraction in ROI900
 
@@ -208,56 +207,56 @@ $(BASENAME)_seg_B@1+mps+ROI900+d300.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASEN
 
 black.nii.gz : $(BASENAME).mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 1 0 max 0
+	thresh-glob $< $@ 1 0 max 0
 
 $(BASENAME)_seg_B.mha : $(BASENAME)_seg_T+B+a.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 1 1
+	thresh-glob $< $@ 0 1 1
 
 $(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_T+B+a.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 1 1 1
+	thresh-glob $< $@ 0 1 1 1
 
 %@1.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 1 max 1
+	thresh-glob $< $@ 0 1 max 1
 
 %@255.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 1 max
+	thresh-glob $< $@ 0 1 max
 
 %_obp+10+0.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/open_bin_para $< $@ 0 10 0
+	open_bin_para $< $@ 0 10 0
 
 %_kNo+2@1.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/keepNobj $< $@ 0   1 0 2 0 0 NumberOfPixels
+	keepNobj $< $@ 0   1 0 2 0 0 NumberOfPixels
 
 %_op+500+0.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/open_parabolic_f32 $< $@ 0 500 0
+	open_parabolic_f32 $< $@ 0 500 0
 
 %_op+5.5+0.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/open_parabolic_f32 $< $@ 0 5.5 0
+	open_parabolic_f32 $< $@ 0 5.5 0
 
 %_ROI900.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/extract_subimage $< $@  661 1118 263  1000 1000 770
+	extract_subimage $< $@  661 1118 263  1000 1000 770
 
 $(BASENAME)_seg_B@1+mps+ROI900-op-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900_op+5.5+0.mha black.nii.gz
 	touch $@.stime
-	$(ITKDIR)/paste $^ $@ 0
+	paste $^ $@ 0
 
 $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha  $(BASENAME)_seg_B@1+mps+ROI900-op-ROI900.mha # op should be done on segments@255 to avoid parabola "clipping"
 	touch $@.stime
-	$(ITKDIR)/max $^ $@ 0
+	max $^ $@ 0
 
 
 %_mps+0-1+0.331662.vtk %_mps+0-1+0.331662_max-sphere.mha %_mps+0-1+0.331662.txt : %.mha
 	touch $@.stime
-	$(ITKDIR)/min-path_seg_f32  $< $*_mps+0-1+0.331662  0 0 -1 10000 0.331662    p595 p826 p31    p439 p270 p317    p467.8 p587.9 p125.7  p476.8 p579.6 p124.1 | tee $*_mps+0-1+0.331662.out
+	min-path_seg_f32  $< $*_mps+0-1+0.331662  0 0 -1 10000 0.331662    p595 p826 p31    p439 p270 p317    p467.8 p587.9 p125.7  p476.8 p579.6 p124.1 | tee $*_mps+0-1+0.331662.out
 
 %.vtp : %.vtk
 	touch $@.stime
@@ -285,20 +284,20 @@ $(BASENAME)_seg_Bt+Arz_fm-seeds.mha : ../manual/processing/$(BASENAME)_seg_Bt+Ar
 
 %_fm.mha : $(BASENAME)_seg_Bt+Arz_fm-seeds.mha %.mha
 	touch $@.stime
-	$(ITKDIR)/fast-marching_f32 $^ $@ 0
-	$(ITKDIR)/toUInt16 $@ $@ 0
+	fast-marching_f32 $^ $@ 0
+	toUInt16 $@ $@ 0
 
 %_add+1360.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/add_const $< $@ 0 +1360
+	add_const $< $@ 0 +1360
 
 $(BASENAME)_seg_Arz_fm+1360.mha : $(BASENAME)_seg_Arz_fm_add+1360.mha  $(BASENAME)_seg_Arz.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 $(BASENAME)_seg_Bt+Arz-fm.mha : $(BASENAME)_seg_Bt_fm.mha  $(BASENAME)_seg_Arz_fm+1360.mha
 	touch $@.stime
-	$(ITKDIR)/max $^ $@ 0
+	max $^ $@ 0
 
 ### END fm map for LUT coloring of Bt+Arz
 
@@ -307,32 +306,32 @@ $(BASENAME)_seg_Bt+Arz-fm.mha : $(BASENAME)_seg_Bt_fm.mha  $(BASENAME)_seg_Arz_f
 
 %_kNo+1@1.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/keepNobj $< $@ 0   1 0 1 0 0 NumberOfPixels
+	keepNobj $< $@ 0   1 0 1 0 0 NumberOfPixels
 
 %_kNo+1@255.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/keepNobj $< $@ 0 255 0 1 0 0 NumberOfPixels
+	keepNobj $< $@ 0 255 0 1 0 0 NumberOfPixels
 
 %_ed+3.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 3 0
+	erode-dilate_dm_f32 $< $@ 0 3 0
 
 $(BASENAME)_seg_B_ed+3_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B_ed+3_kNo+1@255.mha
 	touch $@.stime
-	$(ITKDIR)/fast-marching_f32 $^ $@ 0
-	$(ITKDIR)/toUInt16 $@ $@ 0
+	fast-marching_f32 $^ $@ 0
+	toUInt16 $@ $@ 0
 
 $(BASENAME)_seg_B_fm.mha : $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_B.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mha : $(BASENAME)_seg_B_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha # first input defines output type
 	touch $@.stime
-	$(ITKDIR)/add $^ $@ 0
+	add $^ $@ 0
 
 $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm.mha $(BASENAME)_seg_B@1.mha # first input defines output type
 	touch $@.stime
-	$(ITKDIR)/add $^ $@ 0
+	add $^ $@ 0
 
 ### END fm map for LUT coloring of B
 
@@ -341,12 +340,12 @@ $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha : $(BASENAME)_seg_B_
 
 $(BASENAME)_seg_V@700.mha : $(BASENAME)_seg_V@1.mha
 	touch $@.stime
-	$(ITKDIR)/toUInt16 $< $@ 0
-	$(ITKDIR)/thresh-glob $@ $@ 0 1 1 700 # works only if input can hold 700
+	toUInt16 $< $@ 0
+	thresh-glob $@ $@ 0 1 1 700 # works only if input can hold 700
 
 $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B@1.mha $(BASENAME)_seg_V@700.mha # first input defines output type
 	touch $@.stime
-	$(ITKDIR)/max $^ $@ 0
+	max $^ $@ 0
 
 ### END make the vene all blue
 
@@ -355,23 +354,23 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 
 %_rsi+0+1.0.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
+	resample $< $@ 1 0 1.0 1.0 1.0
 
 %_add+1.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/add_const $< $@ 0 +1
+	add_const $< $@ 0 +1
 
 %+seg.mha : %.mha ../manual/processing/mask+seg.mha
 	touch $@.stime
-	$(ITKDIR)/max $^ $@ 0
+	max $^ $@ 0
 
 %-seg.mha : %.mha ../manual/processing/mask-seg.mha
 	touch $@.stime
-	$(ITKDIR)/mask-negated $^ $@ 0
+	mask-negated $^ $@ 0
 
 %+mask.mha : %_add+1.mha h3d_hull_02-seg.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 %_sws.vtp : %.mha
 	touch $@.stime
@@ -393,22 +392,22 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 
 $(BASENAME)_seg_a.mha : $(BASENAME)_seg_T+B+a.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 2 2
+	thresh-glob $< $@ 0 2 2
 
 $(BASENAME)_seg_a@1.mha : $(BASENAME)_seg_T+B+a.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 2 2 1
+	thresh-glob $< $@ 0 2 2 1
 
 $(BASENAME)_seg_a@2.mha : $(BASENAME)_seg_T+B+a.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 2 2 2
+	thresh-glob $< $@ 0 2 2 2
 
 
 ### BEGIN Bt.blend
 
 $(BASENAME)_seg_Bt@1+mask.mha : $(BASENAME)_seg_Bt@1_add+1.mha h3d_hull_02-seg+seg.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 Bt.stl : $(BASENAME)_seg_Bt@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
 	ln -sf $< $@
@@ -451,35 +450,35 @@ Arz_dec.blend : Arz_dec.stl.blend
 
 %_m+1.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/mean $< $@ 0 +1
+	mean $< $@ 0 +1
 
 %_m+2.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/mean $< $@ 0 +2
+	mean $< $@ 0 +2
 
 %_m+3.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/mean $< $@ 0 +3
+	mean $< $@ 0 +3
 
 %_th+127@1.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@  0 127 max 1
+	thresh-glob $< $@  0 127 max 1
 
 %_ed+10.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 10 0
+	erode-dilate_dm_f32 $< $@ 0 10 0
 
 %_ed+30.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 30 0
+	erode-dilate_dm_f32 $< $@ 0 30 0
 
 $(BASENAME)_seg_B@Arz.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_Arz@1_ed+30.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 $(BASENAME)_seg_B@Arz-A-V.mha : $(BASENAME)_seg_B@Arz.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha
 	touch $@.stime
-	$(ITKDIR)/mask-negated $^ $@ 0
+	mask-negated $^ $@ 0
 
 ACN-Arz.vtp : $(BASENAME)_seg_B@Arz-A-V+mask_sws_th+0+0+1+1+1.vtp
 	ln -sf $< $@
@@ -526,15 +525,15 @@ V.blend : V.stl.blend
 
 %_ed+60.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/erode-dilate_dm_f32 $< $@ 0 60 0
+	erode-dilate_dm_f32 $< $@ 0 60 0
 
 $(BASENAME)_seg_B@Bt.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_Bt@1_ed+60.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 $(BASENAME)_seg_B@Bt-A-V.mha : $(BASENAME)_seg_B@Bt.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha
 	touch $@.stime
-	$(ITKDIR)/mask-negated $^ $@ 0
+	mask-negated $^ $@ 0
 
 ACN-Bt.vtp : $(BASENAME)_seg_B@Bt-A-V+mask_sws_th+0+0+1+1+1.vtp
 	ln -sf $< $@
@@ -550,25 +549,25 @@ ACN-Bt.blend : ACN-Bt.stl.blend
 ## A+V+ACN.mha : ACN only around artery and veine (not connecting capillary)
 A+V+ACN.mha : $(BASENAME)_seg_B.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+100.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 ## A+V+path.mha : only artery, veine and connecting capillary
 A+V+path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha demo-path@1.mha
 	touch $@.stime
-	$(ITKDIR)/max $^ $@ 0
+	max $^ $@ 0
 
 #%-ROI900.mha : %_ROI900.mha black.nii.gz
 $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900.mha black.nii.gz
 	touch $@.stime
-	$(ITKDIR)/paste $^ $@ 0
+	paste $^ $@ 0
 
 # $(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B.mha A+V+path_ed+100.mha # A+V not smoothed
 # 	touch $@.stime
-# 	$(ITKDIR)/mask $^ $@ 0
+# 	mask $^ $@ 0
 
 $(BASENAME)_seg_B+A+V+path.mha : A+V+ACN_m+3_th+127@1.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha # A+V smoothed
 	touch $@.stime
-	$(ITKDIR)/max $^ $@ 0
+	max $^ $@ 0
 
 %_lmp.vtp : %.vtp
 	touch $@.stime
@@ -579,8 +578,8 @@ A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path@255_m+1_th+127@1+mask_sws_lmp_th+0
 
 A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A+V+path_ed+3.mha
 	touch $@.stime
-	$(ITKDIR)/fast-marching_f32 $^ $@ 0
-	$(ITKDIR)/toUInt16 $@ $@ 0
+	fast-marching_f32 $^ $@ 0
+	toUInt16 $@ $@ 0
 
 %.wrl : %.vtp  %_fm.mha
 	touch $@.stime
@@ -612,28 +611,28 @@ A+V+ACN-path_dec.blend : A+V+ACN-path_dec.wrl.blend
 
 %_dmsm+0+0.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/distance_map_signed_maurer_f32 $< $@ 1 0 0
+	distance_map_signed_maurer_f32 $< $@ 1 0 0
 
 $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0.mha : %_wsm+15+1+0.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/watershed_morph $< $@ 1 15 1 0
-	$(ITKDIR)/toUInt8 $@ $@ 1 # only contains about 78 labels
+	watershed_morph $< $@ 1 15 1 0
+	toUInt8 $@ $@ 1 # only contains about 78 labels
 
 %_ols.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/open_label-shape $< $@ 0 0 0 1 NumberOfPixelsOnBorder
+	open_label-shape $< $@ 0 0 0 1 NumberOfPixelsOnBorder
 
 # $(BASENAME)_seg_Alv-comp-cont.mha : $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0_ols.mha $(BASENAME)_seg_a@1_ROI900.mha 
 # 	touch $@.stime
-# 	$(ITKDIR)/mask $^ $@ 0
+# 	mask $^ $@ 0
 
 $(BASENAME)_seg_Alv.mha : $(BASENAME)_seg_a_ROI900_dmsm+0+0_wsm+15+1+0.mha $(BASENAME)_seg_a@1_ROI900.mha 
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 $(BASENAME)_seg_a45.mha : $(BASENAME)_seg_Alv.mha
 	touch $@.stime
-	$(ITKDIR)/thresh-glob $< $@ 0 46 46 1
+	thresh-glob $< $@ 0 46 46 1
 
 $(BASENAME)_seg_Alv_sws.vtp : $(BASENAME)_seg_Alv.mha
 	touch $@.stime
@@ -650,13 +649,13 @@ $(BASENAME)_seg_a45.vtp : $(BASENAME)_seg_Alv.vtp
 
 # $(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_a45_ed+15.mha
 # 	touch $@.stime
-# 	$(ITKDIR)/mask $^ $@ 0
+# 	mask $^ $@ 0
 $(BASENAME)_seg_B@a45.mha : ../manual/correction/$(BASENAME)_seg_B@a45.mha
 	ln -sf $< $@
 
 $(BASENAME)_seg_B@a45+mask.mha : $(BASENAME)_seg_B@a45_add+1.mha $(BASENAME)_seg_a45_ed+60.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 ACN-a45.mha : $(BASENAME)_seg_B@a45+mask.mha
 	ln -sf $< $@
@@ -666,8 +665,8 @@ ACN-a45.vtp : ACN-a45_sws_th+0+0+1+1+1.vtp
 
 ACN-a45_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ROI900.mha $(BASENAME)_seg_B@1+mps+ROI900+d300_ed+3.mha
 	touch $@.stime
-	$(ITKDIR)/fast-marching_f32 $^ $@ 0
-	$(ITKDIR)/toUInt16 $@ $@ 0
+	fast-marching_f32 $^ $@ 0
+	toUInt16 $@ $@ 0
 
 # ACN-a45_fm.mha : A+V+ACN-path_fm.mha
 # 	ln -sf $< $@

@@ -1,5 +1,7 @@
 
 ### setting default paths of external programs
+ITK?=/opt/ITK-CLIs/
+
 PV?=/opt/paraview-4.4.0
 ## 64-bit enabled octave:
 OCTAVE?=/opt/octave-4.0.0
@@ -10,15 +12,17 @@ SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 
+export PATH:= $(ITK)/bin:$(PATH)
 export PATH:= $(PV)/bin:$(PATH)
 export PATH:= $(OCTAVE)/bin:$(PATH)
 
 
 ### check existance of external programs
 ## http://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile#25668869
-EXECUTABLES = pvpython octave
+EXECUTABLES = add add_const analyse_labels distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 file_converter keepNobj label_connected_components mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste resample slice thresh-glob toUInt16 toUInt8 watershed_morph
+EXECUTABLES+= pvpython octave
 K:= $(foreach exec,$(EXECUTABLES),\
-	$(if $(shell PATH=$(PATH) which $(exec)),some string,$(error "No $(exec) in PATH)))
+	$(if $(shell PATH=$(PATH) which $(exec)),some string,$(error "No $(exec) in PATH")))
 
 
 

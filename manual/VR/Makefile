@@ -15,7 +15,6 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 
 
-ITKDIR:= ~/itk/simple/build_itk4_iana0
 VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 
 

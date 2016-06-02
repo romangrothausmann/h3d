@@ -18,7 +18,6 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 BN:= h3d
 BNseg:= $(BN)_seg_B+a
 
-ITKDIR:= ~/itk/simple/build_itk4_iana0
 VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 
 include gmsl
@@ -84,34 +83,34 @@ $(BN).mha : ../$(BN).mha
 	ln -sf $< $@
 
 $(BNseg).mha : ../$(BN)_seg_B+a.mha mask.mha # crop to mask to avoid WS wells outside mask
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 mask.mha : ../h3d_hull_02-seg.mha # lu+1 does not necessary reach upto $(BN)_seg_T+B+a@1.mha => use h3d_hull_02-seg
 	ln -sf $< $@
 
 %_lu+1_low.mha %_lu+1_mid.mha %_lu+1_upp.mha : $(BN).mha %.mha
 	touch $@.stime
-	$(ITKDIR)/label_uncertainty_float $^ $*_lu+1  0 1 # ~210GB of RAM
+	label_uncertainty_float $^ $*_lu+1  0 1 # ~210GB of RAM
 
 %.ana : %.mha
 	touch $@.stime
-	$(ITKDIR)/analyse_labels $< 1 > $@
+	analyse_labels $< 1 > $@
 
 %_ROI.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/extract_subimage  $< $@ $(origin) $(extent)
+	extract_subimage  $< $@ $(origin) $(extent)
 
 # %_dc.mha : %.mha
 # 	touch $@.stime
-# 	$(ITKDIR)/file_converter $< $@ 0
+# 	file_converter $< $@ 0
 
 %_add+1.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/add_const  $< $@ 0 +1
+	add_const  $< $@ 0 +1
 
 %_T-mask.mha : %_add+1.mha mask.mha
 	touch $@.stime
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 %.anaJS : %.mha # %_dc.mha # if label_uncertainty_float saves compressed
 	touch $@.stime
@@ -164,7 +163,7 @@ LUT.png :
 	$(eval sliceN= $(word 2, $(sep)))
 
 	touch $@.stime
-	$(ITKDIR)/slice $+ $@ 0 $(normal) $(sliceN)
+	slice $+ $@ 0 $(normal) $(sliceN)
 	$(mogrifyIM) $@
 
 fig_luBounds_%_RGB.png : $$(wordlist 2,4,$$(fig_luBounds_$$*_PNGs))

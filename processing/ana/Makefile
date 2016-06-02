@@ -11,7 +11,6 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 BN:= h3d
 BNseg:= $(BN)_seg_T+B+a
 
-ITKDIR:= ~/itk/simple/build_itk4_iana0
 VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 
 
@@ -39,11 +38,11 @@ mask.mha : ../h3d_hull_02-seg.mha # must be the same as for luBounds! => use h3d
 	ln -sf $< $@
 
 $(BNseg).mha : ../$(BNseg).mha mask.mha # crop to mask
-	$(ITKDIR)/mask $^ $@ 0
+	mask $^ $@ 0
 
 %_rs+1.0.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/resample $< $@ 1 0 1.0 1.0 1.0
+	resample $< $@ 1 0 1.0 1.0 1.0
 
 %_B_raw.vtp %_B_sws.vtp : %.mha
 	touch $@.stime
@@ -67,7 +66,7 @@ $(BNseg).mha : ../$(BNseg).mha mask.mha # crop to mask
 
 %.ana : %.mha
 	touch $@.stime
-	$(ITKDIR)/analyse_labels $< 1 > $@
+	analyse_labels $< 1 > $@
 
 %.anaSV : %.vtp
 	touch $@.stime
@@ -87,7 +86,7 @@ $(BNseg).mha : ../$(BNseg).mha mask.mha # crop to mask
 
 %_dc.mha : %.mha
 	touch $@.stime
-	$(ITKDIR)/file_converter $< $@ 0
+	file_converter $< $@ 0
 
 %.anaJS : %_dc.mha
 	touch $@.stime

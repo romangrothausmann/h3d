@@ -15,7 +15,6 @@ SPACE := $(eval) $(eval)
 base_ = $(subst $(SPACE),_,$(filter-out $(lastword $(subst _, ,$1)),$(subst _, ,$1)))
 base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,$1)))
 
-ITKDIR = ~/itk/simple/build_itk4_iana0
 
 fig_histo_3D-sliced+seg_PNGs= BG_x@0838.png BG_y@1624.png BG_z@0688_sb.png OV1_LUT_x@0838.png OV1_LUT_y@1624.png OV1_LUT_z@0688.png 3D-OV.png
 fig_histo_3D-sliced+seg_PNGs:= $(addprefix fig_histo_3D-sliced+seg/,$(fig_histo_3D-sliced+seg_PNGs))
@@ -103,7 +102,7 @@ fig_histo_3D-sliced+seg.svg : $(fig_histo_3D-sliced+seg_PNGs)
 	$(eval normal= $(word 1, $(sep)))
 	$(eval sliceN= $(word 2, $(sep)))
 
-	$(ITKDIR)/slice $+ $@ 0 $(normal) $(sliceN)
+	slice $+ $@ 0 $(normal) $(sliceN)
 
 
 %.Make.svg : $$(call base.,%).gv # rule should be more specific than %.svg!

@@ -11,7 +11,6 @@
 SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
-ITKDIR = ~/itk/simple/build_itk4_iana0
 ITKVTKDIR = ~/itk/itk-vtk_CLIs/build_itk4_iana0/
 VTKDIR = ~/vtk/simple/build_vtk6_iana0
 
@@ -255,17 +254,17 @@ fig_SRV2D.svg : $(planes-SRV2D)
 	$(eval normal= $(word 1, $(sep)))
 	$(eval sliceN= $(word 2, $(sep)))
 
-	$(ITKDIR)/slice $+ $@ 0 $(normal) $(sliceN) # ITK-slice much faster than c3d and SDI!
+	slice $+ $@ 0 $(normal) $(sliceN) # ITK-slice much faster than c3d and SDI!
 
 	@if [ "$(basename $+)" == "$(SRV_G)" ]; then \
 	   echo "Doing G" ; \
-	   $(ITKDIR)/toUInt8 $@ $@ 0 ; \
+	   toUInt8 $@ $@ 0 ; \
 	else \
 	   echo "Doing A|B" ; \
-	   $(ITKDIR)/toUInt16 $@ $@ 0 ; \
+	   toUInt16 $@ $@ 0 ; \
 	fi
 
-#	$(ITKDIR)/stat $@
+#	stat $@
 
 
 %.svg: $$(call base.,%).gv # %.svg : $(suffix $*).gv does not work, needs SECONDEXPANSION
