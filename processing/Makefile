@@ -150,7 +150,7 @@ a@wsm+30.mha : $(BASENAME)_seg_a_m+3_th+127_dmsm+0+0_wsm+30+1+0.mha $(BASENAME)_
 
 $(BASENAME)_seg_1+Bt+Arz-map.mha :  ../manual/processing/$(BASENAME)_seg_1+Bt+Arz-map.mha
 # $(BASENAME)_seg_1+Bt+Arz-map.mha : $(BASENAME)_seg_a.mha  a-wsm+30.mha
-#	vglrun +xcb $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^)  # use CnJ of ITKSnap v3.3.0+gdWS to select labels and save as: $(BASENAME)_seg_1+Bt+Arz-map.mha
+#	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^)  # use CnJ of ITKSnap v3.3.0+gdWS to select labels and save as: $(BASENAME)_seg_1+Bt+Arz-map.mha
 	ln -sf $< $@
 
 %_th+2+2.mha : %.mha

@@ -10,6 +10,8 @@ PV?=/opt/paraview-4.4.0
 OCTAVE?=/opt/octave-4.0.0
 MAKE2GV?=/opt/makefile2graph
 
+## vglrun < 2.4 might need +xcb parameter
+VGLRUN?=vglrun
 
 
 SHELL:= /bin/bash
@@ -34,6 +36,7 @@ EXECUTABLES+= blender
 EXECUTABLES+= pvpython
 EXECUTABLES+= octave
 EXECUTABLES+= make2graph
+EXECUTABLES+= $(VGLRUN)
 
 K:= $(foreach exec,$(EXECUTABLES),\
 	$(if $(shell PATH=$(PATH) which $(exec)),some string,$(error "No $(exec) in PATH")))
