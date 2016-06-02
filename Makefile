@@ -8,6 +8,7 @@ BLENDER?=/opt/blender-2.76b
 PV?=/opt/paraview-4.4.0
 ## 64-bit enabled octave:
 OCTAVE?=/opt/octave-4.0.0
+MAKE2GV?=/opt/makefile2graph
 
 
 
@@ -21,6 +22,7 @@ export PATH:= $(ITKVTK)/bin:$(PATH)
 export PATH:= $(BLENDER):$(PATH)
 export PATH:= $(PV)/bin:$(PATH)
 export PATH:= $(OCTAVE)/bin:$(PATH)
+export PATH:= $(MAKE2GV)/bin:$(PATH)
 
 
 ### check existance of external programs
@@ -29,7 +31,10 @@ EXECUTABLES = add add_const analyse_labels distance_map_signed_maurer_f32 erode-
 EXECUTABLES+= analyse_S+V decimate-QC discrete_marching-cubes hull largest_mesh-part probe-surf2vrml ribbon_FrenetSerret threshold vtk2vtp vtp2pvtp
 EXECUTABLES+= straighten
 EXECUTABLES+= blender
-EXECUTABLES+= pvpython octave
+EXECUTABLES+= pvpython
+EXECUTABLES+= octave
+EXECUTABLES+= make2graph
+
 K:= $(foreach exec,$(EXECUTABLES),\
 	$(if $(shell PATH=$(PATH) which $(exec)),some string,$(error "No $(exec) in PATH")))
 
@@ -113,7 +118,7 @@ stime.lst : $(SUBDIRS)
 ## below a rule with "make", a very special case for NOT using $(MAKE) or +make
 ### lines that contain "$(MAKE)" even in a comment get exectued even with -n|--dry-run !!!
 %.gv : % Makefile $(MAKEFILES) # put % to get executed after target has been made to avoid make2graph error due to missing files; http://www.gnu.org/software/make/manual/make.html#MAKEFILES-Variable
-	$(GVmake) -Bnd $* | ~/programme/makefile2graph/make2graph > $@ # DO NOT PUT a comment with make-var here
+	$(GVmake) -Bnd $* | make2graph > $@ # DO NOT PUT a comment with make-var here
 
 #prevent removal of any intermediate files http://stackoverflow.com/questions/5426934/why-this-makefile-removes-my-goal https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 #.SECONDARY: # $(SRV_G)_[xyz]@[0-9]*.png #not working
