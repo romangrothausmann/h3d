@@ -181,7 +181,7 @@ fig_SRV-curvedPV/%.png fig_SRV-curvedPV/%_ori-axes.png %.pvsm : $(planes-G) $(pl
 
 vis_SRV-curved.blend : $(planes-G) $(planes-A) $(planes-B) $(plane_X3Ds)
 	touch $@.stime
-	~/programme/blender/blender -b   -P ~/blender/scripts/vis_SRV-curved.py -- -o vis_SRV-curved.blend
+	blender -b   -P ~/blender/scripts/vis_SRV-curved.py -- -o vis_SRV-curved.blend
 	rm vis_SRV-curved.blend1 # not sure what in the blender script causes a backup save
 
 
@@ -208,7 +208,7 @@ fig_SRV-curved.blend : vis_SRV-curved.blend $(planes-G) $(planes-A) $(planes-B) 
 
 fig_SRV-curved/fig_SRV-curved_%.png : fig_SRV-curved.blend | fig_SRV-curved/
 	touch $@.stime
-	~/programme/blender/blender -b $< -o //fig_SRV-curved/$(basename $<)_#.png -noaudio -F PNG -f $* # -o $@ does not work
+	blender -b $< -o //fig_SRV-curved/$(basename $<)_#.png -noaudio -F PNG -f $* # -o $@ does not work
 	$(convertIM) $@ -gravity South -background white -splice 0x1 -background black -splice 0x1 -trim +repage -chop 0x1 -gravity North -background white -splice 0x1 -background black -splice 0x1 -trim +repage -chop 0x1 $@.png # mogrify shoud but does not know -splice : http://www.imagemagick.org/discourse-server/viewtopic.php?t=11344#p36577
 	mv -f $@.png $@
 

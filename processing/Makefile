@@ -268,7 +268,7 @@ demo-path.txt : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI9
 	awk '{print $$1, $$2, $$3, $$4, 1, $$6}' $< > $@ # replace path-number by bifurcation-number as expected by path2blend_ng.py
 
 demo-path.blend : demo-path.txt
-	~/programme/blender/blender -b   -P ~/blender/scripts/path2blend_ng.py -- -i $< -o $@  | tee $(basename $@).out
+	blender -b   -P ~/blender/scripts/path2blend_ng.py -- -i $< -o $@  | tee $(basename $@).out
 
 demo-path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662_max-sphere.mha
 	ln -s $< $@
@@ -384,7 +384,7 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 	vtp2stl  $^ $@ 1
 
 %.stl.blend : %.stl
-	~/programme/blender/blender -b   -P ~/blender/scripts/stl2blend.py -- -i $< -o $@
+	blender -b   -P ~/blender/scripts/stl2blend.py -- -i $< -o $@
 
 ### END *.blend
 
@@ -585,7 +585,7 @@ A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A
 	probe-surf2vrml  $^ $@  270 0 0
 
 %.wrl.blend : %.wrl
-	~/programme/blender/blender -b   -P ~/blender/scripts/x3d2blend.py -- -i $< -o $@
+	blender -b   -P ~/blender/scripts/x3d2blend.py -- -i $< -o $@
 
 A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 	ln -sf $< $@

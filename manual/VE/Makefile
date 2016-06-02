@@ -88,7 +88,7 @@ fig_ov01/ :
 
 fig_ov01/fig_ov01_%.png : fig_ov01.blend | fig_ov01/
 	touch $@.stime
-	~/programme/blender/blender -b $< -o fig_ov01/$(basename $<)_#.png -noaudio -F PNG -f $* # -o $@ does not work
+	blender -b $< -o fig_ov01/$(basename $<)_#.png -noaudio -F PNG -f $* # -o $@ does not work
 	@if [ "$*" -ge 5 -a "$*" -le 6 ]; then \
 	   $(mogrifyIM) -gravity Center -crop 1280x800+0+0 +repage $@ ; \
 	fi # a separate rule like fig_ov01_5.png fig_ov01_6.png : ; $(mogrifyIM) -gravity Center -crop 1280x800+0+0 +repage $@  does not work because multiple dependencies but only one rule: http://stackoverflow.com/questions/22127119/gnu-make-warning-ignoring-old-commands-for-target-xxx#22127172  https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html
@@ -103,32 +103,32 @@ fig_A2V/ :
 
 fig_A2V/fig_A2V_1.png : A2V.blend | fig_A2V/
 	touch $@.stime
-	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f  555 # -o $@ does not work
+	blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f  555 # -o $@ does not work
 	mv -f $(basename $@)_000555.png $@ # remove frame number ending
 
 fig_A2V/fig_A2V_3.png : A2V.blend | fig_A2V/
 	touch $@.stime
-	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 2900 # -o $@ does not work
+	blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 2900 # -o $@ does not work
 	mv -f $(basename $@)_002900.png $@ # remove frame number ending
 
 fig_A2V/fig_A2V_5.png : A2V.blend | fig_A2V/
 	touch $@.stime
-	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 4550 # -o $@ does not work
+	blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 4550 # -o $@ does not work
 	mv -f $(basename $@)_004550.png $@ # remove frame number ending
 
 fig_A2V/fig_A2V_2.png : A2V-reversed.blend | fig_A2V/
 	touch $@.stime
-	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f  676 # -o $@ does not work
+	blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f  676 # -o $@ does not work
 	mv -f $(basename $@)_000676.png $@ # remove frame number ending
 
 fig_A2V/fig_A2V_4.png : A2V-reversed.blend | fig_A2V/
 	touch $@.stime
-	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 2881 # -o $@ does not work
+	blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 2881 # -o $@ does not work
 	mv -f $(basename $@)_002881.png $@ # remove frame number ending
 
 fig_A2V/fig_A2V_6.png : A2V-reversed.blend | fig_A2V/
 	touch $@.stime
-	~/programme/blender/blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 4200 # -o $@ does not work
+	blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 4200 # -o $@ does not work
 	mv -f $(basename $@)_004200.png $@ # remove frame number ending
 
 fig_A2V.svg : $(fig_A2V_PNGs)
