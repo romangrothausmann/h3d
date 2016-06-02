@@ -24,7 +24,6 @@ BASENAME = h3d
 
 # BASE = $(BASENAME)-$(DATE)_$(DIRSUFFIX)
 
-VTKDIR = ~/vtk/simple/build_vtk6_iana0
 
 
 serialF= $(BASENAME)_seg_Bt@1_ed+60.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_ed+10.mha $(BASENAME)_seg_Arz@1_ed+30.mha $(BASENAME)_seg_B_ed+3_fm.mha $(BASENAME)_seg_Bt_fm.mha $(BASENAME)_seg_Arz_fm.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_lcc-8b.mha $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha $(BASENAME)_seg_B_obp+10+0.mha $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtk A+V+ACN-path_fm.mha $(BASENAME)_seg_B_ed+3.mha
@@ -88,7 +87,7 @@ $(BASENAME)_rsi+1+1.0.mha : $(BASENAME).mha
 $(BASENAME)_hu%_00.vtp $(BASENAME)_hu%_00.mha : $(BASENAME).mha # % only to force single execution of rule ($@ will only contain one of the targets!): http://stackoverflow.com/questions/2973445/gnu-makefile-rule-generating-a-few-targets-from-a-single-source-file#3077254
 ## upper "lit" needs to be above 342.332 as voxelizer seems to voxelize only below!
 	touch $@.stime
-	$(VTKDIR)/hull $(BASENAME)_hull_00.vtp 0 0  $<  $(BASENAME)_hull_00.mha  0 \
+	hull $(BASENAME)_hull_00.vtp 0 0  $<  $(BASENAME)_hull_00.mha  0 \
 		822.25    574.062  -34                1.2191     -0.140661  -0.536829398293234  \
 		34.1557   655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
 		-61.0851  221.929  -32.7672328973014  0.051673   -0.924611  -0.377391  \
@@ -99,7 +98,7 @@ $(BASENAME)_hu%_00.vtp $(BASENAME)_hu%_00.mha : $(BASENAME).mha # % only to forc
 $(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mha : $(BASENAME).mha 
 ## move all sides slidly further in (~2-3µm) normal directions: 1.: +x; 2.: -x; 3.: -y; 4.: +y
 	touch $@.stime
-	$(VTKDIR)/hull $(BASENAME)_hull_02.vtp 0 0  $<  $(BASENAME)_hull_02.mha  0 \
+	hull $(BASENAME)_hull_02.vtp 0 0  $<  $(BASENAME)_hull_02.mha  0 \
 		820       574.062  -34                1.2191     -0.140661  -0.536829398293234  \
 		37        655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
 		-61.0851  224      -32.7672328973014  0.051673   -0.924611  -0.377391  \
@@ -260,7 +259,7 @@ $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : 
 
 %.vtp : %.vtk
 	touch $@.stime
-	$(VTKDIR)/vtk2vtp $< $@ 1
+	vtk2vtp $< $@ 1
 
 demo-path.vtp : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900_mps+0-1+0.331662.vtp
 	ln -s $< $@
@@ -374,15 +373,15 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 
 %_sws.vtp : %.mha
 	touch $@.stime
-	$(VTKDIR)/discrete_marching-cubes $< $(basename $<)  2 2 0
+	discrete_marching-cubes $< $(basename $<)  2 2 0
 	rm $*_raw.vtp
 
 %_th+0+0+1+1+1.vtp : %.vtp
 	touch $@.stime
-	$(VTKDIR)/threshold  $< $@  0 0 Scalars_ 1 1 1
+	threshold  $< $@  0 0 Scalars_ 1 1 1
 
 %.stl : %.vtp
-	~/vtk/simple/build_vtk6_iana0/vtp2stl  $^ $@ 1
+	vtp2stl  $^ $@ 1
 
 %.stl.blend : %.stl
 	~/programme/blender/blender -b   -P ~/blender/scripts/stl2blend.py -- -i $< -o $@
@@ -434,7 +433,7 @@ Arz.blend : Arz.stl.blend
 
 %_dec.vtp : %.vtp
 	touch $@.stime
-	$(VTKDIR)/decimate-QC $< $@ 0 64
+	decimate-QC $< $@ 0 64
 
 Arz_dec.stl : $(BASENAME)_seg_Arz@1+mask_rsi+0+1.0_sws_th+0+0+1+1+1_dec.stl # link to simple STL as this defines the mesh name in the *blend that objects link to
 	ln -sf $< $@
@@ -485,7 +484,7 @@ ACN-Arz.vtp : $(BASENAME)_seg_B@Arz-A-V+mask_sws_th+0+0+1+1+1.vtp
 
 %.pvtp : %.vtp
 	touch $@.stime
-	$(VTKDIR)/vtp2pvtp $< $@ 0 4
+	vtp2pvtp $< $@ 0 4
 
 ACN-Arz_0.vtp ACN-Arz_1.vtp ACN-Arz_2.vtp ACN-Arz_3.vtp : ACN-Arz.pvtp
 #ACN-Arz_%.vtp : ACN-Arz.pvtp #does not work
@@ -571,7 +570,7 @@ $(BASENAME)_seg_B+A+V+path.mha : A+V+ACN_m+3_th+127@1.mha $(BASENAME)_seg_B@1+mp
 
 %_lmp.vtp : %.vtp
 	touch $@.stime
-	$(VTKDIR)/largest_mesh-part $< $@ 0
+	largest_mesh-part $< $@ 0
 
 A+V+ACN-path.vtp : $(BASENAME)_seg_B+A+V+path@255_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1.vtp #@255 for m+1
 	ln -sf $< $@
@@ -583,7 +582,7 @@ A+V+ACN-path_fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1.mha $(BASENAME)_seg_B+A
 
 %.wrl : %.vtp  %_fm.mha
 	touch $@.stime
-	$(VTKDIR)/probe-surf2vrml  $^ $@  270 0 0
+	probe-surf2vrml  $^ $@  270 0 0
 
 %.wrl.blend : %.wrl
 	~/programme/blender/blender -b   -P ~/blender/scripts/x3d2blend.py -- -i $< -o $@
@@ -593,14 +592,14 @@ A+V+ACN-path.blend : A+V+ACN-path.wrl.blend
 
 $(BASENAME)_seg_B+A+V+path_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1_dec.vtp : %_dec.vtp : %.vtp
 	touch $@.stime
-	$(VTKDIR)/decimate-QC $< $@ 0 256
+	decimate-QC $< $@ 0 256
 
 A+V+ACN-path_dec.vtp : $(BASENAME)_seg_B+A+V+path@255_m+1_th+127@1+mask_sws_lmp_th+0+0+1+1+1_dec.vtp # link to simple STL as this defines the mesh name in the *blend that objects link to
 	ln -sf $< $@
 
 A+V+ACN-path_dec.wrl : A+V+ACN-path_dec.vtp  A+V+ACN-path_fm.mha
 	touch $@.stime
-	$(VTKDIR)/probe-surf2vrml  $^ $@  270 0 0
+	probe-surf2vrml  $^ $@  270 0 0
 
 A+V+ACN-path_dec.blend : A+V+ACN-path_dec.wrl.blend
 	ln -sf $< $@
@@ -636,16 +635,16 @@ $(BASENAME)_seg_a45.mha : $(BASENAME)_seg_Alv.mha
 
 $(BASENAME)_seg_Alv_sws.vtp : $(BASENAME)_seg_Alv.mha
 	touch $@.stime
-	$(VTKDIR)/discrete_marching-cubes $< $(basename $<)  1 255 0
+	discrete_marching-cubes $< $(basename $<)  1 255 0
 	rm $(BASENAME)_seg_Alv_raw.vtp
 
 $(BASENAME)_seg_Alv.vtp : $(BASENAME)_seg_Alv_sws.vtp
 	touch $@.stime
-	$(VTKDIR)/threshold  $< $@  0 0 Scalars_ 0 0 0 # adjecency is stored as point data, AllScalars: 1 leads to gaps, 0 to "scars"
+	threshold  $< $@  0 0 Scalars_ 0 0 0 # adjecency is stored as point data, AllScalars: 1 leads to gaps, 0 to "scars"
 
 $(BASENAME)_seg_a45.vtp : $(BASENAME)_seg_Alv.vtp
 	touch $@.stime
-	$(VTKDIR)/threshold  $< $@  0 1 Scalars_ 46 46 1 # label is stored as cell data, AllScalars does not matter for cell data
+	threshold  $< $@  0 1 Scalars_ 46 46 1 # label is stored as cell data, AllScalars does not matter for cell data
 
 # $(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_a45_ed+15.mha
 # 	touch $@.stime

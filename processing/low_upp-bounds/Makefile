@@ -18,7 +18,6 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 BN:= h3d
 BNseg:= $(BN)_seg_B+a
 
-VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 
 include gmsl
 

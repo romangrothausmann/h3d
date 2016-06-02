@@ -15,7 +15,6 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 
 
-VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 
 
 fig_v-render_PNGs= fig_v-render_01_trim.png fig_v-render_02_oao_trim.png fig_v-render_02_trim.png fig_v-render_03_LE_trim.png fig_v-render_03_RE_trim.png

@@ -12,7 +12,6 @@ SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 ITKVTKDIR = ~/itk/itk-vtk_CLIs/build_itk4_iana0/
-VTKDIR = ~/vtk/simple/build_vtk6_iana0
 
 ## run IM tools without setting cration and modification date (or -strip) to avoid changes in PNGs that are not visual: http://stackoverflow.com/questions/13577280/getting-imagemagick-convert-to-not-write-out-extra-info
 ## some bug now needs even more default options: http://unix.stackexchange.com/questions/255252/create-the-same-png-with-imagemagick-2-times-binaries-differ#255256
@@ -83,7 +82,7 @@ gv-fig_SRV2D : fig_SRV-curved.svg.neato.svg fig_SRV-curved.svg.fdp.svg fig_SRV-c
 
 
 %.x3d : %.vtp
-	~/vtk/simple/build_vtk6_iana0/vtp2x3d  $^ $@
+	vtp2x3d  $^ $@
 
 
 ##Begin bg
@@ -167,11 +166,11 @@ plane-B_%.png: $(SRV_B)_%.tif LUT_B.png # order matters to IM
 
 xz-plane.vtp : ../../processing/demo-path.vtp
 	touch $@.stime
-	$(VTKDIR)/ribbon_FrenetSerret $< $@ 0 82.9155 0
+	ribbon_FrenetSerret $< $@ 0 82.9155 0
 
 yz-plane.vtp : ../../processing/demo-path.vtp
 	touch $@.stime
-	$(VTKDIR)/ribbon_FrenetSerret $< $@ 0 82.9155 90
+	ribbon_FrenetSerret $< $@ 0 82.9155 90
 
 
 fig_SRV-curvedPV/%.png fig_SRV-curvedPV/%_ori-axes.png %.pvsm : $(planes-G) $(planes-A) $(planes-B) $(plane_VTPs) xz-plane.vtp yz-plane.vtp | fig_SRV-curvedPV/

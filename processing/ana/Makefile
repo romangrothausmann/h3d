@@ -11,7 +11,6 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 BN:= h3d
 BNseg:= $(BN)_seg_T+B+a
 
-VTKDIR:= ~/vtk/simple/build_vtk6_iana0
 
 
 
@@ -46,23 +45,23 @@ $(BNseg).mha : ../$(BNseg).mha mask.mha # crop to mask
 
 %_B_raw.vtp %_B_sws.vtp : %.mha
 	touch $@.stime
-	$(VTKDIR)/discrete_marching-cubes $< $*_B 1 1 1
+	discrete_marching-cubes $< $*_B 1 1 1
 
 %_a_raw.vtp %_a_sws.vtp : %.mha
 	touch $@.stime
-	$(VTKDIR)/discrete_marching-cubes $< $*_a 2 2 1
+	discrete_marching-cubes $< $*_a 2 2 1
 
 # %_T_raw.vtp %_T_sws.vtp : %.mha # not possible @ 0.33 (crashes during SWS)
 # 	touch $@.stime
-# 	$(VTKDIR)/discrete_marching-cubes $< $*_T 3 3 1
+# 	discrete_marching-cubes $< $*_T 3 3 1
 
 %_o.vtp : %.vtp
 	touch $@.stime
-	$(VTKDIR)/threshold $< $@ 1 0 Scalars_ 1 3 0 # big files need compression OR writer->SetHeaderTypeToUInt64()
+	threshold $< $@ 1 0 Scalars_ 1 3 0 # big files need compression OR writer->SetHeaderTypeToUInt64()
 
 %_raw.vtp %_sws.vtp : %.mha # not possible @ 0.33 (crashes during SWS)
 	touch $@.stime
-	$(VTKDIR)/discrete_marching-cubes $< $* 1 3 1
+	discrete_marching-cubes $< $* 1 3 1
 
 %.ana : %.mha
 	touch $@.stime
@@ -70,7 +69,7 @@ $(BNseg).mha : ../$(BNseg).mha mask.mha # crop to mask
 
 %.anaSV : %.vtp
 	touch $@.stime
-	$(VTKDIR)/analyse_S+V $< > $@
+	analyse_S+V $< > $@
 
 %_raw.anaSS : %_B_raw.anaSV %_a_raw.anaSV # %_T.anaS  not possible @ 0.33
 	sed '3d' $^ > $@
