@@ -11,7 +11,6 @@
 SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
-ITKVTKDIR = ~/itk/itk-vtk_CLIs/build_itk4_iana0/
 
 ## run IM tools without setting cration and modification date (or -strip) to avoid changes in PNGs that are not visual: http://stackoverflow.com/questions/13577280/getting-imagemagick-convert-to-not-write-out-extra-info
 ## some bug now needs even more default options: http://unix.stackexchange.com/questions/255252/create-the-same-png-with-imagemagick-2-times-binaries-differ#255256
@@ -89,7 +88,7 @@ gv-fig_SRV2D : fig_SRV-curved.svg.neato.svg fig_SRV-curved.svg.fdp.svg fig_SRV-c
 
 $(SRV_G)%mha planeVTPs%done : ../../processing/h3d.mha ../../processing/demo-path.vtp
 	touch $@.stime
-	$(ITKVTKDIR)/straighten $^  $(SRV_G).mha  0 500 500 0.331662 2  xy-plane   0   $(z-slice_num)
+	straighten $^  $(SRV_G).mha  0 500 500 0.331662 2  xy-plane   0   $(z-slice_num)
 	touch planeVTPs.done
 
 $(plane_VTPs) : planeVTPs.done # merely a trick to crate a pseudo dependence with a dot to use with % in rule above
@@ -125,7 +124,7 @@ LUT_A.png:
 
 $(SRV_A).mha: ../../processing/h3d_seg_Bt+Arz-fm.mha ../../processing/demo-path.vtp
 	touch $@.stime
-	$(ITKVTKDIR)/straighten $^  $@  0 500 500 0.331662 0
+	straighten $^  $@  0 500 500 0.331662 0
 
 
 plane-A_%.png: $(SRV_A)_%.tif LUT_A.png # order matters to IM
@@ -149,7 +148,7 @@ LUT_B.png:
 
 $(SRV_B).mha: ../../processing/h3d_seg_B-fm.mha ../../processing/demo-path.vtp
 	touch $@.stime
-	$(ITKVTKDIR)/straighten $^  $@  0 500 500 0.331662 0
+	straighten $^  $@  0 500 500 0.331662 0
 
 
 plane-B_%.png: $(SRV_B)_%.tif LUT_B.png # order matters to IM
