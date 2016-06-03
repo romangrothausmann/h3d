@@ -181,7 +181,7 @@ fig_SRV-curvedPV/%.png fig_SRV-curvedPV/%_ori-axes.png %.pvsm : $(planes-G) $(pl
 
 vis_SRV-curved.blend : $(planes-G) $(planes-A) $(planes-B) $(plane_X3Ds)
 	touch $@.stime
-	blender -b   -P ~/blender/scripts/vis_SRV-curved.py -- -o vis_SRV-curved.blend
+	blender -b   -P $(SUBDIR)/blender/scripts/vis_SRV-curved.py -- -o vis_SRV-curved.blend
 	rm vis_SRV-curved.blend1 # not sure what in the blender script causes a backup save
 
 

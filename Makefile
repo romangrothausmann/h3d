@@ -13,6 +13,9 @@ MAKE2GV?=/opt/makefile2graph
 ## vglrun < 2.4 might need +xcb parameter
 VGLRUN?=vglrun
 
+## path to submodules
+export SUBDIR = $(realpath submodules)
+
 
 SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
