@@ -11,7 +11,7 @@ OCTAVE?=/opt/octave-4.0.0
 MAKE2GV?=/opt/makefile2graph
 
 ## vglrun < 2.4 might need +xcb parameter
-VGLRUN?=vglrun
+export VGLRUN?=vglrun
 
 ## path to submodules
 export SUBDIR = $(realpath submodules)
