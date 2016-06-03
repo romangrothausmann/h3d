@@ -1,3 +1,6 @@
 [submodule "submodules/blender"]
 	path = submodules/blender
 	url = https://github.com/romangrothausmann/Blender_scripts.git
+[submodule "submodules/paraview/scripts"]
+	path = submodules/paraview/scripts
+	url = https://github.com/romangrothausmann/ParaView_scripts.git
