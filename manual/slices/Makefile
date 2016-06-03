@@ -55,7 +55,7 @@ h3d_hull_00.vtp : ../../processing/h3d_hull_00.vtp
 
 3D-OV.png : xyz-sliced+hull.pvsm h3d_rsi+1+1.0.mha h3d_hull_00.vtp
 	touch $@.stime
-	$(VGLRUN) pvpython ~/paraview/scripts/render-view.py  -s 1024 1024 -oa -i $< -png $@
+	$(VGLRUN) pvpython $(SUBDIR)/paraview/scripts/render-view.py  -s 1024 1024 -oa -i $< -png $@
 
 LUT.png :
 	$(convertIM) xc:#000 xc:#f00 xc:#0f0 xc:#00f -append -transparent black $@

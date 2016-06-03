@@ -41,19 +41,19 @@ h3d.mha : ../../processing/$(BASENAME).mha # *.pvsm refer to h3d.mha
 
 fig_v-render_%.png : fig_v-render_%.pvsm h3d.mha
 	touch $@.stime
-	$(VGLRUN) pvpython ~/paraview/scripts/render-view.py  -s 1400 1400 -hq -i $< -png $@
+	$(VGLRUN) pvpython $(SUBDIR)/paraview/scripts/render-view.py  -s 1400 1400 -hq -i $< -png $@
 
 fig_v-render_%_oao.png : fig_v-render_%.pvsm h3d.mha
 	touch $@.stime
-	$(VGLRUN) pvpython ~/paraview/scripts/render-view.py  -s 1400 1400 -oao -i $< -png $@
+	$(VGLRUN) pvpython $(SUBDIR)/paraview/scripts/render-view.py  -s 1400 1400 -oao -i $< -png $@
 
 fig_v-render_03_LE.png : fig_v-render_03.pvsm h3d.mha
 	touch $@.stime
-	$(VGLRUN) pvpython ~/paraview/scripts/render-view.py  -s 1400 1024 -hq -oa -i $< -png $@ -LE
+	$(VGLRUN) pvpython $(SUBDIR)/paraview/scripts/render-view.py  -s 1400 1024 -hq -oa -i $< -png $@ -LE
 
 fig_v-render_03_RE.png : fig_v-render_03.pvsm h3d.mha
 	touch $@.stime
-	$(VGLRUN) pvpython ~/paraview/scripts/render-view.py  -s 1400 1024 -hq -oa -i $< -png $@ -RE
+	$(VGLRUN) pvpython $(SUBDIR)/paraview/scripts/render-view.py  -s 1400 1024 -hq -oa -i $< -png $@ -RE
 
 %_trim.png : %.png
 	$(convertIM) $< -trim $@
