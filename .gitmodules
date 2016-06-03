@@ -1,0 +1,3 @@
+[submodule "submodules/blender"]
+	path = submodules/blender
+	url = https://github.com/romangrothausmann/Blender_scripts.git
