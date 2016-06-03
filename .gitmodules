@@ -4,3 +4,6 @@
 [submodule "submodules/paraview/scripts"]
 	path = submodules/paraview/scripts
 	url = https://github.com/romangrothausmann/ParaView_scripts.git
+[submodule "submodules/octave"]
+	path = submodules/octave
+	url = https://github.com/romangrothausmann/octave.git
