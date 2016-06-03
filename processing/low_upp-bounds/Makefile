@@ -113,7 +113,7 @@ mask.mha : ../h3d_hull_02-seg.mha # lu+1 does not necessary reach upto $(BN)_seg
 
 %.anaJS : %.mha # %_dc.mha # if label_uncertainty_float saves compressed
 	touch $@.stime
-	octave  ~/octave/scripts/jointSurf3D.m  $<  > $@ # each needs about 40GB of RAM (~5h) => can run in parallel
+	octave  $(SUBDIR)/octave/scripts/jointSurf3D.m  $<  > $@ # each needs about 40GB of RAM (~5h) => can run in parallel
 
 %.anaJJ : %.ana %.anaJS # need difference 
 	paste $^ | awk '{if($$27==0){print $$25 - $$29}}' | sed '1i\\S' > $@

@@ -89,7 +89,7 @@ $(BNseg).mha : ../$(BNseg).mha mask.mha # crop to mask
 
 %.anaJS : %_dc.mha
 	touch $@.stime
-	octave  ~/octave/scripts/jointSurf3D.m  $<  > $@
+	octave  $(SUBDIR)/octave/scripts/jointSurf3D.m  $<  > $@
 
 %.anaJJ : %.ana %.anaJS # need difference 
 	paste $^ | awk '{if($$27==0){print $$25 - $$29}}' | sed '1i\\S' > $@
