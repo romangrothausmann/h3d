@@ -79,6 +79,7 @@ clean :
 %slices.done %ana.done %luBounds.done %VR.done %SRV.done %VE.done : # this way rule will only be executed once for all listed *.done
 	/usr/bin/time -v -o processing/timing \
 	   $(MAKE) -C processing/ all # uses its own .SERIAL
+	find processing/ -size +10G -name "*.mha"  | xargs pigz -v -f # just to save disc space, subsequent make-calls will unpack needed files (pigz used because of 4GB bug in ITK/VTK's MetaIO: https://issues.itk.org/jira/browse/ITK-3321)
 
 # endif
 
