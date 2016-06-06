@@ -7,7 +7,7 @@
 #### ToDo:
 
 ## change h3d_seg_T+B+a.mha to be ordered T@1, B@2, a@3 => adjust thresholds accordingly!
-## check which .SERIAL prereq. can be done with less mem-usg e.g. SDI or other filter, e.g. paste, erode-dilate_dm
+## check which .SERIAL prereq. can be done with less mem-usg e.g. SDI or other filter, e.g. paste_image, erode-dilate_dm
 ## split _raw and _sws dmc
 
 #### Done:
@@ -246,7 +246,7 @@ $(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_T+B+a.mha
 
 $(BASENAME)_seg_B@1+mps+ROI900-op-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900_op+5.5+0.mha black.nii.gz
 	touch $@.stime
-	paste $^ $@ 0
+	paste_image $^ $@ 0
 
 $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0_MAX_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1_op+500+0.mha  $(BASENAME)_seg_B@1+mps+ROI900-op-ROI900.mha # op should be done on segments@255 to avoid parabola "clipping"
 	touch $@.stime
@@ -558,7 +558,7 @@ A+V+path.mha : $(BASENAME)_seg_B_obp+10+0_kNo+2@1.mha demo-path@1.mha
 #%-ROI900.mha : %_ROI900.mha black.nii.gz
 $(BASENAME)_seg_B@1+mps+ROI900-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900.mha black.nii.gz
 	touch $@.stime
-	paste $^ $@ 0
+	paste_image $^ $@ 0
 
 # $(BASENAME)_seg_B+A+V+path.mha : $(BASENAME)_seg_B.mha A+V+path_ed+100.mha # A+V not smoothed
 # 	touch $@.stime
