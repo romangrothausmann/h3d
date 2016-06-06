@@ -32,7 +32,7 @@ export PATH:= $(MAKE2GV)/bin:$(PATH)
 
 ### check existance of external programs
 ## http://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile#25668869
-EXECUTABLES = add add_const analyse_labels distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 file_converter keepNobj label_connected_components mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste resample slice thresh-glob toUInt16 toUInt8 watershed_morph
+EXECUTABLES = add add_const analyse_labels distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 file_converter keepNobj label_connected_components mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste_image resample slice thresh-glob toUInt16 toUInt8 watershed_morph
 EXECUTABLES+= analyse_S+V decimate-QC discrete_marching-cubes hull largest_mesh-part probe-surf2vrml ribbon_FrenetSerret threshold vtk2vtp vtp2pvtp
 EXECUTABLES+= straighten
 EXECUTABLES+= blender
@@ -79,7 +79,9 @@ clean :
 %slices.done %ana.done %luBounds.done %VR.done %SRV.done %VE.done : # this way rule will only be executed once for all listed *.done
 	/usr/bin/time -v -o processing/timing \
 	   $(MAKE) -C processing/ all # uses its own .SERIAL
+	touch processing/compressing.stime
 	find processing/ -size +10G -name "*.mha"  | xargs pigz -v -f # just to save disc space, subsequent make-calls will unpack needed files (pigz used because of 4GB bug in ITK/VTK's MetaIO: https://issues.itk.org/jira/browse/ITK-3321)
+	touch processing/compressing
 
 # endif
 
