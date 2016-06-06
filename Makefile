@@ -53,13 +53,12 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 
 SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/
-SUBDIRS+= article/latex/images/ article/latex/tables/
 
 
 .PHONY: all clean $(SUBDIRS)
 
 
-all : $(SUBDIRS) stime.lst # video
+all : $(SUBDIRS) article/latex/images/ article/latex/tables/ stime.lst # video
 
 clean :
 	$(MAKE) -C $(SUBDIRS) clean
@@ -96,13 +95,16 @@ manual/SRV/ : processing/SRV.done
 
 manual/VE/ : processing/VE.done
 
+article/latex/images/ article/latex/tables/ : $(SUBDIRS) # do article stuff after SUBDIRS
+
+
 .PHONY: video
 video : processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/ # deps just to ensure video is executed afterwards
 	/usr/bin/time -v -o $@timing \
 	   $(MAKE) -C manual/VE/  video
 
 
-$(SUBDIRS) :
+$(SUBDIRS) article/latex/images/ article/latex/tables/ :
 	/usr/bin/time -v -o $@timing \
 	   $(MAKE) -C $@
 
