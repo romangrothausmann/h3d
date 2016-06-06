@@ -53,12 +53,13 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 
 SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/
+SUBDIRS+= article/latex/images/ article/latex/tables/
 
 
 .PHONY: all clean $(SUBDIRS)
 
 
-all : $(SUBDIRS) # video
+all : $(SUBDIRS) stime.lst # video
 
 clean :
 	$(MAKE) -C $(SUBDIRS) clean
@@ -106,7 +107,7 @@ $(SUBDIRS) :
 	   $(MAKE) -C $@
 
 
-stime.lst : $(SUBDIRS)
+stime.lst : | $(SUBDIRS)
 	for i in `find -name '*.stime'`; do \
 	    printf "%s\t%s\t%s\n" \
 		`ls -lgG --time-style='+%s' $$i | awk '{print $$4}'` \
