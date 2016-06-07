@@ -7,3 +7,6 @@
 [submodule "submodules/octave"]
 	path = submodules/octave
 	url = https://github.com/romangrothausmann/octave.git
+[submodule "submodules/aniMakefileSVG"]
+	path = submodules/aniMakefileSVG
+	url = https://github.com/romangrothausmann/aniMakefileSVG.git
