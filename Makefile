@@ -115,11 +115,16 @@ $(SUBDIRS) article/latex/images/ article/latex/tables/ :
 stime.lst : | $(SUBDIRS)
 	for i in `find -name '*.stime'`; do \
 	    printf "%s\t%s\t%s\n" \
-		`ls -lgG --time-style='+%s' $$i | awk '{print $$4}'` \
-		` ( ls -lgG --time-style='+%s' $${i%.stime} || ls -lgG --time-style='+%s' $${i%.stime}.gz ) | awk '{print $$4}'` \
+		`ls -lgG --time-style='+%s %N' $$i | awk '{printf ("%d", ($$4 + $$5/1e9)*1e3)}'` \
+		` ( ls -lgG --time-style='+%s %N' $${i%.stime} || ls -lgG --time-style='+%s %N' $${i%.stime}.gz ) | awk '{printf ("%d", ($$4 + $$5/1e9)*1e3)}'` \
 		$${i%.stime} ; \
 	done > $@
 
+
+all.%.Make.mp4 : stime.lst all.gv
+	ln -sf $(addprefix ../../,$^) $(SUBDIR)/aniMakefileSVG/
+	$(MAKE) -C $(SUBDIR)/aniMakefileSVG/  $@
+	mv $(SUBDIR)/aniMakefileSVG/$@ .
 
 
 .SERIAL : manual/VE/ # multiple blender runs

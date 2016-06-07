@@ -21,3 +21,9 @@ PID=$! # remember PID
 ## terminate top-logging
 kill $PID
 
+## create aSVGs and "render" them to MP4s, specify ETIME=120 SIZE=1920x1080 to override automatic detection:
+make PV=/opt/paraview-5.0.1_GL2/ ETIME=120 all.neato.Make.mp4 
+# make PV=/opt/paraview-5.0.1_GL2/ ETIME=120 SIZE=1920x1080 all.dot.Make.mp4 
+# make PV=/opt/paraview-5.0.1_GL2/ ETIME=120 SIZE=1920x1080 all.fdp.Make.mp4 
+
+
