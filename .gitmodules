@@ -10,3 +10,6 @@
 [submodule "submodules/aniMakefileSVG"]
 	path = submodules/aniMakefileSVG
 	url = https://github.com/romangrothausmann/aniMakefileSVG.git
+[submodule "submodules/gnuplot"]
+	path = submodules/gnuplot
+	url = https://github.com/romangrothausmann/gnuplot.git
