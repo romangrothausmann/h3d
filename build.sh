@@ -15,6 +15,10 @@ top -b -d 2 \
 	  > top.out &
 PID=$! # remember PID
 
+## top.out can be CLI visualized with:
+# tail -n300 -f top.out    |   stdbuf -oL   awk '{"date -d @"$1" +%T" | getline T; print T, $2, $3}'  |   feedgnuplot.pl --stream --domain --lines --timefmt '%H:%M:%S' --set 'format x "%H:%M:%S"' --ymin 0 --ymax 100 --nopoints --lines --with "boxes fs solid " --style 0 "lc 3 with steps" --style 1 "lc 2 with steps" --terminal 'dumb 120,20' --xlen 600 | sed 's/\x0c/\x1bc\n/'
+
+
 ## run and time overall make
 /usr/bin/time -v -a -o timing /opt/make-4.1/bin/make PV=/opt/paraview-5.0.1_GL2/ -j6 -k 2>&1 | tee make0.out
 
