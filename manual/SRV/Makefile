@@ -224,7 +224,11 @@ fig_SRV-straightenedPV.svg : fig_SRV-straightenedPV/vis_SRV-straightened.png fig
 	@echo "changed files: " $?
 	touch $@
 
+lines.svg : z-slice.lst
+	gnuplot -e "datafile='$<';scale=0.331662" $(SUBDIR)/gnuplot/lines.gpl
+
 fig_SRV2D.svg : $(planes-SRV2D)
+#	inkscape lines.svg --export-plain-svg=$@ --export-area-drawing # base for fig_SRV2D.svg
 #	sed -i 's/h3d/$$(BASENAME)/g' fig_SRV2D_base.svg > $@
 	@echo "changed files: " $?
 	touch $@ # https://www.gnu.org/software/make/manual/html_node/Empty-Targets.html#Empty-Targets

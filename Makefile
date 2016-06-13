@@ -38,6 +38,7 @@ EXECUTABLES+= straighten
 EXECUTABLES+= blender
 EXECUTABLES+= pvpython
 EXECUTABLES+= octave
+EXECUTABLES+= gnuplot
 EXECUTABLES+= make2graph
 EXECUTABLES+= $(VGLRUN)
 
