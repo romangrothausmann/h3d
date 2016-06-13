@@ -18,6 +18,26 @@ SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 
+### setting default paths of external programs
+ITK?=/opt/ITK-CLIs/
+VTK?=/opt/VTK-CLIs/
+
+export PATH:= $(ITK)/bin:$(PATH)
+export PATH:= $(VTK)/bin:$(PATH)
+
+
+## git show 5fd0311de8d8c0:processing/Makefile | grep -oP 'ITKDIR\)/\K.*?(?= )' | sort -u | xargs
+EXECUTABLES = add add_const distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 keepNobj label_connected_components mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste resample thresh-glob toUInt16 toUInt8 watershed_morph
+
+## git show 5fd0311de8d8c0:processing/Makefile | grep -oP 'VTKDIR\)/\K.*?(?= )' | sort -u | xargs
+EXECUTABLES+= decimate-QC discrete_marching-cubes hull largest_mesh-part probe-surf2vrml threshold vtk2vtp vtp2pvtp
+
+
+K:= $(foreach exec,$(EXECUTABLES),\
+	$(if $(shell PATH=$(PATH) which $(exec)),some string,$(error "No $(exec) in PATH")))
+
+
+
 BASENAME = h3d
 
 # DATE = ` date +"%y%m%d" `
