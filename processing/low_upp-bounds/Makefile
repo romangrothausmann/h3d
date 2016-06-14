@@ -146,7 +146,7 @@ LUT.png :
 
 %.ppm.raw : %.png
 #	convert $< -compress none $@ # arbitrary multi-column output 
-	convert $< -compress none PPM:- | sed '1,3d;s/\([0-9]* [0-9]* [0-9]*\) /\1\n/g' | sed '/^$$/d' > $@ # RGB-column reformatted output: http://www.imagemagick.org/Usage/formats/#pbmplus
+	convert $< -compress none PPM:- | sed '1,3d;s/\([0-9]* [0-9]* [0-9]*\) /\1\n/g' | sed '/^$$/d' | sed '1ilow mid upp' > $@ # RGB-column reformatted output: http://www.imagemagick.org/Usage/formats/#pbmplus
 
 %.pgm.raw : %.png
 	convert $< -negate -compress none PGM:- | sed '1,3d' | tr -s ' ' '\n' > $@ # single-column inverted output
