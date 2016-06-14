@@ -55,6 +55,7 @@ fig_luBounds_z_PNGs+= $(BNseg)_lu+1_upp_ROI_$(word 3,$(slices))_LUT.png
 
 
 all : luBounds.csv fig_luBounds_x.svg fig_luBounds_y.svg fig_luBounds_z.svg
+all : line-plot.svg
 
 clean :
 	@-rm -v $(BNseg)_lu+1_???_* 
@@ -136,6 +137,24 @@ LUT.png :
 %_LUT.png : %.png LUT.png
 #	$(eval options= -transparent black)
 	$(convertIM) $<  LUT.png  -fx "v.p{0,u.p*2^`$(convertIM) $< -format '%z' info:`}" $(options) $@ # p in [0;1], QuantumRange==IM's max bit depth (see Qxx in convert -version), u.depth should work but does not and is very slow
+
+
+### BEGIN line-plot_1D-img
+
+%_1D.png : %.png
+	extract_subimage $< $@ 220 145 60 1
+
+%.ppm.raw : %.png
+#	convert $< -compress none $@ # arbitrary multi-column output 
+	convert $< -compress none PPM:- | sed '1,3d;s/\([0-9]* [0-9]* [0-9]*\) /\1\n/g' | sed '/^$$/d' > $@ # RGB-column reformatted output: http://www.imagemagick.org/Usage/formats/#pbmplus
+
+%.pgm.raw : %.png
+	convert $< -negate -compress none PGM:- | sed '1,3d' | tr -s ' ' '\n' > $@ # single-column inverted output
+
+line-plot.svg : h3d_ROI_z@150_1D.pgm.raw fig_luBounds_z_RGB_1D.ppm.raw
+	gnuplot -e "datafiles='$^';outfile='$@'" $(SUBDIR)/gnuplot/line-plot_1D-img.gp
+
+### END line-plot_1D-img
 
 
 ## below a rule with "make", a very special case for NOT using $(MAKE) or +make

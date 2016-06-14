@@ -225,7 +225,7 @@ fig_SRV-straightenedPV.svg : fig_SRV-straightenedPV/vis_SRV-straightened.png fig
 	touch $@
 
 lines.svg : z-slice.lst
-	gnuplot -e "datafile='$<';scale=0.331662" $(SUBDIR)/gnuplot/lines.gpl
+	gnuplot -e "datafile='$<';scale=0.331662" $(SUBDIR)/gnuplot/lines.gp
 
 fig_SRV2D.svg : $(planes-SRV2D)
 #	inkscape lines.svg --export-plain-svg=$@ --export-area-drawing # base for fig_SRV2D.svg
