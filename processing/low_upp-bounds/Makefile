@@ -66,6 +66,7 @@ clean :
 	@-rm -rv fig_luBounds*
 	@-rm -v all.*
 	@-rm -v LUT.png
+	@-rm -v line-plot.svg
 #	@-rmdir -v 
 
 clean_all : clean
@@ -90,7 +91,7 @@ mask.mha : ../h3d_hull_02-seg.mha # lu+1 does not necessary reach upto $(BN)_seg
 
 %_lu+1_low.mha %_lu+1_mid.mha %_lu+1_upp.mha : $(BN).mha %.mha
 	touch $@.stime
-	label_uncertainty_float $^ $*_lu+1  0 1 # ~210GB of RAM
+	label_uncertainty_float $^ $*_lu+1  0 1 0 # ~210GB of RAM
 
 %.ana : %.mha
 	touch $@.stime
@@ -189,7 +190,7 @@ fig_luBounds_%_RGB.png : $$(wordlist 2,4,$$(fig_luBounds_$$*_PNGs))
 
 fig_luBounds_%.svg : $$(fig_luBounds_$$*_PNGs) fig_luBounds_%_RGB.png fig_base.svg
 	+mkdir -p $(basename $@) # doing this in its own rule becomes very tricky
-	mv $(filter-out fig_base.svg,$^) $(basename $@) # doing this in its own rule becomes very tricky
+	cp $(filter-out fig_base.svg,$^) $(basename $@) # doing this in its own rule becomes very tricky
 	sed 's$$xlink:href="file:///myURL/$$xlink:href="$(basename $@)/$$g;s/XYZ@/$*@/g' < fig_base.svg > $@
 	@echo "changed files: " $?
 	touch $@
