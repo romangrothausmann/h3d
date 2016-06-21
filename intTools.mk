@@ -18,21 +18,21 @@ ITKVTK?=$(SUBDIR)/ITKVTK-CLIs/
 all : $(ITKEXE)
 all : $(VTKEXE)
 all : $(ITKVTKEXE)
-clean : cleanITK
-clean : cleanVTK
-clean : cleanITKVTK
+clean :
+	$(MAKE) -C $(ITK)/build/ clean
+	$(MAKE) -C $(VTK)/build/ clean
+	$(MAKE) -C $(ITKVTK)/build/ clean
 
-.PHONY: initITK cleanITK
+.PHONY: initITK
 initITK :
 	mkdir -p $(ITK)/build/ && \
 	cd $(ITK)/build/ && \
 	cmake -DITK_DIR=$(ITKLIB) -DCMAKE_BUILD_TYPE=Release ..
 
 $(ITKEXE) : initITK
-$(ITKEXE) cleanITK :
 	$(MAKE) -C $(ITK)/build/ $@
 
-.PHONY: initVTK cleanVTK
+.PHONY: initVTK
 initVTK :
 	cd $(VTK)/ && \
 	git submodule update --init --recursive # http://stackoverflow.com/questions/3796927/how-to-git-clone-including-submodules#4438292
@@ -41,10 +41,9 @@ initVTK :
 	cmake -DVTK_DIR=$(VTKLIB) -DCMAKE_BUILD_TYPE=Release ..
 
 $(VTKEXE) : initVTK
-$(VTKEXE) cleanVTK :
 	$(MAKE) -C $(VTK)/build/ $@
 
-.PHONY: initITKVTK cleanITKVTK
+.PHONY: initITKVTK
 initITKVTK :
 	cd $(ITKVTK)/ && \
 	git submodule update --init --recursive # http://stackoverflow.com/questions/3796927/how-to-git-clone-including-submodules#4438292
@@ -53,5 +52,4 @@ initITKVTK :
 	cmake -DITK_DIR=$(ITKLIB) -DVTK_DIR=$(VTKLIB) -DCMAKE_BUILD_TYPE=Release ..
 
 $(ITKVTKEXE) : initITKVTK
-$(ITKVTKEXE) cleanITKVTK :
 	$(MAKE) -C $(ITKVTK)/build/ $@
