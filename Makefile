@@ -1,6 +1,8 @@
 
+### setting default paths of external libraries
+ITKLIB?=/opt/itk-4.9.1/lib/cmake/ITK-4.9
+
 ### setting default paths of external programs
-ITK?=/opt/ITK-CLIs/
 VTK?=/opt/VTK-CLIs/
 ITKVTK?=/opt/ITK-VTK_CLIs/
 
@@ -16,12 +18,15 @@ export VGLRUN?=vglrun
 ## path to submodules
 export SUBDIR = $(realpath submodules)
 
+### setting default paths of internal programs for PATH
+ITK?=$(SUBDIR)/ITK-CLIs/
+
 
 SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 
-export PATH:= $(ITK)/bin:$(PATH)
+export PATH:= $(ITK)/build:$(PATH)
 export PATH:= $(VTK)/bin:$(PATH)
 export PATH:= $(ITKVTK)/bin:$(PATH)
 export PATH:= $(BLENDER):$(PATH)
@@ -32,7 +37,7 @@ export PATH:= $(MAKE2GV)/bin:$(PATH)
 
 ### check existance of external programs
 ## http://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile#25668869
-EXECUTABLES = add add_const analyse_labels distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 file_converter keepNobj label_connected_components mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste_image resample slice thresh-glob toUInt16 toUInt8 watershed_morph
+ITKEXE = add add_const analyse_labels distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 file_converter keepNobj label_connected_components label_uncertainty_float mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste_image resample slice thresh-glob toUInt16 toUInt8 watershed_morph
 EXECUTABLES+= analyse_S+V decimate-QC discrete_marching-cubes hull largest_mesh-part probe-surf2vrml ribbon_FrenetSerret threshold vtk2vtp vtp2pvtp
 EXECUTABLES+= straighten
 EXECUTABLES+= blender
@@ -59,10 +64,27 @@ SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ m
 .PHONY: all clean $(SUBDIRS)
 
 
+all : intTools.done
 all : $(SUBDIRS) article/latex/images/ article/latex/tables/ stime.lst # video
 
 clean :
 	$(MAKE) -C $(SUBDIRS) clean
+
+
+## build internal tools
+## only build those listed above e.g. ITKEXE
+## run with unlimited -j because all involved programms are single threaded, needs spedific rules (intTools.mk) because multiple goals are processed serially ("in turn") even with -j: https://savannah.gnu.org/support/?107274
+.PHONY: intTools # make sure intTools is always executed (even if intTools.done already exists)
+intTools :
+	$(MAKE) \
+		ITKLIB=$(ITKLIB) ITKEXE='$(ITKEXE)' \
+		-j -f intTools.mk # run with unlimited -j
+	INTTOOLS="$(ITKEXE)"; PATH=$(PATH); \
+		for i in $$INTTOOLS; do if test -z `which $$i`; then echo "Error, No $$i in PATH!" 1>&2; exit 125; fi; done
+
+intTools.done : intTools
+	touch intTools.done
+
 
 # mJOBS = $(shell echo $(MAKEFLAGS) | grep -o j.*) # only works with = empty with :=
 # ifeq ($(mJOBS),) # always true: executed before = is evaluated ???
@@ -108,6 +130,7 @@ video : processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ man
 	   $(MAKE) -C manual/VE/  video
 
 
+$(SUBDIRS) : intTools.done
 $(SUBDIRS) article/latex/images/ article/latex/tables/ :
 	/usr/bin/time -v -o $@timing \
 	   $(MAKE) -C $@
