@@ -9,6 +9,7 @@ export SUBDIR = $(realpath submodules)
 ### setting default paths of internal programs
 ITK?=$(SUBDIR)/ITK-CLIs/
 VTK?=$(SUBDIR)/VTK-CLIs/
+ITKVTK?=$(SUBDIR)/ITKVTK-CLIs/
 
 
 .PHONY: all clean
@@ -16,8 +17,10 @@ VTK?=$(SUBDIR)/VTK-CLIs/
 
 all : $(ITKEXE)
 all : $(VTKEXE)
+all : $(ITKVTKEXE)
 clean : cleanITK
 clean : cleanVTK
+clean : cleanITKVTK
 
 .PHONY: initITK cleanITK
 initITK :
@@ -40,3 +43,15 @@ initVTK :
 $(VTKEXE) : initVTK
 $(VTKEXE) cleanVTK :
 	$(MAKE) -C $(VTK)/build/ $@
+
+.PHONY: initITKVTK cleanITKVTK
+initITKVTK :
+	cd $(ITKVTK)/ && \
+	git submodule update --init --recursive # http://stackoverflow.com/questions/3796927/how-to-git-clone-including-submodules#4438292
+	mkdir -p $(ITKVTK)/build/ && \
+	cd $(ITKVTK)/build/ && \
+	cmake -DITK_DIR=$(ITKLIB) -DVTK_DIR=$(VTKLIB) -DCMAKE_BUILD_TYPE=Release ..
+
+$(ITKVTKEXE) : initITKVTK
+$(ITKVTKEXE) cleanITKVTK :
+	$(MAKE) -C $(ITKVTK)/build/ $@
