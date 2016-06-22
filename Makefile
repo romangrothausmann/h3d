@@ -80,7 +80,7 @@ intTools :
 		ITKLIB=$(ITKLIB) ITKEXE='$(ITKEXE)' \
 		VTKLIB=$(VTKLIB) VTKEXE='$(VTKEXE)' \
 		ITKVTKEXE='$(ITKVTKEXE)' \
-		-j -f intTools.mk # run with unlimited -j
+		-j24 -f intTools.mk # unlimited -j overridden by -j6 from build.sh?
 	INTTOOLS="$(ITKEXE) $(VTKEXE) $(ITKVTKEXE)"; \
 		PATH=$(PATH); \
 		for i in $$INTTOOLS; do if test -z `which $$i`; then echo "Error, No $$i in PATH!" 1>&2; exit 125; fi; done
