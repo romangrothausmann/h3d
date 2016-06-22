@@ -23,6 +23,7 @@ Fig_luBounds=  fig_luBounds_z/h3d_ROI_z@150.png fig_luBounds_y/h3d_ROI_y@150.png
 Fig_luBounds+= fig_luBounds_z/h3d_seg_B+a_lu+1_low_ROI_z@150_LUT.png fig_luBounds_y/h3d_seg_B+a_lu+1_low_ROI_y@150_LUT.png fig_luBounds_x/h3d_seg_B+a_lu+1_low_ROI_x@150_LUT.png
 Fig_luBounds+= fig_luBounds_z/h3d_seg_B+a_lu+1_upp_ROI_z@150_LUT.png fig_luBounds_y/h3d_seg_B+a_lu+1_upp_ROI_y@150_LUT.png fig_luBounds_x/h3d_seg_B+a_lu+1_upp_ROI_x@150_LUT.png
 Fig_luBounds+= fig_luBounds_z/fig_luBounds_z_RGB.png fig_luBounds_y/fig_luBounds_y_RGB.png fig_luBounds_x/fig_luBounds_x_RGB.png
+Fig_luBounds+= fig_luBounds_z/h3d_ROI_z@150.svg fig_luBounds_z/h3d_seg_B+a_lu+1_low_ROI_z@150_LUT.svg fig_luBounds_z/h3d_seg_B+a_lu+1_upp_ROI_z@150_LUT.svg fig_luBounds_z/fig_luBounds_z_RGB.svg
 # Fig_luBounds:= $(addprefix ../../../processing/low_upp-bounds/,$(Fig_luBounds))
 
 Fig_A2V= fig_A2V_1.png fig_A2V_2.png fig_A2V_3.png fig_A2V_4.png fig_A2V_5.png fig_A2V_6.png
@@ -109,6 +110,7 @@ fig_luBounds : $(Fig_luBounds)
 fig_luBounds_x/%.png : ../../../processing/low_upp-bounds/fig_luBounds_x/%.png | fig_luBounds_x/ ; cp -v $^ $@
 fig_luBounds_y/%.png : ../../../processing/low_upp-bounds/fig_luBounds_y/%.png | fig_luBounds_y/ ; cp -v $^ $@
 fig_luBounds_z/%.png : ../../../processing/low_upp-bounds/fig_luBounds_z/%.png | fig_luBounds_z/ ; cp -v $^ $@
+fig_luBounds_z/%.svg : ../../../processing/low_upp-bounds/fig_luBounds_z/%.svg | fig_luBounds_z/ ; cp -v $^ $@
 
 
 

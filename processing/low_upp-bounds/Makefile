@@ -29,6 +29,7 @@ center:= 1353 1970 0418
 #center:= 1271 1646 0700
 extent:=  300  300  300
 #extent:=  400  400  400
+1D_EXT:= 220 145 60 1
 halfex:= $(call map,halve,$(extent))
 origin:= $(call pairmap,subtract,$(center),$(halfex))
 
@@ -53,11 +54,16 @@ fig_luBounds_z_PNGs+= $(BNseg)_lu+1_low_ROI_$(word 3,$(slices))_LUT.png
 fig_luBounds_z_PNGs+= $(BNseg)_lu+1_mid_ROI_$(word 3,$(slices))_LUT.png
 fig_luBounds_z_PNGs+= $(BNseg)_lu+1_upp_ROI_$(word 3,$(slices))_LUT.png
 
+fig_luBounds_z_SVGs:= $(fig_luBounds_z_PNGs:%.png=fig_luBounds_z/%.svg)
+fig_luBounds_z_SVGs+= fig_luBounds_z/fig_luBounds_z_RGB.svg
+
+
 .PHONY: all clean clean_all
 
 
 all : luBounds.csv fig_luBounds_x.svg fig_luBounds_y.svg fig_luBounds_z.svg
 all : line-plot.svg
+all : $(fig_luBounds_z_SVGs)
 
 clean :
 	@-rm -v $(BNseg)_lu+1_???_* 
@@ -145,7 +151,7 @@ LUT.png :
 ### BEGIN line-plot_1D-img
 
 %_1D.png : %.png
-	extract_subimage $< $@ 220 145 60 1
+	extract_subimage $< $@ $(1D_EXT)
 
 %.ppm.raw : %.png
 #	convert $< -compress none $@ # arbitrary multi-column output 
@@ -156,6 +162,27 @@ LUT.png :
 
 line-plot.svg : h3d_ROI_z@150_1D.pgm.raw fig_luBounds_z_RGB_1D.ppm.raw
 	gnuplot -e "datafiles='$^';outfile='$@'" $(SUBDIR)/gnuplot/line-plot_1D-img.gp
+
+define BASE_SVG
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="$(word 1, $(extent))" height="$(word 2, $(extent))" viewBox="0 0 $(word 1, $(extent)) $(word 2, $(extent))"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <image x="0" y="0"
+     xlink:href="file:///myURL/$(BNseg)_lu+1_upp_ROI_XYZ@150_LUT.png"
+     style="image-rendering:optimizeSpeed" /><!-- no smoothing -->
+  <rect x="$(word 1,$(1D_EXT))" y="$(word 2,$(1D_EXT))" width="$(word 3,$(1D_EXT))" height="$(word 4,$(1D_EXT))" fill="rgb(0,0,0)" fill-opacity=".5" />
+</svg>
+endef
+export BASE_SVG
+
+fig_base.svg :
+	echo "$$BASE_SVG" > $@ # no heredoc possible, but: http://stackoverflow.com/questions/649246/is-it-possible-to-create-a-multi-line-string-variable-in-a-makefile#649462
+
+
+%.svg : %.png fig_base.svg
+	sed 's$$xlink:href="file:///myURL/.*\.png$$xlink:href="$(notdir $<)$$g' < fig_base.svg > $@
 
 ### END line-plot_1D-img
 
