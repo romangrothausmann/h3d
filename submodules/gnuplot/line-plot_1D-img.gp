@@ -10,13 +10,14 @@ if (!exists("outfile")) outfile='line-plot_1D-img.svg' # use ARG0."svg" for gp-5
 df1= word(datafiles,1)
 df2= word(datafiles,2)
 
-set terminal svg enhanced font "arial,10" size 800,600 #with enhanced don't use: courier
+set terminal svg enhanced font "serif,14" size 800,600 #with enhanced don't use: courier
+#set terminal epslatex color
 set output outfile
 
 
-set title "line-plots of orig. data and RGB overlay"
+# set title "line-plots of orig. data and RGB overlay"
 set xlabel "pixel index"
-set ylabel "pixel value"
+set ylabel "approx. pixel value"
 
 
 stats df1 u 1 nooutput # sets e.g. STATS_records
@@ -25,6 +26,7 @@ set xrange [0:STATS_records-1]
 set yrange [STATS_min-10:255]
 
 set key opaque
+set key width +4 # for typesetting with latex font
 
 set style line 1 lt rgb "red"
 set style line 2 lt rgb "green"
@@ -33,10 +35,10 @@ set style line 3 lt rgb "blue"
 set style fill solid
 #set style fill transparent pattern 4 bo
 
-plot df2 u 0:(255 * !(int($1) && int($2) && int($3))) w fillsteps lt rgb "black" t "tissue", \
+plot df2 u 0:(250 * !(int($1) && int($2) && int($3))) w fillsteps lt rgb "black" t "tissue", \
 for [i=3:1:-1] df2 u (column(i) + 3*i - 3*3) w fillsteps ls i t columnheader, \
 df1 w steps lt rgb "#eeeeee" lw 3 t "orig (inv)", \
-"" u ($0+0.5):1 smooth cspline lt rgb "#888888" lw 2 t " smoothed"
+"" u ($0+0.5):1 smooth cspline lt rgb "#888888" lw 2 t "smoothed"
 
 # set multiplot
 # do for [i=3:1:-1] {

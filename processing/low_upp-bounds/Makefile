@@ -3,6 +3,8 @@
 # $(error Version of make too old! ($(MAKE_VERSION) <= 3.81))
 # endif
 
+SUBDIR?=../../submodules/
+
 SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
