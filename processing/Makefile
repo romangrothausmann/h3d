@@ -18,12 +18,14 @@ SHELL:= /bin/bash
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 
-### setting default paths of external programs
-ITK?=/opt/ITK-CLIs/
-VTK?=/opt/VTK-CLIs/
+SUBMODDIR?=../submodules/
 
-export PATH:= $(ITK)/bin:$(PATH)
-export PATH:= $(VTK)/bin:$(PATH)
+### setting default paths of internal programs
+ITK?=$(SUBMODDIR)/ITK-CLIs/
+VTK?=$(SUBMODDIR)/VTK-CLIs/
+
+export PATH:= $(ITK)/build:$(PATH)
+export PATH:= $(VTK)/build:$(PATH)
 
 
 ## git show 5fd0311de8d8c0:processing/Makefile | grep -oP 'ITKDIR\)/\K.*?(?= )' | sort -u | xargs
