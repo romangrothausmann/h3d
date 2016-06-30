@@ -13,6 +13,7 @@ df2= word(datafiles,2)
 set terminal svg enhanced font "arial,10" size 800,600 #with enhanced don't use: courier
 set output outfile
 
+# set margin 0, 0, 0, 0 # fits plot to SVG viewbox BUT also surpresses anything outside, e.g. labels etc; therefore use workaround below
 
 set title "line-plots of orig. data and RGB overlay"
 set xlabel "pixel index"
@@ -25,6 +26,7 @@ set xrange [0:STATS_records-1]
 set yrange [STATS_min-10:255]
 
 set key opaque
+set key width +4 # for typesetting with latex font
 
 set style line 1 lt rgb "red"
 set style line 2 lt rgb "green"
@@ -33,13 +35,25 @@ set style line 3 lt rgb "blue"
 set style fill solid
 #set style fill transparent pattern 4 bo
 
-plot df2 u 0:(255 * !(int($1) && int($2) && int($3))) w fillsteps lt rgb "black" t "tissue", \
+plot df2 u 0:(250 * !(int($1) && int($2) && int($3))) w fillsteps lt rgb "black" t "tissue", \
 for [i=3:1:-1] df2 u (column(i) + 3*i - 3*3) w fillsteps ls i t columnheader, \
 df1 w steps lt rgb "#eeeeee" lw 3 t "orig (inv)", \
-"" u ($0+0.5):1 smooth cspline lt rgb "#888888" lw 2 t " smoothed"
+"" u ($0+0.5):1 smooth cspline lt rgb "#888888" lw 2 t "smoothed"
 
 # set multiplot
 # do for [i=3:1:-1] {
 #     plot df2 u 0:(column(i)+i) w fillsteps ls i,  \
 #       df1 u ($0+0.5):1 smooth cspline lt rgb "#888888" lw 2
 # }
+
+unset output # closes output file
+
+## workaround output for sed to adjust SVG viewbox: sed -i "s|viewBox=.*\$|`gnuplot ...`|" outfile
+## note that SVG y-direction is down while gnuplot's y-direction is up!
+set print "-" # print to stdout: help set print
+print sprintf('viewBox="%d %d %d %d" preserveAspectRatio="xMinYMin slice"', \
+      GPVAL_TERM_XMIN, \
+      GPVAL_TERM_YSIZE / GPVAL_TERM_SCALE - GPVAL_TERM_YMAX, \
+      GPVAL_TERM_XMAX - GPVAL_TERM_XMIN, \
+      GPVAL_TERM_YMAX - GPVAL_TERM_YMIN)
+unset print # flush 
