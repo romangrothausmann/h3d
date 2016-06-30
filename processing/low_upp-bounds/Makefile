@@ -161,7 +161,8 @@ LUT.png :
 	convert $< -negate -compress none PGM:- | sed '1,3d' | tr -s ' ' '\n' > $@ # single-column inverted output
 
 line-plot.svg : h3d_ROI_z@150_1D.pgm.raw fig_luBounds_z_RGB_1D.ppm.raw
-	gnuplot -e "datafiles='$^';outfile='$@'" $(SUBDIR)/gnuplot/line-plot_1D-img.gp
+	VAL=` gnuplot -e "datafiles='$^';outfile='$@'" $(SUBDIR)/gnuplot/line-plot_1D-img.gp ` ; \
+	sed -i "s|viewBox=.*\$$|$${VAL}|" $@ # adjust SVG viewbox for typesetting with latex ;-)
 
 define BASE_SVG
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
