@@ -9,7 +9,7 @@ Fig_histo_3D-sliced+seg= 3D-OV.png  BG_x@0838.png  BG_y@1624.png  BG_z@0688_sb.p
 Fig_histo_3D-sliced+seg:= $(addprefix ../../../manual/slices/fig_histo_3D-sliced+seg/,$(Fig_histo_3D-sliced+seg))
 
 
-Fig_line-plot= line-plot.svg
+Fig_line-plot= line-plot.svg fig_luBounds_z_RGB_1D-1p.png
 Fig_line-plot:= $(addprefix ../../../processing/low_upp-bounds/,$(Fig_line-plot))
 
 

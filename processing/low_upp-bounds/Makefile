@@ -62,7 +62,7 @@ fig_luBounds_z_SVGs+= fig_luBounds_z/fig_luBounds_z_RGB.svg
 
 
 all : luBounds.csv fig_luBounds_x.svg fig_luBounds_y.svg fig_luBounds_z.svg
-all : line-plot.svg
+all : line-plot.svg fig_luBounds_z_RGB_1D-1p.png
 all : $(fig_luBounds_z_SVGs)
 
 clean :
@@ -152,6 +152,9 @@ LUT.png :
 
 %_1D.png : %.png
 	extract_subimage $< $@ $(1D_EXT)
+
+%-1p.png : %.png
+	$(convertIM) $< -gravity East -chop 1x0 $@ # remove 1 pixel on the right to fit gnuplot filledsteps
 
 %.ppm.raw : %.png
 #	convert $< -compress none $@ # arbitrary multi-column output 
