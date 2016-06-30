@@ -14,6 +14,7 @@ set terminal svg enhanced font "serif,14" size 800,600 #with enhanced don't use:
 #set terminal epslatex color
 set output outfile
 
+# set margin 0, 0, 0, 0 # fits plot to SVG viewbox BUT also surpresses anything outside, e.g. labels etc; therefore use workaround below
 
 # set title "line-plots of orig. data and RGB overlay"
 set xlabel "pixel index"
@@ -45,3 +46,15 @@ df1 w steps lt rgb "#eeeeee" lw 3 t "orig (inv)", \
 #     plot df2 u 0:(column(i)+i) w fillsteps ls i,  \
 #       df1 u ($0+0.5):1 smooth cspline lt rgb "#888888" lw 2
 # }
+
+unset output # closes output file
+
+## workaround output for sed to adjust SVG viewbox: sed -i "s|viewBox=.*\$|`gnuplot ...`|" outfile
+## note that SVG y-direction is down while gnuplot's y-direction is up!
+set print "-" # print to stdout: help set print
+print sprintf('viewBox="%d %d %d %d" preserveAspectRatio="xMinYMin slice"', \
+      GPVAL_TERM_XMIN, \
+      GPVAL_TERM_YSIZE / GPVAL_TERM_SCALE - GPVAL_TERM_YMAX, \
+      GPVAL_TERM_XMAX - GPVAL_TERM_XMIN, \
+      GPVAL_TERM_YMAX - GPVAL_TERM_YMIN)
+unset print # flush 
