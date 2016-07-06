@@ -62,12 +62,12 @@ SRV2D/ :
 
 # fig_histo_colored : MR3006g_OT1_RGB_point-sel_00_comb.png MR3006g_OT1_118_bi8.png kap-net_histo_reg_8bit_z118.png kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_z118.png
 
-fig_histo_3D-sliced+seg : ../../../manual/slices/fig_histo_3D-sliced+seg.svg 
-	cp -v $^ .
+fig_histo_3D-sliced+seg : fig_histo_3D-sliced+seg.svg 
 	touch $@
 
-fig_histo_3D-sliced+seg.svg : $(Fig_histo_3D-sliced+seg) | fig_histo_3D-sliced+seg/
+fig_histo_3D-sliced+seg.svg : ../../../manual/slices/fig_histo_3D-sliced+seg.svg $(Fig_histo_3D-sliced+seg) | fig_histo_3D-sliced+seg/
 	cp -v $^ fig_histo_3D-sliced+seg/
+	mv fig_histo_3D-sliced+seg/$@ $@
 
 fig_line-plot : $(Fig_line-plot)
 	cp -v $^ .
@@ -90,18 +90,20 @@ fig_srv-curved : $(Fig_srv-curved) | fig_SRV-curved/
 	mv fig_SRV-curved/fig_SRV-curved_0.png fig_SRV-curved/fig_SRV-curved_1.png
 	touch $@
 
-fig_srv : ../../../manual/SRV/fig_SRV-curvedPV.svg ../../../manual/SRV/fig_SRV-straightenedPV.svg ../../../manual/SRV/fig_SRV2D.svg
-	cp -v $^ .
+fig_srv : fig_SRV-curvedPV.svg fig_SRV-straightenedPV.svg fig_SRV2D.svg
 	touch $@
 
-fig_SRV-curvedPV.svg : ../../../manual/SRV/fig_SRV-curvedPV/vis_SRV-curved_ori-axes.png ../../../manual/SRV/fig_SRV-curvedPV/vis_SRV-curved.png | fig_SRV-curvedPV/
+fig_SRV-curvedPV.svg : ../../../manual/SRV/fig_SRV-curvedPV.svg ../../../manual/SRV/fig_SRV-curvedPV/vis_SRV-curved_ori-axes.png ../../../manual/SRV/fig_SRV-curvedPV/vis_SRV-curved.png | fig_SRV-curvedPV/
 	cp -v $^ fig_SRV-curvedPV/
+	mv fig_SRV-curvedPV/$@ $@
 
-fig_SRV-straightenedPV.svg : ../../../manual/SRV/fig_SRV-straightenedPV/vis_SRV-straightened_ori-axes.png  ../../../manual/SRV/fig_SRV-straightenedPV/vis_SRV-straightened.png | fig_SRV-straightenedPV/
+fig_SRV-straightenedPV.svg : ../../../manual/SRV/fig_SRV-straightenedPV.svg ../../../manual/SRV/fig_SRV-straightenedPV/vis_SRV-straightened_ori-axes.png  ../../../manual/SRV/fig_SRV-straightenedPV/vis_SRV-straightened.png | fig_SRV-straightenedPV/
 	cp -v $^ fig_SRV-straightenedPV/
+	mv fig_SRV-straightenedPV/$@ $@
 
-fig_SRV2D.svg : $(Fig_SRV2D) | SRV2D/
+fig_SRV2D.svg : ../../../manual/SRV/fig_SRV2D.svg $(Fig_SRV2D) | SRV2D/
 	cp -v $^ SRV2D/
+	mv SRV2D/$@ $@
 
 
 fig_luBounds : $(Fig_luBounds)
