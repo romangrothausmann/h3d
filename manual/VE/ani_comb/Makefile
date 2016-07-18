@@ -6,19 +6,19 @@ endif
 
 SHELL:= /bin/bash
 
-DIRs = Bt2A45 A452V V2A_ov A2A45 A452Bt
+DIRs = Bt2A45 A2V V2A_ov A452Bt
 
 fBt2A45  = $(shell echo render_{000000..004535}.png)
 FBt2A45  = $(fBt2A45:%=Bt2A45/%)
 
 fA452V   = $(shell echo render_{002373..004939}.png)
-FA452V   = $(fA452V:%=A452V/%)
+FA452V   = $(fA452V:%=A2V/%)
 
 fV2A     = $(shell echo render_{000001..001549}.png)
 FV2A     = $(fV2A:%=V2A_ov/%)
 
 fA2A45   = $(shell echo render_{000048..002061}.png)
-FA2A45   = $(fA2A45:%=A2A45/%)
+FA2A45   = $(fA2A45:%=A2V/%)
 
 fA452Bt  = $(shell echo render_{000001..003000}.png)
 FA452Bt  = $(fA452Bt:%=A452Bt/%)
@@ -39,14 +39,13 @@ $(DIRs) : % : ../%
 	@ln -s $< .
 
 Bt2A45/render%.png : ../Bt2A45/render%.png
-A452V/render%.png : ../A2V/render%.png
+A2V/render%.png : ../A2V/render%.png
 V2A_ov/render%.png : ../V2A_ov/render%.png
-A2A45/render%.png : ../A2V/render%.png
 A452Bt/render%.png : ../A452Bt/render%.png
 
 %.png : | $(DIRs)
-#	@ln -s $^ .
-	@echo $@ # we need a recipe
+	@test -f $@ || @echo "$@ missing."
+	@echo "$@ exists."
 
 %.flist : $(Fall)
 #	$(file >$@) $(foreach O,$^,$(file >>$@,$O)) # segfaults with v4.0, works with v4.1
@@ -54,7 +53,7 @@ A452Bt/render%.png : ../A452Bt/render%.png
 	+sed -i 's/ /\n/g' $@
 	@echo $@ created
 
-%.mp4.1p %.2pass.log %.2pass.log.mbtree : %.flist
+%.mp4.1p %.2pass.log %.2pass.log.mbtree : %.flist $(Fall)
 	touch $@.stime
 	mencoder mf://@$< -o $*.mp4.1p -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=3000:threads=auto:pass=1  -fps 25 -passlogfile $*.2pass.log
 
