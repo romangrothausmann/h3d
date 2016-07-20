@@ -8,6 +8,7 @@ BLENDER?=/opt/blender-2.76b
 PV?=/opt/paraview-4.4.0
 ## 64-bit enabled octave:
 OCTAVE?=/opt/octave-4.0.0
+BF?=/opt/bio-format_CLIs/
 MAKE2GV?=/opt/makefile2graph
 
 ## vglrun < 2.4 might need +xcb parameter
@@ -32,18 +33,20 @@ export PATH:= $(ITKVTK)/build:$(PATH)
 export PATH:= $(BLENDER):$(PATH)
 export PATH:= $(PV)/bin:$(PATH)
 export PATH:= $(OCTAVE)/bin:$(PATH)
+export PATH:= $(BF):$(PATH)
 export PATH:= $(MAKE2GV)/bin:$(PATH)
 
 
 ### check existance of external programs
 ## http://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile#25668869
-ITKEXE = add add_const analyse_labels distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 file_converter keepNobj label_connected_components label_uncertainty_float mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste_image resample slice thresh-glob toUInt16 toUInt8 watershed_morph
+ITKEXE = add add_const analyse_labels distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 file_converter keepNobj label_connected_components label_uncertainty_float mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste_image resample slice thresh-glob toUInt16 toUInt8 watershed_morph file-series_reader_SDI tile
 VTKEXE = analyse_S+V decimate-QC discrete_marching-cubes hull largest_mesh-part probe-surf2vrml ribbon_FrenetSerret threshold vtk2vtp vtp2pvtp
 ITKVTKEXE = straighten
 EXECUTABLES+= blender
 EXECUTABLES+= pvpython
 EXECUTABLES+= octave
 EXECUTABLES+= gnuplot
+EXECUTABLES+= bfconvert
 EXECUTABLES+= make2graph
 EXECUTABLES+= $(VGLRUN)
 
