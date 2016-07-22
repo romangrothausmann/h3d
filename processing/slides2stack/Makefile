@@ -51,8 +51,8 @@ K:= $(foreach exec,$(EXECUTABLES),\
 BASENAME = h3d
 
 
-w=2000
-h=2000
+w=12000
+h=12000
 s=8
 
 MR3006g_OT1slices= $(shell seq -f %03.0f 1 140)
@@ -74,7 +74,7 @@ all : $(BASENAME)_raw.mha
 
 clean :
 	@-rm -v MR3006g_OT*
-	@-rm -v $(BASENAME)_raw.mha
+	@-rm -v $(BASENAME)_raw.mha*
 
 
 % :: %.gz
@@ -91,7 +91,7 @@ clean :
 %.txt : ../../manual/processing/%.txt # marked slice centers on 8-bin TIFFs exported with export_multipointset.ijm
 	ln -sf $< $@
 
-$(BASENAME)_raw.mha : MR3006g_OT1.nii MR3006g_OT2.nii MR3006g_OT3.nii # output MHA here, which is more easily loaded correctly in fiji
+$(BASENAME)_raw.mha : MR3006g_OT1.mha MR3006g_OT2.mha MR3006g_OT3.mha # output MHA here, which is more easily loaded correctly in fiji
 	touch $@.stime
 	tile $< $@ 0 1 1 $(words $^) $^ # $< is only for header specs!
 
@@ -106,11 +106,12 @@ $(BASENAME)_raw.mha : MR3006g_OT1.nii MR3006g_OT2.nii MR3006g_OT3.nii # output M
 	touch $@.stime
 	$(eval pos= $(subst $(basename $<),,$*))
 	$(eval pos= $(subst _s,,$(pos)))
-	$(eval crop= $(shell awk 'NR==$(pos){printf("%d,%d,$(w),$(h)",$$1*$(s)-($(w)/2),$$2*$(s)-($(h)/2))}' $<))
+	$(eval crop= $(shell awk 'BEGIN{ln="$(pos)"; gsub ("^0*", "", ln)} NR==ln{printf("%d,%d,$(w),$(h)", $$1*$(s)-($(w)/2) < 0 ? 0 : $$1*$(s)-($(w)/2), $$2*$(s)-($(h)/2) < 0 ? 0 : $$2*$(s)-($(h)/2) )}' $<)) # stripping leading zeros is essential!!! http://stackoverflow.com/questions/15515911/strip-leading-zeros-in-awk-program
+#	@echo awk 'BEGIN{ln="$(pos)"; gsub ("^0*", "", ln)} NR==ln{printf("%d,%d,$(w),$(h)", $$1*$(s)-($(w)/2) < 0 ? 0 : $$1*$(s)-($(w)/2), $$2*$(s)-($(h)/2) < 0 ? 0 : $$2*$(s)-($(h)/2) )}' $<
 	BF_MAX_MEM=$(BFmem) bfconvert -no-upgrade -overwrite -crop $(crop) $(lastword $^) $@
 
-%.nii : $$($$*slices) # NIIs differenciate properly between RGB and generic vector, MHAs not: http://www.itk.org/pipermail/insight-developers/2009-March/011990.html
+%.mha : $$($$*slices) # NIIs differenciate properly between RGB and generic vector but cannot be streamed
 	touch $@.stime
 	$(eval NS=$(words $($*slices)))
-	file-series_reader_SDI $*_s%03d.png $@ 1 $(NS) $(NS) # sadly does not accept a list as $$($$*slices)
+	file-series_reader_SDI $@ $^
 
