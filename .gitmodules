@@ -19,3 +19,6 @@
 [submodule "submodules/ITKVTK-CLIs"]
 	path = submodules/ITKVTK-CLIs
 	url = https://github.com/romangrothausmann/ITK-VTK_CLIs.git
+[submodule "submodules/ij"]
+	path = submodules/ij
+	url = https://github.com/romangrothausmann/IJ_scripts.git

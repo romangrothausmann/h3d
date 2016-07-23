@@ -33,15 +33,18 @@ ITK?=$(SUBMODDIR)/ITK-CLIs/
 
 ### setting default paths of external programs
 BF?=/opt/bio-format_CLIs/
+IJ?=/opt/fiji/Fiji.app/
 
 
 
 export PATH:= $(ITK)/build:$(PATH)
 export PATH:= $(BF):$(PATH)
+export PATH:= $(IJ):$(PATH)
 
 
 EXECUTABLES = file-series_reader_SDI tile
 EXECUTABLES+= bfconvert
+EXECUTABLES+= ImageJ-linux64
 
 
 K:= $(foreach exec,$(EXECUTABLES),\
@@ -69,12 +72,13 @@ BFmem=10g
 .PHONY : all clean
 
 
-all : $(BASENAME)_raw.mha
+all : $(BASENAME).mha
 
 
 clean :
 	@-rm -v MR3006g_OT*
-	@-rm -v $(BASENAME)_raw.mha*
+	@-rm -v $(BASENAME).mha*
+	@-rm -vr [1-2]{src,reg,XML}
 
 
 % :: %.gz
@@ -91,9 +95,28 @@ clean :
 %.txt : ../../manual/processing/%.txt # marked slice centers on 8-bin TIFFs exported with export_multipointset.ijm
 	ln -sf $< $@
 
-$(BASENAME)_raw.mha : MR3006g_OT1.mha MR3006g_OT2.mha MR3006g_OT3.mha # output MHA here, which is more easily loaded correctly in fiji
+1src/ :
+	mkdir -p 1src/
+
+$(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : 1src/% : % | 1src/
+	ln -s ../$< $@
+
+# ## make-4.0 needs a few minute to evaluating these dependencies:
+# $(subst .png,.tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))
+# $(subst .png,.tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(subst .png,.tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
+# $(subst .png,.tif,$(addprefix %reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : # instead of reg/%.tif %src to force single execution
+# 	mkdir -p $*reg/ $*XMLs/
+# 	ImageJ-linux64 --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py $(dir $(word 1,$^)) $*reg/ $*XMLs/ $(notdir $(word 1,$^))
+
+$(subst .png,%tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
+	mkdir -p 1reg/ 1XMLs/
+	ImageJ-linux64 --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
+	mmv "1reg/*.png.tif" "1reg/#1.tif"
+	@test -f $@ # fiji errors are not returned as return value
+
+$(BASENAME).mha : $(subst .png,.tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
 	touch $@.stime
-	tile $< $@ 0 1 1 $(words $^) $^ # $< is only for header specs!
+	file-series_reader_SDI $@ $^
 
 
 .SECONDARY: # prevent removal of any intermediate files
@@ -112,6 +135,5 @@ $(BASENAME)_raw.mha : MR3006g_OT1.mha MR3006g_OT2.mha MR3006g_OT3.mha # output M
 
 %.mha : $$($$*slices) # NIIs differenciate properly between RGB and generic vector but cannot be streamed
 	touch $@.stime
-	$(eval NS=$(words $($*slices)))
 	file-series_reader_SDI $@ $^
 
