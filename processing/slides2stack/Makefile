@@ -11,10 +11,10 @@
 
 
 #### ToDo:
-## create final stack (containing registered slices)
 
 #### Done:
 ## create raw stack (containing unregistered slices)
+## create final stack (containing registered slices)
 
 
 
@@ -42,7 +42,7 @@ export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile
+EXECUTABLES = file-series_reader_SDI tile extract_subimage
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 
@@ -60,7 +60,7 @@ s=8
 
 MR3006g_OT1slices= $(shell seq -f %03.0f 1 140)
 MR3006g_OT2slices= $(shell seq -f %03.0f 1 203)
-MR3006g_OT3slices= $(shell seq -f %03.0f 1 201)
+# MR3006g_OT3slices= $(shell seq -f %03.0f 1 201) # ignore OT3 as it was not used due to folds
 MR3006g_OT1slices:= $(MR3006g_OT1slices:%=MR3006g_OT1_s%.png)
 MR3006g_OT2slices:= $(MR3006g_OT2slices:%=MR3006g_OT2_s%.png)
 MR3006g_OT3slices:= $(MR3006g_OT3slices:%=MR3006g_OT3_s%.png)
@@ -78,7 +78,7 @@ all : $(BASENAME).mha
 clean :
 	@-rm -v MR3006g_OT*
 	@-rm -v $(BASENAME).mha*
-	@-rm -vr [1-2]{src,reg,XML}
+	@-rm -vr [1-2]{src,reg,XMLs}
 
 
 % :: %.gz
@@ -95,10 +95,17 @@ clean :
 %.txt : ../../manual/processing/%.txt # marked slice centers on 8-bin TIFFs exported with export_multipointset.ijm
 	ln -sf $< $@
 
-1src/ :
-	mkdir -p 1src/
+1src/ Stra/ 2src/ :
+	mkdir -p $@
 
-$(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : 1src/% : % | 1src/
+s%.png : %.png
+	touch $@.stime
+	extract_subimage $< $@ 5000 5000 2000 2000
+
+$(addprefix 1src/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : 1src/% : % | 1src/
+	ln -s ../$< $@
+
+$(addprefix Stra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : Stra/% : % | Stra/ # traVS.py excts dirs with equal # files so . cannot be used!
 	ln -s ../$< $@
 
 # ## make-4.0 needs a few minute to evaluating these dependencies:
@@ -108,13 +115,30 @@ $(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)
 # 	mkdir -p $*reg/ $*XMLs/
 # 	ImageJ-linux64 --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py $(dir $(word 1,$^)) $*reg/ $*XMLs/ $(notdir $(word 1,$^))
 
-$(subst .png,%tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
+$(subst .png,%xml,$(addprefix 1XMLs/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 1src/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
 	mkdir -p 1reg/ 1XMLs/
-	ImageJ-linux64 --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
+	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
 	mmv "1reg/*.png.tif" "1reg/#1.tif"
+	rm -r 1reg/ # only need XMLs
 	@test -f $@ # fiji errors are not returned as return value
 
-$(BASENAME).mha : $(subst .png,.tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
+$(subst .png,%tif,$(addprefix 2tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix Stra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) $(subst .png,.xml,$(addprefix 1XMLs/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
+	mkdir -p 2tra/
+	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/traVS.py Stra/ 2tra/ 1XMLs/
+	mmv "2tra/*.png.tif" "2tra/#1.tif"
+	@test -f $@ # fiji errors are not returned as return value
+
+2src/%.png : 2tra/%.tif | 2src/
+#	touch $@.stime
+	extract_subimage $< $@ 7500 7500 10000 10000 # essential to reduce HD usage concerning mask and its compression
+
+$(subst .png,%tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 2src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
+	mkdir -p 2reg/ 2XMLs/
+	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 2src/ 2reg/ 2XMLs/ $(notdir $<)
+	mmv "2reg/*.png.tif" "2reg/#1.tif"
+	@test -f $@ # fiji errors are not returned as return value
+
+$(BASENAME).mha : $(subst .png,.tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
 	touch $@.stime
 	file-series_reader_SDI $@ $^
 
