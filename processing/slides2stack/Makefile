@@ -100,7 +100,7 @@ clean :
 
 s%.png : %.png
 	touch $@.stime
-	extract_subimage $< $@ 5000 5000 2000 2000
+	extract_subimage $< $@ 4000 4000 4000 4000
 
 $(addprefix 1src/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : 1src/% : % | 1src/
 	ln -s ../$< $@
