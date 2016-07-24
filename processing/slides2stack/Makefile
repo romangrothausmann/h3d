@@ -42,7 +42,7 @@ export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile
+EXECUTABLES = file-series_reader_SDI tile extract_subimage subimage_mask
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 
@@ -95,10 +95,14 @@ clean :
 %.txt : ../../manual/processing/%.txt # marked slice centers on 8-bin TIFFs exported with export_multipointset.ijm
 	ln -sf $< $@
 
-1src/ :
-	mkdir -p 1src/
+1src/ Stra/ 2src/ :
+	mkdir -p $@
 
-$(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : 1src/% : % | 1src/
+s%.png : %.png
+	touch $@.stime
+	subimage_mask $< $@ 1 3000 3000 6000 6000
+
+$(addprefix 1src/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : 1src/% : % | 1src/
 	ln -s ../$< $@
 
 # ## make-4.0 needs a few minute to evaluating these dependencies:
@@ -110,7 +114,7 @@ $(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)
 
 $(subst .png,%tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
 	mkdir -p 1reg/ 1XMLs/
-	ImageJ-linux64 --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
+	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
 	mmv "1reg/*.png.tif" "1reg/#1.tif"
 	@test -f $@ # fiji errors are not returned as return value
 
