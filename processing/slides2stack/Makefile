@@ -42,7 +42,7 @@ export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile extract_subimage
+EXECUTABLES = file-series_reader_SDI tile extract_subimage subimage_mask
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 
@@ -100,7 +100,7 @@ clean :
 
 s%.png : %.png
 	touch $@.stime
-	extract_subimage $< $@ 4000 4000 4000 4000
+	subimage_mask $< $@ 1 3000 3000 6000 6000
 
 $(addprefix 1src/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : 1src/% : % | 1src/
 	ln -s ../$< $@
@@ -119,7 +119,7 @@ $(subst .png,%xml,$(addprefix 1XMLs/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) 
 	mkdir -p 1reg/ 1XMLs/
 	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
 	mmv "1reg/*.png.tif" "1reg/#1.tif"
-	rm -r 1reg/ # only need XMLs
+#	rm -r 1reg/ # only need XMLs
 	@test -f $@ # fiji errors are not returned as return value
 
 $(subst .png,%tif,$(addprefix 2tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix Stra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) $(subst .png,.xml,$(addprefix 1XMLs/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
@@ -129,8 +129,8 @@ $(subst .png,%tif,$(addprefix 2tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(
 	@test -f $@ # fiji errors are not returned as return value
 
 2src/%.png : 2tra/%.tif | 2src/
-#	touch $@.stime
-	extract_subimage $< $@ 7500 7500 10000 10000 # essential to reduce HD usage concerning mask and its compression
+	touch $@.stime
+	extract_subimage $< $@ 6000 4000 10000 10000 # essential to reduce HD usage concerning mask and its compression
 
 $(subst .png,%tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 2src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
 	mkdir -p 2reg/ 2XMLs/
