@@ -51,6 +51,11 @@ K:= $(foreach exec,$(EXECUTABLES),\
 	$(if $(shell PATH=$(PATH) which $(exec)),some string,$(error "No $(exec) in PATH")))
 
 
+## run IM tools without setting cration and modification date (or -strip) to avoid changes in PNGs that are not visual: http://stackoverflow.com/questions/13577280/getting-imagemagick-convert-to-not-write-out-extra-info
+## some bug now needs even more default options: http://unix.stackexchange.com/questions/255252/create-the-same-png-with-imagemagick-2-times-binaries-differ#255256
+convertIM:= convert -define png:exclude-chunks=date,time +set date:create +set date:modify
+mogrifyIM:= mogrify -define png:exclude-chunks=date,time +set date:create +set date:modify
+
 BASENAME = h3d
 
 
@@ -97,6 +102,9 @@ clean :
 
 1src/ Stra/ 2src/ :
 	mkdir -p $@
+
+%.png : %_RGB.png
+	 $(convertIM) $< -set colorspace Gray -separate -average $@ # should match default Fiji conversion: https://imagej.nih.gov/ij/docs/menus/image.html#type
 
 s%.png : %.png
 	touch $@.stime
@@ -148,7 +156,7 @@ $(BASENAME).mha : $(subst .png,.tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3
 
 .SECONDEXPANSION:
 
-%.png : $$(call base_,%).txt $$(call base_,%).tif
+%_RGB.png : $$(call base_,%).txt $$(call base_,%).tif
 	@echo "process $+ to $*"
 	touch $@.stime
 	$(eval pos= $(subst $(basename $<),,$*))
