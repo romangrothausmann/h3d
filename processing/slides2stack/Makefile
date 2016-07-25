@@ -42,7 +42,7 @@ export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile extract_subimage subimage_mask
+EXECUTABLES = file-series_reader_SDI tile subimage_extract subimage_mask
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 
@@ -116,6 +116,7 @@ $(subst .png,%tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(
 	mkdir -p 1reg/ 1XMLs/
 	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
 	mmv "1reg/*.png.tif" "1reg/#1.tif"
+#	rm -r 1reg/ # only need XMLs
 	@test -f $@ # fiji errors are not returned as return value
 
 $(BASENAME).mha : $(subst .png,.tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
