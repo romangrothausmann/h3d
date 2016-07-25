@@ -42,7 +42,7 @@ export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile extract_subimage subimage_mask
+EXECUTABLES = file-series_reader_SDI tile subimage_extract subimage_mask
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 
@@ -130,7 +130,7 @@ $(subst .png,%tif,$(addprefix 2tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(
 
 2src/%.png : 2tra/%.tif | 2src/
 	touch $@.stime
-	extract_subimage $< $@ 6000 4000 10000 10000 # essential to reduce HD usage concerning mask and its compression
+	subimage_extract $< $@ 0 6000 4000 10000 10000 # essential to reduce HD usage concerning mask and its compression
 
 $(subst .png,%tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 2src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
 	mkdir -p 2reg/ 2XMLs/

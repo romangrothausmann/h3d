@@ -107,7 +107,7 @@ mask.mha : ../h3d_hull_02-seg.mha # lu+1 does not necessary reach upto $(BN)_seg
 
 %_ROI.mha : %.mha
 	touch $@.stime
-	extract_subimage  $< $@ $(origin) $(extent)
+	subimage_extract  $< $@ 0 $(origin) $(extent)
 
 # %_dc.mha : %.mha
 # 	touch $@.stime
@@ -151,7 +151,7 @@ LUT.png :
 ### BEGIN line-plot_1D-img
 
 %_1D.png : %.png
-	extract_subimage $< $@ $(1D_EXT)
+	subimage_extract $< $@ 0 $(1D_EXT)
 
 %-1p.png : %.png
 	$(convertIM) $< -gravity East -chop 1x0 $@ # remove 1 pixel on the right to fit gnuplot filledsteps

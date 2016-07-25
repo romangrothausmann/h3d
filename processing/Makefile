@@ -29,7 +29,7 @@ export PATH:= $(VTK)/build:$(PATH)
 
 
 ## git show 5fd0311de8d8c0:processing/Makefile | grep -oP 'ITKDIR\)/\K.*?(?= )' | sort -u | xargs
-EXECUTABLES = add add_const distance_map_signed_maurer_f32 erode-dilate_dm_f32 extract_subimage fast-marching_f32 keepNobj label_connected_components mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste resample thresh-glob toUInt16 toUInt8 watershed_morph
+EXECUTABLES = add add_const distance_map_signed_maurer_f32 erode-dilate_dm_f32 subimage_extract fast-marching_f32 keepNobj label_connected_components mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste resample thresh-glob toUInt16 toUInt8 watershed_morph
 
 ## git show 5fd0311de8d8c0:processing/Makefile | grep -oP 'VTKDIR\)/\K.*?(?= )' | sort -u | xargs
 EXECUTABLES+= decimate-QC discrete_marching-cubes hull largest_mesh-part probe-surf2vrml threshold vtk2vtp vtp2pvtp
@@ -264,7 +264,7 @@ $(BASENAME)_seg_B@1.mha : $(BASENAME)_seg_T+B+a.mha
 
 %_ROI900.mha : %.mha
 	touch $@.stime
-	extract_subimage $< $@  661 1118 263  1000 1000 770
+	subimage_extract $< $@ 0 661 1118 263  1000 1000 770
 
 $(BASENAME)_seg_B@1+mps+ROI900-op-ROI900.mha : $(BASENAME)_seg_B@1+mps+ROI900_op+5.5+0.mha black.nii.gz
 	touch $@.stime
