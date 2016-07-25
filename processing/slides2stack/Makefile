@@ -100,7 +100,7 @@ clean :
 %.txt : ../../manual/processing/%.txt # marked slice centers on 8-bin TIFFs exported with export_multipointset.ijm
 	ln -sf $< $@
 
-1src/ Stra/ 2src/ :
+1src/ Stra/ 2src/ 3src/ :
 	mkdir -p $@
 
 %.png : %_RGB.png
@@ -127,7 +127,7 @@ $(subst .png,%xml,$(addprefix 1XMLs/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) 
 	mkdir -p 1reg/ 1XMLs/
 	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
 	mmv "1reg/*.png.tif" "1reg/#1.tif"
-#	rm -r 1reg/ # only need XMLs
+#	rm -r 1reg/ 1src/ # only need XMLs
 	@test -f $@ # fiji errors are not returned as return value
 
 $(subst .png,%tif,$(addprefix 2tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix Stra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) $(subst .png,.xml,$(addprefix 1XMLs/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
@@ -136,17 +136,28 @@ $(subst .png,%tif,$(addprefix 2tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(
 	mmv "2tra/*.png.tif" "2tra/#1.tif"
 	@test -f $@ # fiji errors are not returned as return value
 
-2src/%.png : 2tra/%.tif | 2src/
+3src/%.png : 2tra/%.tif | 3src/
 	touch $@.stime
-	subimage_extract $< $@ 0 6000 4000 10000 10000 # essential to reduce HD usage concerning mask and its compression
+	subimage_extract $< $@ 0 4500 3500 11000 11000 # essential to reduce HD usage concerning mask and its compression
 
-$(subst .png,%tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 2src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
+2src/%.png : 3src/%.png | 2src/
+	touch $@.stime
+	subimage_mask $< $@ 0  2400 3200 6000 5300 # 2nd reg also only works with ROI
+
+$(subst .png,%xml,$(addprefix 2XMLs/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 2src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
 	mkdir -p 2reg/ 2XMLs/
 	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 2src/ 2reg/ 2XMLs/ $(notdir $<)
 	mmv "2reg/*.png.tif" "2reg/#1.tif"
+#	rm -r 2reg/ 2src/ # only need XMLs
 	@test -f $@ # fiji errors are not returned as return value
 
-$(BASENAME).mha : $(subst .png,.tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
+$(subst .png,%tif,$(addprefix 3tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 3src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) $(subst .png,.xml,$(addprefix 2XMLs/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
+	mkdir -p 3src/
+	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/traVS.py 3src/ 3tra/ 2XMLs/
+	mmv "3tra/*.png.tif" "3tra/#1.tif"
+	@test -f $@ # fiji errors are not returned as return value
+
+$(BASENAME).mha : $(subst .png,.tif,$(addprefix 3tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
 	touch $@.stime
 	file-series_reader_SDI $@ $^
 
