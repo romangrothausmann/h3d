@@ -11,10 +11,12 @@
 
 
 #### ToDo:
-## create final stack (containing registered slices)
+## mask aligned stack
+## generate Fig.1
 
 #### Done:
 ## create raw stack (containing unregistered slices)
+## create aligned stack (containing registered slices)
 
 
 
@@ -42,7 +44,7 @@ export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile subimage_extract subimage_mask
+EXECUTABLES = file-series_reader_SDI tile subimage_extract
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 
@@ -65,10 +67,14 @@ s=8
 
 MR3006g_OT1slices= $(shell seq -f %03.0f 1 140)
 MR3006g_OT2slices= $(shell seq -f %03.0f 1 203)
-MR3006g_OT3slices= $(shell seq -f %03.0f 1 201)
+# MR3006g_OT3slices= $(shell seq -f %03.0f 1 201) # ignore OT3 as it was not used due to folds
 MR3006g_OT1slices:= $(MR3006g_OT1slices:%=MR3006g_OT1_s%.png)
 MR3006g_OT2slices:= $(MR3006g_OT2slices:%=MR3006g_OT2_s%.png)
 MR3006g_OT3slices:= $(MR3006g_OT3slices:%=MR3006g_OT3_s%.png)
+
+XMLS= $(shell seq -f %03.0f 1 343)
+XMLS:= $(XMLS:%=XMLs/f%.xml)
+
 
 ## 256g / 24 ~ 10g
 BFmem=10g
@@ -83,7 +89,7 @@ all : $(BASENAME).mha
 clean :
 	@-rm -v MR3006g_OT*
 	@-rm -v $(BASENAME).mha*
-	@-rm -vr [1-2]{src,reg,XML}
+	@-rm -vr {src,tra,XMLs}
 
 
 % :: %.gz
@@ -100,34 +106,29 @@ clean :
 %.txt : ../../manual/processing/%.txt # marked slice centers on 8-bin TIFFs exported with export_multipointset.ijm
 	ln -sf $< $@
 
-1src/ Stra/ 2src/ :
+XMLs/%.xml : ../../manual/processing/XMLs/%.xml | XMLs/ # bound to 12000x12000 as src!
+	ln -sf ../$< $@
+
+src/ XMLs/ :
 	mkdir -p $@
 
 %.png : %_RGB.png
 	 $(convertIM) $< -set colorspace Gray -separate -average $@ # should match default Fiji conversion: https://imagej.nih.gov/ij/docs/menus/image.html#type
 
-s%.png : %.png
-	touch $@.stime
-	subimage_mask $< $@ 1 3000 3000 6000 6000
-
-$(addprefix 1src/s,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : 1src/% : % | 1src/
+$(addprefix src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) : src/% : % | src/
 	ln -s ../$< $@
 
-# ## make-4.0 needs a few minute to evaluating these dependencies:
-# $(subst .png,.tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))
-# $(subst .png,.tif,$(addprefix 2reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(subst .png,.tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
-# $(subst .png,.tif,$(addprefix %reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : # instead of reg/%.tif %src to force single execution
-# 	mkdir -p $*reg/ $*XMLs/
-# 	ImageJ-linux64 --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py $(dir $(word 1,$^)) $*reg/ $*XMLs/ $(notdir $(word 1,$^))
-
-$(subst .png,%tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix 1src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) # instead of reg/%.tif %src to force single execution
-	mkdir -p 1reg/ 1XMLs/
-	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/regVS.py 1src/ 1reg/ 1XMLs/ $(notdir $<)
-	mmv "1reg/*.png.tif" "1reg/#1.tif"
-#	rm -r 1reg/ # only need XMLs
+$(subst .png,%tif,$(addprefix tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))) : $(addprefix src/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)) $(XMLS) # instead of reg/%.tif %src to force single execution
+	mkdir -p tra/
+	ImageJ-linux64 --memory=250g --allow-multiple --headless $(SUBMODDIR)/ij/traVS.py src/ tra/ XMLs/ # src and XMLs may have different base names, only number and sorting have to match
+	mmv "tra/*.png.tif" "tra/#1.tif"
 	@test -f $@ # fiji errors are not returned as return value
 
-$(BASENAME).mha : $(subst .png,.tif,$(addprefix 1reg/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices)))
+tra/%.png : tra/%.tif
+	touch $@.stime
+	subimage_extract $< $@ 1  4300 4200 10000 10000
+
+$(BASENAME).mha : $(addprefix tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))
 	touch $@.stime
 	file-series_reader_SDI $@ $^
 
