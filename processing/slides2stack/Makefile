@@ -11,12 +11,12 @@
 
 
 #### ToDo:
-## mask aligned stack
 ## generate Fig.1
 
 #### Done:
 ## create raw stack (containing unregistered slices)
 ## create aligned stack (containing registered slices)
+## rep, smROISBS, md, rsi, mask aligned stack
 
 
 
@@ -32,6 +32,7 @@ SUBMODDIR?=../../submodules/
 
 ### setting default paths of internal programs
 ITK?=$(SUBMODDIR)/ITK-CLIs/
+VTK?=$(SUBMODDIR)/VTK-CLIs/
 
 ### setting default paths of external programs
 BF?=/opt/bio-format_CLIs/
@@ -40,11 +41,13 @@ IJ?=/opt/fiji/Fiji.app/
 
 
 export PATH:= $(ITK)/build:$(PATH)
+export PATH:= $(VTK)/build:$(PATH)
 export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile subimage_extract
+EXECUTABLES = file-series_reader_SDI tile subimage_extract paste_image std-mean_ROI_SBS median resample-iso hull mask-negated mask
+EXECUTABLES+= hull
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 
@@ -75,6 +78,8 @@ MR3006g_OT3slices:= $(MR3006g_OT3slices:%=MR3006g_OT3_s%.png)
 XMLS= $(shell seq -f %03.0f 1 343)
 XMLS:= $(XMLS:%=XMLs/f%.xml)
 
+REPIMGs= 048 100 101 230 231 260 261
+REPIMGs:= $(REPIMGs:%=../../manual/correction/rIMG_s%.mha)
 
 ## 256g / 24 ~ 10g
 BFmem=10g
@@ -126,11 +131,53 @@ $(subst .png,%tif,$(addprefix tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(M
 
 tra/%.png : tra/%.tif
 	touch $@.stime
-	subimage_extract $< $@ 1  4300 4200 10000 10000
+	subimage_extract $< $@ 1  4896 4243  9192  9888 # orig. GUI interaction
 
-$(BASENAME).mha : $(addprefix tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))
+$(BASENAME)_raw.mha : $(addprefix tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(MR3006g_OT3slices))
 	touch $@.stime
 	file-series_reader_SDI $@ $^
+
+$(BASENAME)_raw_rep.mha : $(BASENAME)_raw.mha $(REPIMGs)
+	touch $@.stime
+	cp -v $< $@
+	for f in $(filter-out $<,$^) ; do \
+		paste_image $$f $@ $@ 0 ; \
+	done
+	change_header $@ $@ 0 0.11 0.11 1.0 # essential for e.g. rsi!
+
+%_smROISBS.mha : %.mha
+	touch $@.stime
+	std-mean_ROI_SBS $< $@  1800 4000 0  4000 3300 343
+
+%_md+3+3+0.mha : %.mha
+	touch $@.stime
+	median $< $@ 0 3 3 0
+
+%_rsi+1.mha : %.mha
+	touch $@.stime
+	resample-iso $< $@ 0 1 # 0.11;0.11;1.0 => 0.331662; resample-iso specific for 
+
+hu%_02.vtp hu%_02.mha : ../../manual/processing/mask-seg.mha
+## move all sides slidly further in (~2-3µm) normal directions: 1.: +x; 2.: -x; 3.: -y; 4.: +y
+	touch $@.stime
+	hull hull_02.vtp 0 0  $<  hull_02.mha  0 \
+		820       574.062  -34                1.2191     -0.140661  -0.536829398293234  \
+		37        655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
+		-61.0851  224      -32.7672328973014  0.051673   -0.924611  -0.377391  \
+		-67.1372  974      -34.2000006437302  0.214026   0.905051   -0.367525  \
+		0         0        0                  0          0          -1         \
+		0         0        342.332            0          0          1
+
+%-seg.mha : %.mha ../../manual/processing/mask-seg.mha
+	touch $@.stime
+	mask-negated $^ $@ 0
+
+%_mask.mha : %.mha hull_02-seg.mha
+	touch $@.stime
+	mask $^ $@ 0
+
+$(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask should be after rsi
+	ln -sf $< $@
 
 
 .SECONDARY: # prevent removal of any intermediate files
@@ -147,7 +194,7 @@ $(BASENAME).mha : $(addprefix tra/,$(MR3006g_OT1slices) $(MR3006g_OT2slices) $(M
 #	@echo awk 'BEGIN{ln="$(pos)"; gsub ("^0*", "", ln)} NR==ln{printf("%d,%d,$(w),$(h)", $$1*$(s)-($(w)/2) < 0 ? 0 : $$1*$(s)-($(w)/2), $$2*$(s)-($(h)/2) < 0 ? 0 : $$2*$(s)-($(h)/2) )}' $<
 	BF_MAX_MEM=$(BFmem) bfconvert -no-upgrade -overwrite -crop $(crop) $(lastword $^) $@
 
-%.mha : $$($$*slices) # NIIs differenciate properly between RGB and generic vector but cannot be streamed
+MR3006g_OT1.mha MR3006g_OT2.mha MR3006g_OT3.mha : %.mha : $$($$*slices) # NIIs differenciate properly between RGB and generic vector but cannot be streamed
 	touch $@.stime
 	file-series_reader_SDI $@ $^
 
