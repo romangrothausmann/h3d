@@ -46,10 +46,12 @@ export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile subimage_extract paste_image std-mean_ROI_SBS median resample-iso hull mask-negated mask
+EXECUTABLES = file-series_reader_SDI tile subimage_extract paste_image std-mean_ROI_SBS median resample-iso hull mask-negated mask bin slice
 EXECUTABLES+= hull
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
+EXECUTABLES+= gnuplot
+EXECUTABLES+= parallel
 
 
 K:= $(foreach exec,$(EXECUTABLES),\
@@ -89,6 +91,7 @@ BFmem=10g
 
 
 all : $(BASENAME).mha
+all : MR3006g_OT1_b64.svg MR3006g_OT1_s140.png MR3006g_OT1_s140_tra.png $(BASENAME)_s140.png # fig_slideOV
 
 
 clean :
@@ -178,6 +181,24 @@ hu%_02.vtp hu%_02.mha : ../../manual/processing/mask-seg.mha
 
 $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask should be after rsi
 	ln -sf $< $@
+
+# MR3006g_OT1.png : %.png : %.tif ## as tile cannot stream (so far) insufficient RAM without binning
+MR3006g_OT1_b64.png : %_b64.png : %.tif
+	BF_MAX_MEM=$(BFmem) bfconvert -no-upgrade -overwrite -tilex 16384 -tiley 16384  $< $*_T%m.tif # 170187/8 == 21273.375 : 16384/64 == 256 ; 21248/64 == 332
+	parallel --eta -j24 -u 'bin {} {.}_b64.tif 0 64  2>/dev/null'  ::: $*_T*.tif
+	tile $*_T0_b64.tif $@ 1 11 6 `ls -1 $*_T*_b64.tif | sort -V` # arg1 is only for header specs!
+	rm  $*_T*.tif  $*_T*_b64.tif
+
+MR3006g_OT1_b64.svg : MR3006g_OT1_b64.png MR3006g_OT1.txt
+	gnuplot -e " datafiles= '$^'; outfile= '$@'; xmax= 2659; ymax= 1430 " $(SUBMODDIR)/gnuplot/imgOV.gp
+	sed -i 's/gp_image_01.png/MR3006g_OT1_b64.png/g' $@
+	rm gp_image_01.png
+
+$(BASENAME)_s140.png : $(BASENAME).mha
+	slice $< $@ 1 2 139
+
+MR3006g_OT1_s140_tra.png : tra/MR3006g_OT1_s140.png
+	cp $< $@
 
 
 .SECONDARY: # prevent removal of any intermediate files

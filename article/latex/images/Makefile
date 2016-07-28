@@ -5,13 +5,14 @@ GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should 
 
 
 
+Fig_slideOV= MR3006g_OT1_b64.svg MR3006g_OT1_b64.png MR3006g_OT1_s140.png MR3006g_OT1_s140_tra.png h3d_s140.png
+Fig_slideOV:= $(addprefix ../../../processing/slides2stack/,$(Fig_slideOV))
+
 Fig_histo_3D-sliced+seg= 3D-OV.png  BG_x@0838.png  BG_y@1624.png  BG_z@0688_sb.png  OV1_LUT_x@0838.png  OV1_LUT_y@1624.png  OV1_LUT_z@0688.png
 Fig_histo_3D-sliced+seg:= $(addprefix ../../../manual/slices/fig_histo_3D-sliced+seg/,$(Fig_histo_3D-sliced+seg))
 
-
 Fig_line-plot= line-plot.svg fig_luBounds_z_RGB_1D-1p.png
 Fig_line-plot:= $(addprefix ../../../processing/low_upp-bounds/,$(Fig_line-plot))
-
 
 Fig_v-render= fig_v-render_01_trim.png fig_v-render_02_trim.svg fig_v-render_02_trim.png fig_v-render_02_oao_trim.png fig_v-render_03_LE_trim.png fig_v-render_03_RE_trim.png
 Fig_v-render:= $(addprefix ../../../manual/VR/,$(Fig_v-render))
@@ -46,7 +47,7 @@ Fig_SRV2D:= $(addprefix ../../../manual/SRV/SRV2D/,$(Fig_SRV2D))
 
 
 
-all: fig_histo_3D-sliced+seg fig_line-plot fig_v-render fig_ov01 fig_luBounds fig_A2V fig_srv-curved fig_srv # fig_histo_colored 
+all: fig_slideOV fig_histo_3D-sliced+seg fig_line-plot fig_v-render fig_ov01 fig_luBounds fig_A2V fig_srv-curved fig_srv # fig_histo_colored 
 
 
 fig_histo_3D-sliced+seg/ \
@@ -61,6 +62,10 @@ SRV2D/ :
 
 
 # fig_histo_colored : MR3006g_OT1_RGB_point-sel_00_comb.png MR3006g_OT1_118_bi8.png kap-net_histo_reg_8bit_z118.png kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_z118.png
+
+fig_slideOV : $(Fig_slideOV)
+	cp -v $^ .
+	touch $@
 
 fig_histo_3D-sliced+seg : fig_histo_3D-sliced+seg.svg 
 	touch $@
