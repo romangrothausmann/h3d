@@ -91,7 +91,7 @@ BFmem=10g
 
 
 all : $(BASENAME).mha
-all : MR3006g_OT1_b64.svg MR3006g_OT1_s140.png MR3006g_OT1_s140_tra.png $(BASENAME)_s140.png # fig_slideOV
+all : MR3006g_OT2_b+64.svg MR3006g_OT2_s088_RGB_b+10.png MR3006g_OT2_s088_tra_b+10.png $(BASENAME)_OT2_s088_b+03.png # fig_slideOV
 
 
 clean :
@@ -183,21 +183,35 @@ $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask sh
 	ln -sf $< $@
 
 # MR3006g_OT1.png : %.png : %.tif ## as tile cannot stream (so far) insufficient RAM without binning
-MR3006g_OT1_b64.png : %_b64.png : %.tif
+MR3006g_OT1_b+64.png MR3006g_OT2_b+64.png : %_b+64.png : %.tif
 	BF_MAX_MEM=$(BFmem) bfconvert -no-upgrade -overwrite -tilex 16384 -tiley 16384  $< $*_T%m.tif # 170187/8 == 21273.375 : 16384/64 == 256 ; 21248/64 == 332
 	parallel --eta -j24 -u 'bin {} {.}_b64.tif 0 64  2>/dev/null'  ::: $*_T*.tif
-	tile $*_T0_b64.tif $@ 1 11 6 `ls -1 $*_T*_b64.tif | sort -V` # arg1 is only for header specs!
-	rm  $*_T*.tif  $*_T*_b64.tif
+	if [ "$*" == "MR3006g_OT1" ] ; then # MF ifeq does not work as $* is not yet available then \
+		tile $*_T0_b64.tif $@ 1 11 6 `ls -1 $*_T*_b64.tif | sort -V` # arg1 is only for header specs! \
+	fi
+	if [ "$*" == "MR3006g_OT2" ] ; then \
+		tile $*_T0_b64.tif $@ 1 17 7 `ls -1 $*_T*_b64.tif | sort -V` # arg1 is only for header specs! \
+	fi
+	$(mogrifyIM) -fill white -opaque black $@ # replace black conversion artefacts with white
+#	rm  $*_T*.tif  $*_T*_b64.tif
 
-MR3006g_OT1_b64.svg : MR3006g_OT1_b64.png MR3006g_OT1.txt
-	gnuplot -e " datafiles= '$^'; outfile= '$@'; xmax= 2659; ymax= 1430 " $(SUBMODDIR)/gnuplot/imgOV.gp
-	sed -i 's/gp_image_01.png/MR3006g_OT1_b64.png/g' $@
+%_b+64.svg : %_b+64.png %.txt
+	gnuplot -e " datafiles= '$^'; outfile= '$@'; xmax= `identify -format '%w' $<`; ymax= `identify -format '%h' $<` " $(SUBMODDIR)/gnuplot/imgOV.gp
+	sed -i 's/gp_image_01.png/$</g' $@
 	rm gp_image_01.png
 
-$(BASENAME)_s140.png : $(BASENAME).mha
-	slice $< $@ 1 2 139
+$(BASENAME)_OT2_s088.png : $(BASENAME).mha
+	slice $< $@ 1 2 688 # (140+88)/0.331662 ~ 688
+
+%_b+10.png : %.png
+	bin $< $@ 1 10
+
+%_b+03.png : %.png
+	bin $< $@ 1 3
 
 MR3006g_OT1_s140_tra.png : tra/MR3006g_OT1_s140.png
+MR3006g_OT2_s088_tra.png : tra/MR3006g_OT2_s088.png
+MR3006g_OT1_s140_tra.png MR3006g_OT2_s088_tra.png : %_tra.png :
 	cp $< $@
 
 

@@ -5,7 +5,7 @@ GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should 
 
 
 
-Fig_slideOV= MR3006g_OT1_b64.svg MR3006g_OT1_b64.png MR3006g_OT1_s140.png MR3006g_OT1_s140_tra.png h3d_s140.png
+Fig_slideOV= MR3006g_OT2_b+64.svg MR3006g_OT2_b+64.png MR3006g_OT2_s088_RGB_b+10.png MR3006g_OT2_s088_tra_b+10.png h3d_OT2_s088_b+03.png
 Fig_slideOV:= $(addprefix ../../../processing/slides2stack/,$(Fig_slideOV))
 
 Fig_histo_3D-sliced+seg= 3D-OV.png  BG_x@0838.png  BG_y@1624.png  BG_z@0688_sb.png  OV1_LUT_x@0838.png  OV1_LUT_y@1624.png  OV1_LUT_z@0688.png
