@@ -11,12 +11,13 @@
 
 
 #### ToDo:
-## generate Fig.1
+## couple with processing/ and main MF
 
 #### Done:
 ## create raw stack (containing unregistered slices)
 ## create aligned stack (containing registered slices)
 ## rep, smROISBS, md, rsi, mask aligned stack
+## generate Fig.1
 
 
 
@@ -98,6 +99,8 @@ clean :
 	@-rm -v MR3006g_OT*
 	@-rm -v $(BASENAME).mha*
 	@-rm -vr {src,tra,XMLs}
+	@-rm -v hull_*
+	@-rm -v h3d_raw*.mha
 
 
 % :: %.gz
@@ -193,7 +196,7 @@ MR3006g_OT1_b+64.png MR3006g_OT2_b+64.png : %_b+64.png : %.tif
 		tile $*_T0_b64.tif $@ 1 17 7 `ls -1 $*_T*_b64.tif | sort -V` # arg1 is only for header specs! \
 	fi
 	$(mogrifyIM) -fill white -opaque black $@ # replace black conversion artefacts with white
-#	rm  $*_T*.tif  $*_T*_b64.tif
+	rm  $*_T*.tif  $*_T*_b64.tif
 
 define POLY_OT2
 3805 326
@@ -227,7 +230,7 @@ MR3006g_OT1_s140_tra.png MR3006g_OT2_s088_tra.png : %_tra.png :
 	cp $< $@
 
 
-.SECONDARY: # prevent removal of any intermediate files
+# .SECONDARY: # prevent removal of any intermediate files
 
 
 .SECONDEXPANSION:
