@@ -195,7 +195,19 @@ MR3006g_OT1_b+64.png MR3006g_OT2_b+64.png : %_b+64.png : %.tif
 	$(mogrifyIM) -fill white -opaque black $@ # replace black conversion artefacts with white
 #	rm  $*_T*.tif  $*_T*_b64.tif
 
-%_b+64.svg : %_b+64.png %.txt
+define POLY_OT2
+3805 326
+3924 287
+3976 374
+3867 450
+3805 326
+endef
+export POLY_OT2
+
+MR3006g_OT2.pdat :
+	echo "$$POLY_OT2" > $@ # no heredoc possible, but: http://stackoverflow.com/questions/649246/is-it-possible-to-create-a-multi-line-string-variable-in-a-makefile#649462
+
+%_b+64.svg : %_b+64.png %.txt %.pdat
 	gnuplot -e " datafiles= '$^'; outfile= '$@'; xmax= `identify -format '%w' $<`; ymax= `identify -format '%h' $<` " $(SUBMODDIR)/gnuplot/imgOV.gp
 	sed -i 's/gp_image_01.png/$</g' $@
 	rm gp_image_01.png

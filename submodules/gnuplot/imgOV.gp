@@ -7,6 +7,7 @@ if (!exists("ymax")) ymax=10
 
 imgfile= word(datafiles,1)
 datfile= word(datafiles,2)
+polydat= word(datafiles,3)
 
 set size ratio -1
 set xrange [0:xmax]
@@ -22,4 +23,5 @@ set output outfile
 plot \
      imgfile binary filetype=png w rgbimage ti '' , \
      datfile u ($1/8):(ymax-$2/8) pointtype 2 pointsize 3 lc 'yellow' ti '' , \
-     datfile u ($1/8):(ymax-$2/8):($0+1) w labels left offset 1 textcolor 'yellow' font "sans,40" notitle
+     datfile u ($1/8):(ymax-$2/8):($0+1) w labels left offset 1 textcolor 'yellow' font "sans,40" notitle , \
+     polydat u 1:(ymax-$2) w lines lc 'yellow' lw 3 ti '' # http://stackoverflow.com/questions/29015920/gnuplot-draw-polygon-from-data
