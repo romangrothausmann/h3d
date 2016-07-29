@@ -79,6 +79,7 @@ clean :
 ## run with unlimited -j because all involved programms are single threaded, needs spedific rules (intTools.mk) because multiple goals are processed serially ("in turn") even with -j: https://savannah.gnu.org/support/?107274
 .PHONY: intTools # make sure intTools is always executed (even if intTools.done already exists)
 intTools :
+	git submodule update --init --recursive # http://stackoverflow.com/questions/3796927/how-to-git-clone-including-submodules#4438292
 	$(MAKE) \
 		ITKLIB=$(ITKLIB) ITKEXE='$(ITKEXE)' \
 		VTKLIB=$(VTKLIB) VTKEXE='$(VTKEXE)' \

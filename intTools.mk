@@ -34,8 +34,6 @@ $(ITKEXE) : initITK
 
 .PHONY: initVTK
 initVTK :
-	cd $(VTK)/ && \
-	git submodule update --init --recursive # http://stackoverflow.com/questions/3796927/how-to-git-clone-including-submodules#4438292
 	mkdir -p $(VTK)/build/ && \
 	cd $(VTK)/build/ && \
 	cmake -DVTK_DIR=$(VTKLIB) -DCMAKE_BUILD_TYPE=Release ..
@@ -45,8 +43,6 @@ $(VTKEXE) : initVTK
 
 .PHONY: initITKVTK
 initITKVTK :
-	cd $(ITKVTK)/ && \
-	git submodule update --init --recursive # http://stackoverflow.com/questions/3796927/how-to-git-clone-including-submodules#4438292
 	mkdir -p $(ITKVTK)/build/ && \
 	cd $(ITKVTK)/build/ && \
 	cmake -DITK_DIR=$(ITKLIB) -DVTK_DIR=$(VTKLIB) -DCMAKE_BUILD_TYPE=Release ..
