@@ -64,7 +64,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/
 
 
-.PHONY: all clean $(SUBDIRS)
+.PHONY: all clean $(SUBDIRS) base/
 
 
 all : intTools.done
@@ -138,7 +138,7 @@ video : processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ man
 
 
 $(SUBDIRS) : intTools.done
-$(SUBDIRS) article/latex/images/ article/latex/tables/ :
+$(SUBDIRS) article/latex/images/ article/latex/tables/ base/ :
 	/usr/bin/time -v -o $@timing \
 	   $(MAKE) -C $@
 

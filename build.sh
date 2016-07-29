@@ -20,7 +20,7 @@ PID=$! # remember PID
 
 
 ## run and time overall make
-/usr/bin/time -v -a -o timing /opt/make-4.1/bin/make PV=/opt/paraview-5.0.1_GL2/ -j6 -k 2>&1 | tee make0.out
+/usr/bin/time -v -a -o timing /opt/make-4.1/bin/make HTTPSproxy="http://proxy.mh-hannover.de:8080" -j6 -k 2>&1 | tee make0.out
 
 ## terminate top-logging
 kill $PID
