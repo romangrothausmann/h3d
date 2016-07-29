@@ -47,7 +47,7 @@ export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI tile subimage_extract paste_image std-mean_ROI_SBS median resample-iso hull mask-negated mask bin slice
+EXECUTABLES = file-series_reader_SDI tile subimage_extract paste_image std-mean_ROI_SBS median resample-iso hull mask-negated mask bin slice change_header
 EXECUTABLES+= hull
 EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
@@ -230,7 +230,7 @@ MR3006g_OT1_s140_tra.png MR3006g_OT2_s088_tra.png : %_tra.png :
 	cp $< $@
 
 
-# .SECONDARY: # prevent removal of any intermediate files
+.SECONDARY: # prevent removal of any intermediate files
 
 
 .SECONDEXPANSION:
