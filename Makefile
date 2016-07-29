@@ -1,4 +1,8 @@
 
+### proxy for wget to get raw-files
+export HTTPSproxy?=""
+
+
 ### setting default paths of external libraries
 ITKLIB?=/opt/itk-4.9.1/lib/cmake/ITK-4.9
 VTKLIB?=/opt/vtk-7.0.0/lib/cmake/vtk-7.0
@@ -61,7 +65,7 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 
 
-SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/
+SUBDIRS:= processing/slides2stack/ processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/
 
 
 .PHONY: all clean $(SUBDIRS) base/
@@ -106,7 +110,7 @@ intTools.done : intTools
 # processing/%.done : # causes rule to execute as many times as there are *.done !!!
 # %.done : | processing/ # as processing/ already exists this will never execute a recipe
 #	touch $@
-%slices.done %ana.done %luBounds.done %VR.done %SRV.done %VE.done : # this way rule will only be executed once for all listed *.done
+%slices.done %ana.done %luBounds.done %VR.done %SRV.done %VE.done : %slides2stack/slides.done # this way rule will only be executed once for all listed *.done
 	/usr/bin/time -v -o processing/timing \
 	   $(MAKE) -C processing/ all # uses its own .SERIAL
 	touch processing/compressing.stime
@@ -115,6 +119,8 @@ intTools.done : intTools
 
 # endif
 
+
+processing/slides2stack/ : base/
 
 manual/slices/ : processing/slices.done
 
