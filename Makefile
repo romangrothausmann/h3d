@@ -65,13 +65,13 @@ base. = $(subst $(SPACE),.,$(filter-out $(lastword $(subst ., ,$1)),$(subst ., ,
 
 
 
-SUBDIRS:= processing/slides2stack/ processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/
+## SUBDIRS should not contain targets to be executed before processing/
+SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ manual/SRV/ manual/VE/
 
 
-.PHONY: all clean $(SUBDIRS) base/
+.PHONY: all clean $(SUBDIRS) processing/slides2stack/ base/
 
 
-all : intTools.done
 all : $(SUBDIRS) article/latex/images/ article/latex/tables/ stime.lst # video
 
 clean :
@@ -92,9 +92,6 @@ intTools :
 	INTTOOLS="$(ITKEXE) $(VTKEXE) $(ITKVTKEXE)"; \
 		PATH=$(PATH); \
 		for i in $$INTTOOLS; do if test -z `which $$i`; then echo "Error, No $$i in PATH!" 1>&2; exit 125; fi; done
-
-intTools.done : intTools
-	touch intTools.done
 
 
 # mJOBS = $(shell echo $(MAKEFLAGS) | grep -o j.*) # only works with = empty with :=
@@ -120,7 +117,7 @@ intTools.done : intTools
 # endif
 
 
-processing/slides2stack/ : base/
+processing/slides2stack/slides.done : base/base.done # prereq dep does not work with phony target, why?
 
 manual/slices/ : processing/slices.done
 
@@ -143,10 +140,10 @@ video : processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ man
 	   $(MAKE) -C manual/VE/  video
 
 
-$(SUBDIRS) : intTools.done
-$(SUBDIRS) article/latex/images/ article/latex/tables/ base/ :
-	/usr/bin/time -v -o $@timing \
-	   $(MAKE) -C $@
+$(SUBDIRS) processing/slides2stack/slides.don base/base.done : intTools
+$(SUBDIRS) article/latex/images/ article/latex/tables/ base/base.done processing/slides2stack/slides.done :
+	/usr/bin/time -v -o $(dir $@)timing \
+	   $(MAKE) -C $(dir $@)
 
 
 stime.lst : | $(SUBDIRS)

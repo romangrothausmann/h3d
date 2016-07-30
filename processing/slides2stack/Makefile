@@ -230,7 +230,7 @@ MR3006g_OT1_s140_tra.png MR3006g_OT2_s088_tra.png : %_tra.png :
 	cp $< $@
 
 
-.SECONDARY: # prevent removal of any intermediate files
+# .SECONDARY: # prevent removal of any intermediate files
 
 
 .SECONDEXPANSION:
