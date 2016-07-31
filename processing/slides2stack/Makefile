@@ -38,6 +38,7 @@ VTK?=$(SUBMODDIR)/VTK-CLIs/
 ### setting default paths of external programs
 BF?=/opt/bio-format_CLIs/
 IJ?=/opt/fiji/Fiji.app/
+MP?=/opt/mplayer-1.3.0/
 
 
 
@@ -45,6 +46,7 @@ export PATH:= $(ITK)/build:$(PATH)
 export PATH:= $(VTK)/build:$(PATH)
 export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
+export PATH:= $(MP)/bin:$(PATH)
 
 
 EXECUTABLES = file-series_reader_SDI tile subimage_extract paste_image std-mean_ROI_SBS median resample-iso hull mask-negated mask bin slice change_header
@@ -53,6 +55,7 @@ EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 EXECUTABLES+= gnuplot
 EXECUTABLES+= parallel
+EXECUTABLES+= mencoder
 
 
 K:= $(foreach exec,$(EXECUTABLES),\
@@ -91,7 +94,7 @@ BFmem=10g
 .PHONY : all clean
 
 
-all : $(BASENAME).mha
+all : $(BASENAME).mha $(BASENAME).mp4
 all : MR3006g_OT2_b+64.svg MR3006g_OT2_s088_RGB_b+10.png MR3006g_OT2_s088_tra_b+10.png $(BASENAME)_OT2_s088_b+03.png # fig_slideOV
 
 
@@ -182,8 +185,23 @@ hu%_02.vtp hu%_02.mha : ../../manual/processing/mask-seg.mha
 	touch $@.stime
 	mask $^ $@ 0
 
+%_hull.mha : %.mha hull_02.mha
+	touch $@.stime
+	mask $^ $@ 0
+
 $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask should be after rsi
 	ln -sf $< $@
+
+$(BASENAME)%mhd $(BASENAME)%raw : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_hull.mha
+	file_converter $< $(basename $@).mhd 0
+
+%.mp4.1p %.2pass.log %.2pass.log.mbtree : %.raw
+	touch $@.stime
+	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o $*.mp4.1p -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=1  -fps 25 -passlogfile $*.2pass.log
+
+%.mp4 : %.raw %.2pass.log %.2pass.log.mbtree
+	touch $@.stime
+	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o $@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log
 
 # MR3006g_OT1.png : %.png : %.tif ## as tile cannot stream (so far) insufficient RAM without binning
 MR3006g_OT1_b+64.png MR3006g_OT2_b+64.png : %_b+64.png : %.tif
@@ -231,6 +249,7 @@ MR3006g_OT1_s140_tra.png MR3006g_OT2_s088_tra.png : %_tra.png :
 
 
 # .SECONDARY: # prevent removal of any intermediate files
+.PRECIOUS: $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha
 
 
 .SECONDEXPANSION:

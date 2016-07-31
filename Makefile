@@ -13,6 +13,7 @@ PV?=/opt/paraview-4.4.0
 ## 64-bit enabled octave:
 OCTAVE?=/opt/octave-4.0.0
 BF?=/opt/bio-format_CLIs/
+MP?=/opt/mplayer-1.3.0/
 MAKE2GV?=/opt/makefile2graph
 
 ## vglrun < 2.4 might need +xcb parameter
@@ -38,6 +39,7 @@ export PATH:= $(BLENDER):$(PATH)
 export PATH:= $(PV)/bin:$(PATH)
 export PATH:= $(OCTAVE)/bin:$(PATH)
 export PATH:= $(BF):$(PATH)
+export PATH:= $(MP)/bin:$(PATH)
 export PATH:= $(MAKE2GV)/bin:$(PATH)
 
 
@@ -51,6 +53,7 @@ EXECUTABLES+= pvpython
 EXECUTABLES+= octave
 EXECUTABLES+= gnuplot
 EXECUTABLES+= bfconvert
+EXECUTABLES+= mencoder
 EXECUTABLES+= make2graph
 EXECUTABLES+= $(VGLRUN)
 
