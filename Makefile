@@ -46,7 +46,7 @@ export PATH:= $(MAKE2GV)/bin:$(PATH)
 ### check existance of external programs
 ## http://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile#25668869
 ITKEXE = add add_const analyse_labels distance_map_signed_maurer_f32 erode-dilate_dm_f32 subimage_extract fast-marching_f32 file_converter keepNobj label_connected_components label_uncertainty_float mask mask-negated max mean min-path_seg_f32 open_bin_para open_label-shape open_parabolic_f32 paste_image resample slice thresh-glob toUInt16 toUInt8 watershed_morph file-series_reader_SDI tile subimage_mask std-mean_ROI_SBS median resample-iso bin change_header
-VTKEXE = analyse_S+V decimate-QC discrete_marching-cubes hull largest_mesh-part probe-surf2vrml ribbon_FrenetSerret threshold vtk2vtp vtp2pvtp vtp2stl
+VTKEXE = analyse_S+V decimate-QC discrete_marching-cubes hull largest_mesh-part probe-surf2vrml ribbon_FrenetSerret threshold vtk2vtp vtp2pvtp vtp2stl vtp2x3d
 ITKVTKEXE = straighten
 EXECUTABLES+= blender
 EXECUTABLES+= pvpython
@@ -114,7 +114,7 @@ intTools :
 	/usr/bin/time -v -o processing/timing \
 	   $(MAKE) -C processing/ all # uses its own .SERIAL
 	touch processing/compressing.stime
-	find processing/ -size +10G -name "*.mha"  | xargs pigz -v -f # just to save disc space, subsequent make-calls will unpack needed files (pigz used because of 4GB bug in ITK/VTK's MetaIO: https://issues.itk.org/jira/browse/ITK-3321)
+	find processing/ -size +10G -name "*.mha"  | egrep -v 'h3d_seg_Bt\+Arz-fm.mha|h3d_seg_B-fm.mha' | xargs pigz -v -f # just to save disc space, subsequent make-calls will unpack needed files (pigz used because of 4GB bug in ITK/VTK's MetaIO: https://issues.itk.org/jira/browse/ITK-3321)
 	touch processing/compressing
 
 # endif
