@@ -19,8 +19,14 @@ PID=$! # remember PID
 # tail -n300 -f top.out    |   stdbuf -oL   awk '{"date -d @"$1" +%T" | getline T; print T, $2, $3}'  |   feedgnuplot.pl --stream --domain --lines --timefmt '%H:%M:%S' --set 'format x "%H:%M:%S"' --ymin 0 --ymax 100 --nopoints --lines --with "boxes fs solid " --style 0 "lc 3 with steps" --style 1 "lc 2 with steps" --terminal 'dumb 120,20' --xlen 600 | sed 's/\x0c/\x1bc\n/'
 
 
-## run and time overall make
-/usr/bin/time -v -a -o timing /opt/make-4.1/bin/make HTTPSproxy="http://proxy.mh-hannover.de:8080" -j6 -k 2>&1 | tee make0.out
+# ## run and time overall make
+# /usr/bin/time -v -a -o timing /opt/make-4.1/bin/make HTTPSproxy="http://proxy.mh-hannover.de:8080" -j6 -k 2>&1 | tee make0.out
+
+## run make with different -j for processing/slides2stack/ (base/)
+/usr/bin/time -v -a -o timing /opt/make-4.1/bin/make HTTPSproxy="http://proxy.mh-hannover.de:8080" -j24 -k processing/slides2stack/slides.done  2>&1 | tee -a make0.out
+
+## limit make with -j6 to avoid swapping with 256GB RAM
+/usr/bin/time -v -a -o timing /opt/make-4.1/bin/make HTTPSproxy="http://proxy.mh-hannover.de:8080" -j6 -k  2>&1 | tee -a make0.out
 
 ## terminate top-logging
 kill $PID
