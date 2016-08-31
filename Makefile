@@ -120,7 +120,7 @@ intTools :
 # endif
 
 
-processing/slides2stack/slides.done : base/base.done # prereq dep does not work with phony target, why?
+processing/slides2stack/slides.done : | base/base.done # order only dep on base.done to prevent reexec of slides.done # prereq dep does not work with phony target, why?
 
 manual/slices/ : processing/slices.done
 
