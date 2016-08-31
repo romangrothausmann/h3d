@@ -94,11 +94,18 @@ BFmem=10g
 .PHONY : all clean
 
 
-all : $(BASENAME).mha $(BASENAME).mp4
-all : MR3006g_OT2_b+64.svg MR3006g_OT2_s088_RGB_b+10.png MR3006g_OT2_s088_tra_b+10.png $(BASENAME)_OT2_s088_b+03.png # fig_slideOV
+all : slides.done
+
+slides.done : $(BASENAME).mha $(BASENAME).mp4
+slides.done : MR3006g_OT2_b+64.svg MR3006g_OT2_s088_RGB_b+10.png MR3006g_OT2_s088_tra_b+10.png $(BASENAME)_OT2_s088_b+03.png # fig_slideOV
+slides.done :
+	touch $@
+	@-rm -vr {src,tra,XMLs}
+	@-rm h3d_raw.mha h3d_raw_rep.mha h3d.mhd h3d.raw
 
 
 clean :
+	@-rm -v slides.done
 	@-rm -v MR3006g_OT*
 	@-rm -v $(BASENAME).mha*
 	@-rm -vr {src,tra,XMLs}
@@ -214,7 +221,7 @@ MR3006g_OT1_b+64.png MR3006g_OT2_b+64.png : %_b+64.png : %.tif
 		tile $*_T0_b64.tif $@ 1 17 7 `ls -1 $*_T*_b64.tif | sort -V` # arg1 is only for header specs! \
 	fi
 	$(mogrifyIM) -fill white -opaque black $@ # replace black conversion artefacts with white
-	rm  $*_T*.tif  $*_T*_b64.tif
+	-rm  $*_T*.tif  $*_T*_b64.tif
 
 define POLY_OT2
 3805 326
@@ -231,7 +238,7 @@ MR3006g_OT2.pdat :
 %_b+64.svg : %_b+64.png %.txt %.pdat
 	gnuplot -e " datafiles= '$^'; outfile= '$@'; xmax= `identify -format '%w' $<`; ymax= `identify -format '%h' $<` " $(SUBMODDIR)/gnuplot/imgOV.gp
 	sed -i 's/gp_image_01.png/$</g' $@
-	rm gp_image_01.png
+	-rm gp_image_01.png
 
 $(BASENAME)_OT2_s088.png : $(BASENAME).mha
 	slice $< $@ 1 2 688 # (140+88)/0.331662 ~ 688
@@ -249,7 +256,7 @@ MR3006g_OT1_s140_tra.png MR3006g_OT2_s088_tra.png : %_tra.png :
 
 
 # .SECONDARY: # prevent removal of any intermediate files
-.PRECIOUS: $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha
+.PRECIOUS: $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha ../../manual/processing/mask-seg.mha
 
 
 .SECONDEXPANSION:
