@@ -32,7 +32,7 @@ PID=$! # remember PID
 kill $PID
 
 ## create aSVGs and "render" them to MP4s, specify ETIME=120 SIZE=1920x1080 to override automatic detection:
-make ETIME=120 all.neato.Make.mp4 
+# make ETIME=120 SIZE=1920x1080 all.neato.Make.mp4 # too complex now for MP4Client
 # make ETIME=120 SIZE=1920x1080 all.dot.Make.mp4 
 # make ETIME=120 SIZE=1920x1080 all.fdp.Make.mp4 
 

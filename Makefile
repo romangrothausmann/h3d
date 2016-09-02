@@ -9,7 +9,7 @@ VTKLIB?=/opt/vtk-7.0.0/lib/cmake/vtk-7.0
 
 ### setting default paths of external programs
 BLENDER?=/opt/blender-2.76b
-PV?=/opt/paraview-4.4.0
+PV?=/opt/paraview-5.1.2_GL2/
 ## 64-bit enabled octave:
 OCTAVE?=/opt/octave-4.0.0
 BF?=/opt/bio-format_CLIs/
