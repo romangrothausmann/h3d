@@ -43,16 +43,19 @@ fig_luBounds_x_PNGs:= $(BN)_ROI_$(word 1,$(slices)).png
 fig_luBounds_x_PNGs+= $(BNseg)_lu+1_low_ROI_$(word 1,$(slices))_LUT.png
 fig_luBounds_x_PNGs+= $(BNseg)_lu+1_mid_ROI_$(word 1,$(slices))_LUT.png
 fig_luBounds_x_PNGs+= $(BNseg)_lu+1_upp_ROI_$(word 1,$(slices))_LUT.png
+fig_luBounds_x_PNGs+= fig_luBounds_x_RGB.png
 
 fig_luBounds_y_PNGs:= $(BN)_ROI_$(word 2,$(slices)).png
 fig_luBounds_y_PNGs+= $(BNseg)_lu+1_low_ROI_$(word 2,$(slices))_LUT.png
 fig_luBounds_y_PNGs+= $(BNseg)_lu+1_mid_ROI_$(word 2,$(slices))_LUT.png
 fig_luBounds_y_PNGs+= $(BNseg)_lu+1_upp_ROI_$(word 2,$(slices))_LUT.png
+fig_luBounds_y_PNGs+= fig_luBounds_y_RGB.png
 
 fig_luBounds_z_PNGs:= $(BN)_ROI_$(word 3,$(slices)).png
 fig_luBounds_z_PNGs+= $(BNseg)_lu+1_low_ROI_$(word 3,$(slices))_LUT.png
 fig_luBounds_z_PNGs+= $(BNseg)_lu+1_mid_ROI_$(word 3,$(slices))_LUT.png
 fig_luBounds_z_PNGs+= $(BNseg)_lu+1_upp_ROI_$(word 3,$(slices))_LUT.png
+fig_luBounds_z_PNGs+= fig_luBounds_z_RGB.png
 
 fig_luBounds_z_SVGs:= $(fig_luBounds_z_PNGs:%.png=fig_luBounds_z/%.svg)
 fig_luBounds_z_SVGs+= fig_luBounds_z/fig_luBounds_z_RGB.svg
@@ -61,9 +64,9 @@ fig_luBounds_z_SVGs+= fig_luBounds_z/fig_luBounds_z_RGB.svg
 .PHONY: all clean clean_all
 
 
-all : luBounds.csv fig_luBounds_x.svg fig_luBounds_y.svg fig_luBounds_z.svg
+all : luBounds.csv
 all : line-plot.svg fig_luBounds_z_RGB_1D-1p.png
-all : $(fig_luBounds_z_SVGs)
+all : $(fig_luBounds_z_SVGs) $(addprefix fig_luBounds_z/,$(fig_luBounds_z_PNGs)) $(addprefix fig_luBounds_y/,$(fig_luBounds_y_PNGs)) $(addprefix fig_luBounds_x/,$(fig_luBounds_x_PNGs))
 
 clean :
 	@-rm -v $(BNseg)_lu+1_???_* 
@@ -188,6 +191,13 @@ fig_base.svg :
 %.svg : %.png fig_base.svg
 	sed 's$$xlink:href="file:///myURL/.*\.png$$xlink:href="$(notdir $<)$$g' < fig_base.svg > $@
 
+fig_luBounds_%/ :
+	mkdir -p $@
+
+fig_luBounds_x/% : % | fig_luBounds_x/ ; cp $< $@
+fig_luBounds_y/% : % | fig_luBounds_y/ ; cp $< $@
+fig_luBounds_z/% : % | fig_luBounds_z/ ; cp $< $@
+
 ### END line-plot_1D-img
 
 
@@ -220,13 +230,6 @@ fig_base.svg :
 
 fig_luBounds_%_RGB.png : $$(wordlist 2,4,$$(fig_luBounds_$$*_PNGs))
 	$(convertIM) $^ -threshold 1 -channel RGB -combine $@
-
-fig_luBounds_%.svg : $$(fig_luBounds_$$*_PNGs) fig_luBounds_%_RGB.png fig_base.svg
-	+mkdir -p $(basename $@) # doing this in its own rule becomes very tricky
-	cp $(filter-out fig_base.svg,$^) $(basename $@) # doing this in its own rule becomes very tricky
-	sed 's$$xlink:href="file:///myURL/$$xlink:href="$(basename $@)/$$g;s/XYZ@/$*@/g' < fig_base.svg > $@
-	@echo "changed files: " $?
-	touch $@
 
 %.Make.svg : $$(call base.,%).gv # rule should be more specific than %.svg!
 	$(eval pos= $(subst $(basename $+),,$*))
