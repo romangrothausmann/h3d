@@ -75,7 +75,7 @@ SUBDIRS:= processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ m
 .PHONY: all clean $(SUBDIRS) processing/slides2stack/ base/
 
 
-all : $(SUBDIRS) article/latex/images/ article/latex/tables/ stime.lst # video
+all : $(SUBDIRS) article/latex/images/ article/latex/tables/ # stime.lst # video
 
 clean :
 	$(MAKE) -C $(SUBDIRS) clean
@@ -149,7 +149,7 @@ $(SUBDIRS) article/latex/images/ article/latex/tables/ base/base.done processing
 	   $(MAKE) -C $(dir $@)
 
 
-stime.lst : | $(SUBDIRS)
+stime.lst : | $(SUBDIRS) # as previous runs of make (as in build.sh) already removed their intermediate files, this does not work as expected any more, either only do a single make run or add e.g. touch $@.etime to rules
 	for i in `find -name '*.stime'`; do \
 	    printf "%s\t%s\t%s\n" \
 		`ls -lgG --time-style='+%s %N' $$i | awk '{printf ("%d", ($$4 + $$5/1e9)*1e3)}'` \
