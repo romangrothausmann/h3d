@@ -43,11 +43,11 @@ Fig_SRV2D:= $(addprefix ../../../manual/SRV/SRV2D/,$(Fig_SRV2D))
 
 
 .PHONY: all clean
-#.PHONY:fig_histo_3D-sliced+seg fig_v-render fig_ov01 fig_luBounds fig_A2V fig_srv-curved fig_srv # fig_histo_colored 
+#.PHONY: FIG_slideOV FIG_histo_3D-sliced+seg FIG_line-plot FIG_v-render FIG_ov01 FIG_luBounds FIG_A2V FIG_srv-curved FIG_srv # FIG_histo_colored 
 
 
 
-all: fig_slideOV fig_histo_3D-sliced+seg fig_line-plot fig_v-render fig_ov01 fig_luBounds fig_A2V fig_srv-curved fig_srv # fig_histo_colored 
+all: FIG_slideOV FIG_histo_3D-sliced+seg FIG_line-plot FIG_v-render FIG_ov01 FIG_luBounds FIG_A2V FIG_srv-curved FIG_srv # FIG_histo_colored 
 
 
 fig_histo_3D-sliced+seg/ \
@@ -63,39 +63,39 @@ SRV2D/ :
 
 # fig_histo_colored : MR3006g_OT1_RGB_point-sel_00_comb.png MR3006g_OT1_118_bi8.png kap-net_histo_reg_8bit_z118.png kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_z118.png
 
-fig_slideOV : $(Fig_slideOV)
+FIG_slideOV : $(Fig_slideOV)
 	cp -v $^ .
 	touch $@
 
-fig_histo_3D-sliced+seg : fig_histo_3D-sliced+seg.svg 
+FIG_histo_3D-sliced+seg : fig_histo_3D-sliced+seg.svg 
 	touch $@
 
 fig_histo_3D-sliced+seg.svg : ../../../manual/slices/fig_histo_3D-sliced+seg.svg $(Fig_histo_3D-sliced+seg) | fig_histo_3D-sliced+seg/
 	cp -v $^ fig_histo_3D-sliced+seg/
 	mv fig_histo_3D-sliced+seg/$@ $@
 
-fig_line-plot : $(Fig_line-plot)
+FIG_line-plot : $(Fig_line-plot)
 	cp -v $^ .
 	touch $@
 
-fig_v-render : $(Fig_v-render)
+FIG_v-render : $(Fig_v-render)
 	cp -v $^ .
 	touch $@
 
-fig_ov01 : $(Fig_ov01) | fig_ov01/
+FIG_ov01 : $(Fig_ov01) | fig_ov01/
 	cp -v $^ fig_ov01/
 	touch $@
 
-fig_A2V : $(Fig_A2V) | fig_A2V/
+FIG_A2V : $(Fig_A2V) | fig_A2V/
 	cp -v $^ fig_A2V/
 	touch $@
 
-fig_srv-curved : $(Fig_srv-curved) | fig_SRV-curved/
+FIG_srv-curved : $(Fig_srv-curved) | fig_SRV-curved/
 	cp -v $^ fig_SRV-curved/
 	mv fig_SRV-curved/fig_SRV-curved_0.png fig_SRV-curved/fig_SRV-curved_1.png
 	touch $@
 
-fig_srv : fig_SRV-curvedPV.svg fig_SRV-straightenedPV.svg fig_SRV2D.svg
+FIG_srv : fig_SRV-curvedPV.svg fig_SRV-straightenedPV.svg fig_SRV2D.svg
 	touch $@
 
 fig_SRV-curvedPV.svg : ../../../manual/SRV/fig_SRV-curvedPV.svg ../../../manual/SRV/fig_SRV-curvedPV/vis_SRV-curved_ori-axes.png ../../../manual/SRV/fig_SRV-curvedPV/vis_SRV-curved.png | fig_SRV-curvedPV/
@@ -111,7 +111,7 @@ fig_SRV2D.svg : ../../../manual/SRV/fig_SRV2D.svg $(Fig_SRV2D) | SRV2D/
 	mv SRV2D/$@ $@
 
 
-fig_luBounds : $(Fig_luBounds)
+FIG_luBounds : $(Fig_luBounds)
 	touch $@
 
 fig_luBounds_x/%.png : ../../../processing/low_upp-bounds/fig_luBounds_x/%.png | fig_luBounds_x/ ; cp -v $^ $@
