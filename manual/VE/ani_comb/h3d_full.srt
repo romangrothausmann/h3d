@@ -9,16 +9,16 @@ starting outside sampled region.
 Connected arteries (red) and veins (blue) with capillaries up to a proximity of about 30 µm together with adjacent terminal bronchioles (<i>Bt</i>, grey) and beginning of its acinus.
 
 00:00:04,100 --> 00:00:08,000
-Largest part of an acinus (<i>Azn</i>, light grey) contained within sampled region.
+Largest part of an acinus (<i>Acn</i>, light grey) contained within sampled region.
 
 00:00:08,100 --> 00:00:10,000
-Capillary network (<i>ACN-Azn</i> magenta) in proximity of <i>Azn</i> up to about 10 µm.
+Capillary network (<i>ACN-Acn</i> magenta) in proximity of <i>Acn</i> up to about 10 µm.
 
 00:00:10,100 --> 00:00:13,000
 View along an alveolar duct that extends beyond the z-depth of the sampled region.
 
 00:00:14,100 --> 00:00:16,000
-Note: no tissue is rendered. This leads to the gaps between e.g. <i>Bt</i> and <i>Azn</i>.
+Note: no tissue is rendered. This leads to the gaps between e.g. <i>Bt</i> and <i>Acn</i>.
 
 00:00:17,100 --> 00:00:19,000
 Beginning to follow a possible path of an <b>O2</b> molecule.
@@ -35,7 +35,7 @@ Bumps in the surface of <i>Bt</i> are no artefacts,
 but apparent terraces are.
 
 00:00:28,100 --> 00:00:30,000
-About to enter a connected acinus (not <i>Azn</i>),
+About to enter a connected acinus (not <i>Acn</i>),
 which mostly lies outside the sampled region.
 
 00:00:30,100 --> 00:00:32,000
@@ -54,7 +54,7 @@ The first alveoli are about reached. These are significantly smaller than the av
 Camera now exits sampled region.
 
 00:00:40,100 --> 00:00:44,000
-Start of the transition from <i>Bt</i> to <i>Azn</i>, used to outline further details from an over view.
+Start of the transition from <i>Bt</i> to <i>Acn</i>, used to outline further details from an over view.
 
 00:00:44,100 --> 00:00:46,000
 An unobscured view of the ACN contained within the septa is given at the opened surfaces at the borders of the dataset.
@@ -76,10 +76,10 @@ The increased transparency of <i>Bt</i> reveals the underlying capillaries.
 The vessel segments are smoothed less in order to preserve their finer details in comparison to the air segment.
 
 00:00:56,100 --> 00:00:58,000
-Parts of <i>Azn</i> (light grey) are now in view.
+Parts of <i>Acn</i> (light grey) are now in view.
 
 00:01:00,100 --> 00:01:02,000
-As the ACN is only rendered in near proximity, visual distinction between inner and outer side of <i>Azn, Bt</i> is easy.
+As the ACN is only rendered in near proximity, visual distinction between inner and outer side of <i>Acn, Bt</i> is easy.
 
 00:01:02,100 --> 00:01:04,000
 Some regions of the ACN do not suffer from missing connections, see marks.
@@ -88,7 +88,7 @@ Some regions of the ACN do not suffer from missing connections, see marks.
 Most missing connection in the ACN originate from remaining erythrocytes and not from reconstruction artefacts.
 
 00:01:40,100 --> 00:01:42,000
-Beginning to close up on the largest duct entry of <i>Azn</i>.
+Beginning to close up on the largest duct entry of <i>Acn</i>.
 
 00:01:45,100 --> 00:01:47,000
 Many ducts branching off can be observed, a particular ordering is not obvious.
