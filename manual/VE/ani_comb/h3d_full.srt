@@ -6,19 +6,19 @@ Introduction of objects of interest,
 starting outside sampled region.
 
 00:00:01,100 --> 00:00:04,000
-Connected arteries (red) and veines (blue) with capillaries up to a proximity of about 30 µm together with adjacent terminal bronchiolus (<i>Bt</i>, grey) and beginning of its azninus.
+Connected arteries (red) and veins (blue) with capillaries up to a proximity of about 30 µm together with adjacent terminal bronchioles (<i>Bt</i>, grey) and beginning of its acinus.
 
 00:00:04,100 --> 00:00:08,000
-Largest part of an azninus (<i>Azn</i>, light grey) contained within sampled region.
+Largest part of an acinus (<i>Azn</i>, light grey) contained within sampled region.
 
 00:00:08,100 --> 00:00:10,000
-Cappillary network (<i>ACN-Azn</i> magenta) in proximity of <i>Azn</i> up to about 10 µm.
+Capillary network (<i>ACN-Azn</i> magenta) in proximity of <i>Azn</i> up to about 10 µm.
 
 00:00:10,100 --> 00:00:13,000
-View along a ductus that extents beyond the z-depth of the sampled region, see arrow.
+View along an alveolar duct that extends beyond the z-depth of the sampled region.
 
 00:00:14,100 --> 00:00:16,000
-Note: no tissue is rendered. This leads to the gaps between e.g. <i>Bt</i> and <i>Azn</i>, see arrow.
+Note: no tissue is rendered. This leads to the gaps between e.g. <i>Bt</i> and <i>Azn</i>.
 
 00:00:17,100 --> 00:00:19,000
 Beginning to follow a possible path of an <b>O2</b> molecule.
@@ -28,24 +28,24 @@ Camera now enters sampled region.
 Right side of Bt is just about contained in the sampled region.
 
 00:00:22,100 --> 00:00:24,000
-Multiple airway bifurcations appear nearly at the same position, see arrow.
+Multiple airway bifurcations appear nearly at the same position.
 
 00:00:25,100 --> 00:00:28,000
 Bumps in the surface of <i>Bt</i> are no artefacts,
-but apperent terraces are, see arrow.
+but apparent terraces are.
 
 00:00:28,100 --> 00:00:30,000
-About to enter a connected azninus (not <i>Azn</i>),
+About to enter a connected acinus (not <i>Azn</i>),
 which mostly lies outside the sampled region.
 
 00:00:30,100 --> 00:00:32,000
-# Reaching the Broncho Alveolar Duct Junction (BADJ), where a minimal constriction of the airway exists, indicated by the yellow surface/membrane.
+# Reaching the bronchoalveolar duct junction (BADJ), where a minimal constriction of the airway exists.
 
 00:00:32,100 --> 00:00:34,000
 # or the surface covering the rim of the tubular ending of non-parenchymal tissue about x µm further on.
 
 00:00:34,100 --> 00:00:36,000
-Artefacts originating from fragmented tissue are present in this region of the dataset, see arrow.
+Artefacts originating from fragmented tissue are present in this region of the dataset.
 
 00:00:36,100 --> 00:00:38,000
 The first alveoli are about reached. These are significantly smaller than the average.
@@ -57,16 +57,16 @@ Camera now exits sampled region.
 Start of the transition from <i>Bt</i> to <i>Azn</i>, used to outline further details from an over view.
 
 00:00:44,100 --> 00:00:46,000
-An unobscured view of the ACN contained within the septa is given at the opened surfaces at the borders of the dataset, see arrow.
+An unobscured view of the ACN contained within the septa is given at the opened surfaces at the borders of the dataset.
 
 00:00:46,100 --> 00:00:48,000
-As the vessel system is incomplete, the ACN is coloured magenta except in the proximity of the arteries and veines.
+As the vessel system is incomplete, the ACN is coloured magenta except in the proximity of the arteries and veins.
 
 00:00:48,100 --> 00:00:50,000
-There a distance gradient is colored from red to blue.
+There a distance gradient is coloured from red to blue.
 
 00:00:50,100 --> 00:00:52,000
-Vessel connection outside the dataset can lead to false colouring at the borders of the datast, see arrow.
+Vessel connection outside the dataset can lead to false colouring at the borders of the dataset.
 
 00:00:52,100 --> 00:00:54,000
 Visible alveoli now have their standard size.
@@ -79,7 +79,7 @@ The vessel segments are smoothed less in order to preserve their finer details i
 Parts of <i>Azn</i> (light grey) are now in view.
 
 00:01:00,100 --> 00:01:02,000
-As the ACN is only rendered in near proximity, vizual distinction between inner and outer side of <i>Azn, Bt</i> is easy.
+As the ACN is only rendered in near proximity, visual distinction between inner and outer side of <i>Azn, Bt</i> is easy.
 
 00:01:02,100 --> 00:01:04,000
 Some regions of the ACN do not suffer from missing connections, see marks.
@@ -94,7 +94,7 @@ Beginning to close up on the largest duct entry of <i>Azn</i>.
 Many ducts branching off can be observed, a particular ordering is not obvious.
 
 00:01:50,100 --> 00:01:52,000
-Small, outward bumps on the alveolar surface likely originate from macrophages, see arrows.
+Small, outward bumps on the alveolar surface likely originate from macrophages.
 
 00:02:00,100 --> 00:02:02,000
 Camera now enters sampled region again.
@@ -106,23 +106,23 @@ An arteriole (red) embedded in septa comes into view.
 Further inside the dataset, the ACN is more complete.
 
 00:02:14,100 --> 00:02:16,000
-Removing transparency to allow focosing on the arragement of alveoli.
+Removing transparency to allow focusing on the arrangement of alveoli.
 A particular ordering is not obvious.
 
 00:02:16,100 --> 00:02:18,000
-Viewing along the open duct towads the camera position when it was first pointed out.
+Viewing along the open duct towards the camera position when it was first pointed out.
 
 00:02:22,100 --> 00:02:24,000
 Closing up on an alveolar cluster referred to as <i>A45</i>.
 
 00:02:30,100 --> 00:02:32,000
-The ACN sourrounding <i>A45</i> (<i>ACN-A45</i>) was manually refined to also include erythrocytes (red segments).
+The ACN surrounding <i>A45</i> (<i>ACN-A45</i>) was manually refined to also include erythrocytes (red segments).
 
 00:02:32,100 --> 00:02:38,000
 The white line within the ACN indicates the path we are going to follow.
 
 00:02:48,100 --> 00:02:52,000
-Transitioning from the air lumen throught the gas diffusion area into the blood lumen.
+Transitioning from the air lumen through the gas diffusion area into the blood lumen.
 
 00:02:56,100 --> 00:02:58,000
 A cylinder with a length of 5 µm to indicate the scale.
