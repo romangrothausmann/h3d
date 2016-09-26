@@ -5,6 +5,7 @@ base/: base dir for orig data like CZIs, fotos from stereo-Lupe
 manual/: base dir for manually created files
 manual/correction/: manual corrections of auto-seg
 manual/processing/: manual partititions (Bt, Arz), seeds
+manual/processing/XMLs/: transforms for traVS.py
 manual/SRV/: *pvsm, *blend, *svg for FIGs
 manual/VR/: *pvsm, *svg for FIGs
 manual/VE/: *blend, *svg for FIGs
@@ -13,16 +14,19 @@ manual/slices/: *svg for FIGs
 processing/: base dir for automatic processing
 processing/low_upp-bounds/: base dir for eval of low/upp bounds (tab:luB)
 processing/ana/: eval V,S @0.33um and @1.0um for tab:V tab:S
-processing/vid:sliced/: creation of vid:sliced
+processing/slides2stack/: creation of h3d.mha and h3d.mp4
 
 
 Actual build should be done outside source-tree:
 
+git clone https://github.com/romangrothausmann/h3d.git cap-net_build/
+git clone cap-net/ cap-net_build/
 rsync -avP cap-net/ cap-net_build/
 cd cap-net_build/
 
 
 worked:
+/opt/paraview-5.1.2_GL2/ (new default) now seems to yield check-sum-consistent renderings
 make PV=/opt/paraview-5.0.1_GL2/ -j6
 make PV=/opt/paraview-5.0.1_GL1/ -j6
 make PV=/opt/paraview-4.4.0/ -j6
@@ -34,6 +38,7 @@ not working:
 
 
 To merely create graphs of dependencies defined by the Makefiles:
+(deps to complex now for make2graph to work without errors)
 
 rsync -avP cap-net/ cap-net_graphs/
 cd cap-net_graphs/
