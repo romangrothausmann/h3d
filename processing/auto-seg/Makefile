@@ -23,7 +23,7 @@ ITK?=$(SUBMODDIR)/ITK-CLIs/
 export PATH:= $(ITK)/build:$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI file-series_writer mask mask-negated add thresh-glob distance_map_signed_maurer_f32 watershed_morph watershed_morph_nX+border-thr watershed_morph_nX_marker_float open_label-shape fill_holes erode_bin_morph open_bin_morph change_header keepNobj
+EXECUTABLES = file-series_reader_SDI file-series_writer_SDI mask mask-negated add thresh-glob distance_map_signed_maurer_f32 watershed_morph watershed_morph_nX+border-thr watershed_morph_nX_marker_float open_label-shape fill_holes erode_bin_morph open_bin_morph change_header keepNobj toUInt8
 
 
 K:= $(foreach exec,$(EXECUTABLES),\
@@ -46,8 +46,10 @@ autoSeg.done :
 #	@-rm -vr 
 
 clean :
-	@-rm -v autoSeg.done
+	@-rm -v autoSeg.done stderr.out
+	@-rm -v $(BASENAME).mha
 	@-rm -v $(BASENAME)_seg_T+B+a.mha
+	@-rm -v $(BASENAME)_2D*
 	@-rm -vr $(BASENAME)_slices/
 
 
@@ -64,7 +66,7 @@ $(BASENAME).mha : ../slides2stack/$(BASENAME).mha
 
 %_slices/ : %.mha
 	mkdir -pv $@
-	file-series_writer $< $@/$*_%04d.mha 1
+	file-series_writer_SDI $< $@/$*_%04d.mha 1
 
 $(BASENAME)_2D_wsmXbt+1+05+1+150.mha : | $(BASENAME)_slices/ # ToDo: order-only dep not ideal, replace with better deps
 	ls $(BASENAME)_slices/*.mha | \
@@ -87,12 +89,15 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1.mha : $(BASENAME)_2D_ws
 
 %@1.mha : %.mha
 	thresh-glob $< $@ 0  1 max 1
+	toUInt8 $@ $@ 0 # in case input is > 8bit, e.g. wsmXbt
 
 %@2.mha : %.mha
 	thresh-glob $< $@ 0  1 max 2
+	toUInt8 $@ $@ 0 # in case input is > 8bit, e.g. wsmXbt
 
 %@255.mha : %.mha
 	thresh-glob $< $@ 0  1 max # defaults to 255 
+	toUInt8 $@ $@ 0 # in case input is > 8bit, e.g. wsmXbt
 
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1@1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150@2.mha
 	add $^ $@ 0 # fiji: C->1 A->2: C+A: kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+300_C+A.mha
@@ -102,6 +107,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1.mha : $(BASENAME)_2D_wsm
 
 %_B.mha : %.mha
 	thresh-glob $< $@ 0  1 1
+	toUInt8 $@ $@ 0 # in case input is > 8bit, e.g. wsmXbt
 
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_B.mha
 	ln -sf $< $@ # thresh-glob kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1.mha kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C.mha 0  1 1
@@ -168,6 +174,7 @@ $(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_
 
 %_th+125.mha : %.mha
 	thresh-glob $< $@ 0  125 max # thresh-glob kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125.mha 0 125 max
+#	toUInt8 $@ $@ 0 # not needed, only used for h3d.mha
 
 %_kNo+1.mha : %.mha
 	keepNobj $< $@ 0  0 255 1 0 1 NumberOfPixels # keep_N_objects_01 kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125_kNo+1.mha 0 255 1 0 1 NumberOfPixels
