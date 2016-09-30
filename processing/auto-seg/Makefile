@@ -108,7 +108,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150@2_mask-B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150
 
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1@1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150@2_mask-B.mha
 	add $^ $@ 0 # fiji: C->1 A->2: if(v==3){v=1;}else{v=v;} C+A: kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+300_C+A.mha
-	stat_SDI $@ 100 > $@.stat
+#	stat_SDI $@ 100 > $@.stat
 
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1+0.mha # borderExtraWS used to be false <=> 0
 	ln -sf $< $@ # watershed_morph_nX_marker_float $^ $@ 0 1 1 0 # borderExtraWS used to be false <=> 0 # watershed_morph_nX_marker_float kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A.mhd kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1.mha 0 1 1
@@ -160,9 +160,9 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+B.mha : $(BASENAME)_2D_wsmXbt+1+05+1
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_mask-B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+B_fh+0.mha
 	mask-negated $^ $@ 0
 
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+B_fh+0.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_mask-B.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+B_fh+0@1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_mask-B@2.mha
 	add $^ $@ 0
-	stat_SDI $@ 100 > $@.stat #fiji: B: (kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+B_fh+0.mha) -> 1, A: (kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1.mha) -> 2, if(v==3){v=1;}else{v=v;} -> kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha
+#	stat_SDI $@ 100 > $@.stat #fiji: B: (kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+B_fh+0.mha) -> 1, A: (kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1.mha) -> 2, if(v==3){v=1;}else{v=v;} -> kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha
 
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha $(BASENAME)_th+125_kNo+1.mha
 	mask $^ $@ 0 # mask   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125_kNo+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1.mha  0
