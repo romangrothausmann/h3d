@@ -5,12 +5,13 @@
 
 
 #### ToDo:
-## link to slides2stack/hull_02-seg.mha instead of recreating
+## remove hull_00 creation
 ## change h3d_seg_T+B+a.mha to be ordered T@1, B@2, a@3 => adjust thresholds accordingly!
 ## check which .SERIAL prereq. can be done with less mem-usg e.g. SDI or other filter, e.g. paste_image, erode-dilate_dm
 ## split _raw and _sws dmc
 
 #### Done:
+## link to slides2stack/hull_02.* instead of recreating
 
 ## Replaced A+B+T/T+B+A by T+B+a, A+B/B+A by B+a; T = tissue, B = blood, V = veine, A = artery, a = air
 
@@ -117,17 +118,8 @@ $(BASENAME)_hu%_00.vtp $(BASENAME)_hu%_00.mha : $(BASENAME).mha # % only to forc
 		0         0        0                  0          0          -1         \
 		0         0        342.332            0          0          1
 
-$(BASENAME)_hu%_02.vtp $(BASENAME)_hu%_02.mha : $(BASENAME).mha 
-## move all sides slidly further in (~2-3µm) normal directions: 1.: +x; 2.: -x; 3.: -y; 4.: +y
-	touch $@.stime
-	hull $(BASENAME)_hull_02.vtp 0 0  $<  $(BASENAME)_hull_02.mha  0 \
-		820       574.062  -34                1.2191     -0.140661  -0.536829398293234  \
-		37        655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
-		-61.0851  224      -32.7672328973014  0.051673   -0.924611  -0.377391  \
-		-67.1372  974      -34.2000006437302  0.214026   0.905051   -0.367525  \
-		0         0        0                  0          0          -1         \
-		0         0        342.332            0          0          1
-
+$(BASENAME)_hull_02.% : slides2stack/hull_02.%
+	ln -sf $< $@
 
 $(BASENAME)_seg_B+a.mha : $(BASENAME)_seg_B@1.mha $(BASENAME)_seg_a@2.mha
 	touch $@.stime
