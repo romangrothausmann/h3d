@@ -7,6 +7,7 @@
 ## test -j6 and set .SERIAL for ws etc.
 ## clean-up
 ## optimize and remove redundencies
+### join mask-B rules
 
 #### Done:
 
@@ -117,6 +118,10 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1.mha : $(BASENAME)_2D_wsm
 	thresh-glob $< $@ 0  1 1
 	toUInt8 $@ $@ 0 # in case input is > 8bit, e.g. wsmXbt
 
+%_B@1.mha : %.mha # needs make 4.x
+	thresh-glob $< $@ 0  1 1 1
+#	toUInt8 $@ $@ 0 # in case input is > 8bit, e.g. wsmXbt
+
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_B.mha
 	ln -sf $< $@ # thresh-glob kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1.mha kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C.mha 0  1 1
 
@@ -214,7 +219,10 @@ $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_
 
 # BEGIN A+B:
 
-$(BASENAME)_A+B_wsmXm_A+B_rep00.mha : $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1.mha
+$(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha : $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha # also tested $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_a@2.mha, result differs more to kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B_rep01.mha than without _a@2
+	mask-negated $^ $@ 0
+
+$(BASENAME)_A+B_wsmXm_A+B_rep00.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha
 	add $^ $@ 0 # A from kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha # B from kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+2+1+0_masked_th+125_kNo+1.mha # -> kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B_rep00.mha
 
 $(BASENAME)_seg_T+B+a.mha : $(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha
