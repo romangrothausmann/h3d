@@ -5,7 +5,10 @@
 ## basic MF fully functional
 ## couple with processing/ and main MF
 ## test -j6 and set .SERIAL for ws etc.
+## add touch $@.stime
 ## clean-up
+### replace rep13 by rep00 in FNs (diverged from reference cap-net anyway since _rep13+tissue.mha due to different mask)
+### reduce FN complexity
 ## optimize and remove redundencies
 ### join mask-B rules
 
@@ -222,8 +225,22 @@ $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_
 $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha : $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha # also tested $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_a@2.mha, result differs more to kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B_rep01.mha than without _a@2
 	mask-negated $^ $@ 0
 
-$(BASENAME)_A+B_wsmXm_A+B_rep00.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha
+$(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha
 	add $^ $@ 0 # A from kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha # B from kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+2+1+0_masked_th+125_kNo+1.mha # -> kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm_A+B_rep00.mha
+
+### rule for manual creation of target
+# $(BASENAME)_A+B_wsmXm_A+B_rep00.mha : $(BASENAME).mha $(BASENAME)_A+B_wsmXm_A+B.mha # repair not based on another segmentation via CnJ
+# 	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # manual repair
+### rule to use manual created target
+$(BASENAME)_A+B_wsmXm_A+B_rep00.mha : ../../manual/processing/$(BASENAME)_A+B_wsmXm_A+B_rep13.mha
+	ln -sf $< $@
+
+$(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00.mha
+#	add_const $< $@ 0 1 # this would be the better way to get ordered T+B+a, however not done for consitency to earlier way
+	thresh-glob $< $@ 0 0 0 3; add $< $@ $@ 0 # instead of label_replace $< $@ 0  0 3 which is not available (yet)
+
+$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha ../slides2stack/hull_02-seg.mha
+	mask $^ $@ 0
 
 $(BASENAME)_seg_T+B+a.mha : $(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha
 	ln -sf $< $@
