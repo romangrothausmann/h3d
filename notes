@@ -48,3 +48,11 @@ make -t # creates dummy files to avoid: https://github.com/lindenb/makefile2grap
 make all.dot.svg all.neato.svg all.twopi.svg all.fdp.svg # total project
 cd manual/SRV/ && make all.dot.svg all.neato.svg all.twopi.svg all.fdp.svg # SRV sub-project
 
+
+versioning:
+
+major: drastical changes to files used in article (e.g. significant changes in table values or visible changes to images)
+minor: for changes that have an effect on checksums of files used in article (tables, figures, vidoes)
+micro: for changes that have no effect on checksums of files used in article
+
+1.0.0: stable creation of tables, figures (even VR with PV), vidoes (first submission)
