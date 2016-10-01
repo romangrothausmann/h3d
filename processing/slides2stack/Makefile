@@ -98,6 +98,7 @@ all : slides.done
 
 slides.done : $(BASENAME).mha $(BASENAME).mp4
 slides.done : $(BASENAME)_hull_02.mha hull.mha $(BASENAME)_hull_02.vtp hull.vtp
+slides.done : $(BASENAME)_hull_02-seg.mha mask.mha
 slides.done : MR3006g_OT2_b+64.svg MR3006g_OT2_s088_RGB_b+10.png MR3006g_OT2_s088_tra_b+10.png $(BASENAME)_OT2_s088_b+03.png # fig_slideOV
 slides.done :
 	touch $@
@@ -202,6 +203,13 @@ $(BASENAME)_hull_02.% : hull_02.%
 	ln -sf $< $@
 
 hull.% : $(BASENAME)_hull_02.% # general name
+	ln -sf $< $@
+
+.PRECIOUS: hull_02-seg.mha
+$(BASENAME)_hull_02-seg.mha : hull_02-seg.mha # name as used in ../processing/
+	ln -sf $< $@
+
+mask.mha : $(BASENAME)_hull_02-seg.mha # general name
 	ln -sf $< $@
 
 $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask should be after rsi
