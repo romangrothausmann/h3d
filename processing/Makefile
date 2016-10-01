@@ -381,10 +381,10 @@ $(BASENAME)_seg_B-fm.mha : $(BASENAME)_seg_B_obp+10+0_kNo+1@1_ADD_B_fm_ADD_seg_B
 	touch $@.stime
 	mask-negated $^ $@ 0
 
-h3d_hull_02-seg.mha : slides2stack/hull_02-seg.mha
+$(BASENAME)_hull_02-seg.mha : slides2stack/hull_02-seg.mha
 	ln -sf $< $@
 
-%+mask.mha : %_add+1.mha h3d_hull_02-seg.mha
+%+mask.mha : %_add+1.mha $(BASENAME)_hull_02-seg.mha
 	touch $@.stime
 	mask $^ $@ 0
 
