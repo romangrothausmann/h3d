@@ -97,6 +97,7 @@ BFmem=10g
 all : slides.done
 
 slides.done : $(BASENAME).mha $(BASENAME).mp4
+slides.done : $(BASENAME)_hull_02.mha hull.mha $(BASENAME)_hull_02.vtp hull.vtp
 slides.done : MR3006g_OT2_b+64.svg MR3006g_OT2_s088_RGB_b+10.png MR3006g_OT2_s088_tra_b+10.png $(BASENAME)_OT2_s088_b+03.png # fig_slideOV
 slides.done :
 	touch $@
@@ -195,6 +196,13 @@ hu%_02.vtp hu%_02.mha : ../../manual/processing/mask-seg.mha
 %_hull.mha : %.mha hull_02.mha
 	touch $@.stime
 	mask $^ $@ 0
+
+.PRECIOUS: hull_02.mha hull_02.vtp
+$(BASENAME)_hull_02.% : hull_02.%
+	ln -sf $< $@
+
+hull.% : $(BASENAME)_hull_02.% # general name
+	ln -sf $< $@
 
 $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask should be after rsi
 	ln -sf $< $@

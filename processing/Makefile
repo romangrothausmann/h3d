@@ -5,7 +5,7 @@
 
 
 #### ToDo:
-
+## link to slides2stack/hull_02-seg.mha instead of recreating
 ## change h3d_seg_T+B+a.mha to be ordered T@1, B@2, a@3 => adjust thresholds accordingly!
 ## check which .SERIAL prereq. can be done with less mem-usg e.g. SDI or other filter, e.g. paste_image, erode-dilate_dm
 ## split _raw and _sws dmc
