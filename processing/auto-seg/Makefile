@@ -2,6 +2,7 @@
 ##
 
 #### ToDo:
+## conditional use of manual or automatic results
 ## basic MF fully functional
 ## couple with processing/ and main MF
 ## test -j6 and set .SERIAL for ws etc.
@@ -58,6 +59,8 @@ clean :
 	@-rm -v $(BASENAME).mha
 	@-rm -v $(BASENAME)_seg_T+B+a.mha
 	@-rm -v $(BASENAME)_2D*
+	@-rm -v $(BASENAME)_A+B*
+	@-rm -v $(BASENAME)_th+125*
 	@-rm -vr $(BASENAME)_slices/
 
 
@@ -82,6 +85,13 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150.mha : | $(BASENAME)_slices/ # ToDo: order-only 
 	file-series_reader_SDI $@ $(BASENAME)_slices/*_wsmXbt+1+05+1+150.mha # file-series_reader_SDI kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_%04d_wsmXbt+1+05+1+150.mha kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150.mhd 0 1032 1032
 	change_header $@ $@ 0  0.331662 0.331662 0.331662 # z-spacing got lost with file-series_writer
 
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+3001+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150.mha
+	ls $(BASENAME)_slices/*_wsmXbt+1+05+1+150.mha | \
+		parallel --eta  -j24 open_label-shape {} {.}_ols+0+3001+0.mha 1  0 3001 0 NumberOfPixels "&>>stderr.out" # ls -1 kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_[0-9][0-9][0-9][0-9]_wsmXbt+1+05+1+150.mha | parallel --eta  -j24 ~/itk/simple_without-git/build_itk4_iana0/opening_by_label-shape_01 {} {.}_ols+0+3001+0.mha +0 +3001 +0 NumberOfPixels "&>>stderr.out"
+	file-series_reader_SDI $@ $(BASENAME)_slices/*_wsmXbt+1+05+1+150_ols+0+3001+0.mha # file-series_reader_SDI kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_%04d_wsmXbt+1+05+1+150_ols+0+3001+0.mha kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+0+3001+0.mha 0 1032 1032
+	change_header $@ $@ 0  0.331662 0.331662 0.331662 # z-spacing got lost with file-series_writer
+
+# END A:
 
 # BEGIN C:
 
@@ -107,10 +117,10 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1.mha : $(BASENAME)_2D_ws
 	thresh-glob $< $@ 0  1 max # defaults to 255 
 	toUInt8 $@ $@ 0 # in case input is > 8bit, e.g. wsmXbt
 
-$(BASENAME)_2D_wsmXbt+1+05+1+150@2_mask-B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150@2.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1@1.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+3001+0@2_mask-B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+3001+0@2.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1@1.mha
 	mask-negated $^ $@ 0
 
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1@1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150@2_mask-B.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1@1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+3001+0@2_mask-B.mha
 	add $^ $@ 0 # fiji: C->1 A->2: if(v==3){v=1;}else{v=v;} C+A: kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+300_C+A.mha
 #	stat_SDI $@ 100 > $@.stat
 
@@ -196,8 +206,6 @@ $(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_
 %_kNo+1.mha : %.mha
 	keepNobj $< $@ 0  0 255 1 0 1 NumberOfPixels # keep_N_objects_01 kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125_kNo+1.mha 0 255 1 0 1 NumberOfPixels
 
-# END A:
-
 
 # BEGIN B:
 
@@ -216,7 +224,7 @@ $(BASENAME)_A+B_wsmXm+2+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_
 
 # END B:
 
-$(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1.mha : %_masked_th+125_kNo+1.mha: %.mha $(BASENAME)_th+125_kNo+1.mha
+$(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1.mha : %_masked_th+125_kNo+1.mha : %.mha $(BASENAME)_th+125_kNo+1.mha
 	mask $^ $@ 0 # mask   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+1+1+0.mha    kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125_kNo+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha  0 # mask   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+2+1+0.mha    kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125_kNo+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+2+1+0_masked_th+125_kNo+1.mha  0
 
 
