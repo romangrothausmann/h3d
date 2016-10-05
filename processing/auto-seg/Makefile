@@ -196,6 +196,13 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1.mha : $(BA
 %_ebm+02+2.mha : %.mha
 	erode_bin_morph $< $@  0 2 2 # erode_bin_morph  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha 0 2 2  #erode A by 2, by 3 is too much
 
+### rule for manual creation of target
+# $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_lcc+0.mha
+# 	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # vglrun +xcb /opt/compilation/itksnap-src_build-v3.3.0+gdWS/ITK-SNAP -g kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   -s kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha   #CnJ with  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_lcc+0.mha  ->  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha
+### rule to use manual created target
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : ../../manual/processing/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg12.mha
+	ln -sf $< $@
+
 $(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+1+1+0.mha
 	ln -sf $< $@
 
@@ -212,15 +219,8 @@ $(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_
 
 # BEGIN B:
 
-### rule for manual creation of target
-# $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_lcc+0.mha
-# 	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # vglrun +xcb /opt/compilation/itksnap-src_build-v3.3.0+gdWS/ITK-SNAP -g kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   -s kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha   #CnJ with  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_lcc+0.mha  ->  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha
-### rule to use manual created target
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : ../../manual/processing/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg12.mha
-	ln -sf $< $@
-
 $(BASENAME)_A+B_wsmXm+2+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+2+1+0.mha
-	ln -sf $< $@ # watershed_morph_nX_marker_float  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+2+1+0.mha 0 2 1 0
+	ln -sf $< $@ # watershed_morph_nX_marker_float  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+2+1+0.mha 0 2 1 0 # T: 9:14:22, RAM: 141261896 # T: 7:35:21, RAM: 111032844
 
 %_wsmXm+2+1+0.mha : $(BASENAME).mha  %.mha
 	watershed_morph_nX_marker_float $^ $@  0 2 1 0 # watershed_morph_nX_marker_float  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+2+1+0.mha 0 2 1 0
