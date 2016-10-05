@@ -70,6 +70,12 @@ clean :
 %.gz : %
 	pigz -v -- $< 
 
+% :: %.bz2
+	pbzip2 -v -d -- $<
+
+%.bz2 : %
+	pbzip2 -v -- $< 
+
 $(BASENAME).mha : ../slides2stack/$(BASENAME).mha
 	ln -sf $< $@
 
@@ -167,7 +173,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm
 # $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1_masked_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha # using seg00 instead of seg17 for use of manual res.
 # 	$(VGLRUN) $(ITSNKAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # vglrun +xcb /opt/compilation/itksnap-src_build-v3.3.0+gdWS/ITK-SNAP -g kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha -s kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg00.mha   #CnJ with   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1_masked_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha  ->  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg17.mha
 ### rule to use manual created target
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg00.mha : ../../manual/processing/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg18.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg00.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg18.mha
 	ln -sf $< $@
 
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10_OR_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg00.mha
@@ -200,7 +206,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1.mha : $(BA
 # $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_lcc+0.mha
 # 	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # vglrun +xcb /opt/compilation/itksnap-src_build-v3.3.0+gdWS/ITK-SNAP -g kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   -s kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha   #CnJ with  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_lcc+0.mha  ->  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha
 ### rule to use manual created target
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : ../../manual/processing/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg12.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg12.mha
 	ln -sf $< $@
 
 $(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+1+1+0.mha
@@ -243,7 +249,7 @@ $(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_
 # $(BASENAME)_A+B_wsmXm_A+B_rep00.mha : $(BASENAME).mha $(BASENAME)_A+B_wsmXm_A+B.mha # repair not based on another segmentation via CnJ
 # 	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # manual repair
 ### rule to use manual created target
-$(BASENAME)_A+B_wsmXm_A+B_rep00.mha : ../../manual/processing/$(BASENAME)_A+B_wsmXm_A+B_rep13.mha
+$(BASENAME)_A+B_wsmXm_A+B_rep00.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13.mha
 	ln -sf $< $@
 
 $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00.mha
