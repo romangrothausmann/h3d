@@ -196,11 +196,11 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1.mha : $(BA
 %_ebm+02+2.mha : %.mha
 	erode_bin_morph $< $@  0 2 2 # erode_bin_morph  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha 0 2 2  #erode A by 2, by 3 is too much
 
-$(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_wsmXm+1+1+0.mha
+$(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+1+1+0.mha
 	ln -sf $< $@
 
 %_wsmXm+1+1+0.mha : $(BASENAME).mha %.mha
-	watershed_morph_nX_marker_float $^ $@  0 1 1 0 # watershed_morph_nX_marker_float  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+1+1+0.mha 0 1 1 0 # T: 5:38:15, RAM: 141263308
+	watershed_morph_nX_marker_float $^ $@  0 1 1 0 # watershed_morph_nX_marker_float  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha   kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha  kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_A+B_wsmXm+1+1+0.mha 0 1 1 0 # T: 5:38:15, RAM: 141263308
 
 %_th+125.mha : %.mha
 	thresh-glob $< $@ 0  125 max # thresh-glob kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1.mha kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1_th+125.mha 0 125 max
