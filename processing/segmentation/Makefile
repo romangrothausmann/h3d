@@ -6,7 +6,6 @@
 ## join last rep03 with rep13 -> rep14 then mask with mask.mha to create new _seg_T+B+a.mha
 ## couple with processing/ and main MF
 ## add touch $@.stime
-### replace rep13 by rep00 in FNs (diverged from reference cap-net anyway since _rep13+tissue.mha due to different mask)
 ### reduce FN complexity
 ## optimize and remove redundencies
 ### join mask-B rules
@@ -15,6 +14,7 @@
 ## basic MF fully functional
 ## tested -j6 no .SERIAL for ws necessary
 ## clean-up
+## replaced _rep13+tissue with +T
 
 
 
@@ -54,7 +54,7 @@ autoSeg.done : $(BASENAME)_seg_T+B+a.mha
 autoSeg.done : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg.lol
 autoSeg.done : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.lol
 autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B_msg.lol
-autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_msg.lol
+autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B+T_msg.lol
 autoSeg.done :
 	touch $@
 #	@-rm -vr 
@@ -246,13 +246,13 @@ $(BASENAME)_A+B_wsmXm_A+B_msg+T.mha : $(BASENAME)_A+B_wsmXm_A+B_msg.mha
 preMask.mha : $(BASENAME)_seg_T+B+a.mha
 	thresh-glob $< $@ 0 1 max
 
-$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue.mha : $(BASENAME)_A+B_wsmXm_A+B_msg+T.mha preMask.mha # B+a+T
+$(BASENAME)_A+B_wsmXm_A+B+T.mha : $(BASENAME)_A+B_wsmXm_A+B_msg+T.mha preMask.mha # B+a+T
 	mask $^ $@ 0
 
-$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_msg.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha # comp. to _A+B_wsmXm_A+B_rep13+tissue.mha only rep. of Bt obstruction and "landing platform"
+$(BASENAME)_A+B_wsmXm_A+B+T_msg.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha # comp. to _A+B_wsmXm_A+B+T.mha only rep. of Bt obstruction and "landing platform"
 	ln -sf $< $@
 
-$(BASENAME)_seg_T+B+a.mha : $(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_msg.mha
+$(BASENAME)_seg_T+B+a.mha : $(BASENAME)_A+B_wsmXm_A+B+T_msg.mha
 	ln -sf $< $@
 
 %_msg.lol : %.mha %_msg.mha
