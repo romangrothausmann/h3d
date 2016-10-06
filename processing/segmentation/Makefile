@@ -3,9 +3,8 @@
 
 #### ToDo:
 ## conditional use of manual or automatic results
-## basic MF fully functional
+## join last rep03 with rep13 -> rep14 then mask with mask.mha to create new _seg_T+B+a.mha
 ## couple with processing/ and main MF
-## test -j6 and set .SERIAL for ws etc.
 ## add touch $@.stime
 ## clean-up
 ### replace rep13 by rep00 in FNs (diverged from reference cap-net anyway since _rep13+tissue.mha due to different mask)
@@ -14,6 +13,8 @@
 ### join mask-B rules
 
 #### Done:
+## basic MF fully functional
+## tested -j6 no .SERIAL for ws necessary
 
 
 
@@ -256,10 +257,13 @@ $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00.mha
 #	add_const $< $@ 0 1 # this would be the better way to get ordered T+B+a, however not done for consitency to earlier way
 	thresh-glob $< $@ 0 0 0 3; add $< $@ $@ 0 # instead of label_replace $< $@ 0  0 3 which is not available (yet)
 
-$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha ../slides2stack/hull_02-seg.mha
+preMask.mha : $(BASENAME)_seg_T+B+a.mha
+	thresh-glob $< $@ 0 1 max
+
+$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha preMask.mha
 	mask $^ $@ 0
 
-$(BASENAME)_seg_T+B+a.mha : $(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha
+$(BASENAME)_seg_T+B+a.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha # comp. to _A+B_wsmXm_A+B_rep13+tissue.mha only rep. of Bt obstruction and "landing platform"
 	ln -sf $< $@
 
 
