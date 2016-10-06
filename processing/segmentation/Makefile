@@ -80,8 +80,6 @@ clean :
 $(BASENAME).mha : ../slides2stack/$(BASENAME).mha
 	ln -sf $< $@
 
-# BEGIN A:
-
 %_slices/ : %.mha
 	mkdir -pv $@
 	file-series_writer_SDI $< $@/$*_%04d.mha 1
@@ -92,25 +90,19 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150.mha : | $(BASENAME)_slices/ # ToDo: order-only 
 	file-series_reader_SDI $@ $(BASENAME)_slices/*_wsmXbt+1+05+1+150.mha
 	change_header $@ $@ 0  0.331662 0.331662 0.331662 # z-spacing got lost with file-series_writer
 
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+3001+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+3001+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150.mha # a
 	ls $(BASENAME)_slices/*_wsmXbt+1+05+1+150.mha | \
 		parallel --eta  -j24 open_label-shape {} {.}_ols+0+3001+0.mha 1  0 3001 0 NumberOfPixels "&>>stderr.out"
 	file-series_reader_SDI $@ $(BASENAME)_slices/*_wsmXbt+1+05+1+150_ols+0+3001+0.mha
 	change_header $@ $@ 0  0.331662 0.331662 0.331662 # z-spacing got lost with file-series_writer
 
-# END A:
-
-# BEGIN C:
-
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150.mha # C
 	ls $(BASENAME)_slices/*_wsmXbt+1+05+1+150.mha | \
 		parallel --eta  -j24 open_label-shape {} {.}_ols+0+09+0.mha   1  0    9 0 NumberOfPixels "&>>stderr.out"
 	ls $(BASENAME)_slices/*_wsmXbt+1+05+1+150_ols+0+09+0.mha | \
 		parallel --eta  -j24 open_label-shape {} {.}_ols+0+3000+1.mha 1  0 3000 1 NumberOfPixels "&>>stderr.out"
 	file-series_reader_SDI $@ $(BASENAME)_slices/*_wsmXbt+1+05+1+150_ols+0+09+0_ols+0+3000+1.mha
 	change_header $@ $@ 0  0.331662 0.331662 0.331662 # z-spacing got lost with file-series_writer
-
-# END C:
 
 %@1.mha : %.mha
 	thresh-glob $< $@ 0  1 max 1
@@ -206,11 +198,17 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1.mha : $(BA
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg12.mha
 	ln -sf $< $@
 
-$(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+1+1+0.mha
+$(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+1+1+0.mha # a
+	ln -sf $< $@
+
+$(BASENAME)_A+B_wsmXm+2+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+2+1+0.mha # B
 	ln -sf $< $@
 
 %_wsmXm+1+1+0.mha : $(BASENAME).mha %.mha
 	watershed_morph_nX_marker_float $^ $@  0 1 1 0
+
+%_wsmXm+2+1+0.mha : $(BASENAME).mha  %.mha
+	watershed_morph_nX_marker_float $^ $@  0 2 1 0
 
 %_th+125.mha : %.mha
 	thresh-glob $< $@ 0  125 max
@@ -218,16 +216,6 @@ $(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_
 
 %_kNo+1.mha : %.mha
 	keepNobj $< $@ 0  0 255 1 0 1 NumberOfPixels
-
-# BEGIN B:
-
-$(BASENAME)_A+B_wsmXm+2+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+2+1+0.mha
-	ln -sf $< $@
-
-%_wsmXm+2+1+0.mha : $(BASENAME).mha  %.mha
-	watershed_morph_nX_marker_float $^ $@  0 2 1 0
-
-# END B:
 
 $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1.mha : %_masked_th+125_kNo+1.mha : %.mha $(BASENAME)_th+125_kNo+1.mha
 	mask $^ $@ 0
@@ -237,7 +225,7 @@ $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_
 $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha : $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha
 	mask-negated $^ $@ 0
 
-$(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha
+$(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha # actual B+a
 	add $^ $@ 0
 
 ### rule for manual creation of target
@@ -254,7 +242,7 @@ $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00.mha
 preMask.mha : $(BASENAME)_seg_T+B+a.mha
 	thresh-glob $< $@ 0 1 max
 
-$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha preMask.mha
+$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha preMask.mha # B+a+T
 	mask $^ $@ 0
 
 $(BASENAME)_seg_T+B+a.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha # comp. to _A+B_wsmXm_A+B_rep13+tissue.mha only rep. of Bt obstruction and "landing platform"
