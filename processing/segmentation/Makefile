@@ -33,7 +33,7 @@ ITK?=$(SUBMODDIR)/ITK-CLIs/
 export PATH:= $(ITK)/build:$(PATH)
 
 
-EXECUTABLES = file-series_reader_SDI file-series_writer_SDI mask mask-negated add thresh-glob distance_map_signed_maurer_f32 watershed_morph watershed_morph_nX+border-thr watershed_morph_nX_marker_float open_label-shape fill_holes erode_bin_morph open_bin_morph change_header keepNobj toUInt8
+EXECUTABLES = file-series_reader_SDI file-series_writer_SDI mask mask-negated add thresh-glob distance_map_signed_maurer_f32 watershed_morph watershed_morph_nX+border-thr watershed_morph_nX_marker_float open_label-shape fill_holes erode_bin_morph open_bin_morph change_header keepNobj toUInt8 label_overlap
 
 
 K:= $(foreach exec,$(EXECUTABLES),\
@@ -51,6 +51,10 @@ BASENAME = h3d
 all : autoSeg.done
 
 autoSeg.done : $(BASENAME)_seg_T+B+a.mha
+autoSeg.done : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg.lol
+autoSeg.done : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.lol
+autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B_msg.lol
+autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_msg.lol
 autoSeg.done :
 	touch $@
 #	@-rm -vr 
@@ -160,13 +164,13 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm
 	mask $^ $@ 0
 
 ### rule for manual creation of target
-# $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1_masked_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha
+# $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1_masked_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha
 # 	$(VGLRUN) $(ITSNKAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # CnJ
 ### rule to use manual created target
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg00.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg18.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg18.mha
 	ln -sf $< $@
 
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10_OR_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg00.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10_OR_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.mha
 	add $^ $@ 0
 	thresh-glob $@ $@ 0 1 max 255 # as a replacement for OR
 
@@ -192,16 +196,16 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1.mha : $(BA
 	erode_bin_morph $< $@  0 2 2
 
 ### rule for manual creation of target
-# $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_lcc+0.mha
+# $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_lcc+0.mha
 # 	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # CnJ
 ### rule to use manual created target
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg12.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg12.mha
 	ln -sf $< $@
 
-$(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+1+1+0.mha # a
+$(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg_wsmXm+1+1+0.mha # a
 	ln -sf $< $@
 
-$(BASENAME)_A+B_wsmXm+2+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_seg00_wsmXm+2+1+0.mha # B
+$(BASENAME)_A+B_wsmXm+2+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg_wsmXm+2+1+0.mha # B
 	ln -sf $< $@
 
 %_wsmXm+1+1+0.mha : $(BASENAME).mha %.mha
@@ -229,25 +233,29 @@ $(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_
 	add $^ $@ 0
 
 ### rule for manual creation of target
-# $(BASENAME)_A+B_wsmXm_A+B_rep00.mha : $(BASENAME).mha $(BASENAME)_A+B_wsmXm_A+B.mha # repair not based on another segmentation via CnJ
+# $(BASENAME)_A+B_wsmXm_A+B_msg.mha : $(BASENAME).mha $(BASENAME)_A+B_wsmXm_A+B.mha # repair not based on another segmentation via CnJ
 # 	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # manual repair
 ### rule to use manual created target
-$(BASENAME)_A+B_wsmXm_A+B_rep00.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13.mha
+$(BASENAME)_A+B_wsmXm_A+B_msg.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13.mha
 	ln -sf $< $@
 
-$(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00.mha
+$(BASENAME)_A+B_wsmXm_A+B_msg+T.mha : $(BASENAME)_A+B_wsmXm_A+B_msg.mha
 #	add_const $< $@ 0 1 # this would be the better way to get ordered T+B+a, however not done for consitency to earlier way
 	thresh-glob $< $@ 0 0 0 3; add $< $@ $@ 0 # instead of label_replace $< $@ 0  0 3 which is not available (yet)
 
 preMask.mha : $(BASENAME)_seg_T+B+a.mha
 	thresh-glob $< $@ 0 1 max
 
-$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue.mha : $(BASENAME)_A+B_wsmXm_A+B_rep00+T.mha preMask.mha # B+a+T
+$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue.mha : $(BASENAME)_A+B_wsmXm_A+B_msg+T.mha preMask.mha # B+a+T
 	mask $^ $@ 0
 
-$(BASENAME)_seg_T+B+a.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha # comp. to _A+B_wsmXm_A+B_rep13+tissue.mha only rep. of Bt obstruction and "landing platform"
+$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_msg.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha # comp. to _A+B_wsmXm_A+B_rep13+tissue.mha only rep. of Bt obstruction and "landing platform"
 	ln -sf $< $@
 
+$(BASENAME)_seg_T+B+a.mha : $(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_msg.mha
+	ln -sf $< $@
 
+%_msg.lol : %.mha %_msg.mha
+	label_overlap $^ > $@
 
 .SECONDARY: 
