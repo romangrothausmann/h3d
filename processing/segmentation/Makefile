@@ -221,15 +221,12 @@ $(BASENAME)_A+B_wsmXm+2+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_
 %_kNo+1.mha : %.mha
 	keepNobj $< $@ 0  0 255 1 0 1 NumberOfPixels
 
-$(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1.mha : %_masked_th+125_kNo+1.mha : %.mha $(BASENAME)_th+125_kNo+1.mha
-	mask $^ $@ 0
-
 # BEGIN A+B:
 
-$(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha : $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha
+$(BASENAME)_A+B_wsmXm+1+1+0_mask-B.mha : $(BASENAME)_A+B_wsmXm+1+1+0.mha $(BASENAME)_A+B_wsmXm+2+1+0_B@1.mha
 	mask-negated $^ $@ 0
 
-$(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha # final B+a
+$(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_mask-B.mha # final B+a
 	add $^ $@ 0
 
 ### rule for manual creation of target
