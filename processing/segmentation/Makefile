@@ -53,7 +53,6 @@ all : autoSeg.done
 autoSeg.done : $(BASENAME)_seg_T+B+a.mha
 autoSeg.done : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg.lol
 autoSeg.done : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1_masked_obm+10+255_masked_th+125_kNo+1@1_msg.lol
-autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B_msg.lol
 autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B+T_msg.lol
 autoSeg.done :
 	touch $@
@@ -229,21 +228,14 @@ $(BASENAME)_A+B_wsmXm+1+1+0_mask-B.mha : $(BASENAME)_A+B_wsmXm+1+1+0.mha $(BASEN
 $(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_mask-B.mha # final B+a
 	add $^ $@ 0
 
-### rule for manual creation of target
-# $(BASENAME)_A+B_wsmXm_A+B_msg.mha : $(BASENAME).mha $(BASENAME)_A+B_wsmXm_A+B.mha # repair not based on another segmentation via CnJ
-# 	$(VGLRUN) $(ITKSNAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # manual repair
-### rule to use manual created target
-$(BASENAME)_A+B_wsmXm_A+B_msg.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13.mha
-	ln -sf $< $@
-
-$(BASENAME)_A+B_wsmXm_A+B_msg+T.mha : $(BASENAME)_A+B_wsmXm_A+B_msg.mha
+$(BASENAME)_A+B_wsmXm_A+B_T.mha : $(BASENAME)_A+B_wsmXm_A+B.mha
 #	add_const $< $@ 0 1 # this would be the better way to get ordered T+B+a, however not done for consitency to earlier way
 	thresh-glob $< $@ 0 0 0 3; add $< $@ $@ 0 # instead of label_replace $< $@ 0  0 3 which is not available (yet)
 
 preMask.mha : $(BASENAME)_seg_T+B+a.mha
 	thresh-glob $< $@ 0 1 max
 
-$(BASENAME)_A+B_wsmXm_A+B+T.mha : $(BASENAME)_A+B_wsmXm_A+B_msg+T.mha preMask.mha # B+a+T
+$(BASENAME)_A+B_wsmXm_A+B+T.mha : $(BASENAME)_A+B_wsmXm_A+B_T.mha preMask.mha # B+a+T
 	mask $^ $@ 0
 
 $(BASENAME)_A+B_wsmXm_A+B+T_msg.mha : ../../manual/correction/$(BASENAME)_A+B_wsmXm_A+B_rep13+tissue_mask_Bt_corrected-mask_rep03.mha # comp. to _A+B_wsmXm_A+B+T.mha only rep. of Bt obstruction and "landing platform"
