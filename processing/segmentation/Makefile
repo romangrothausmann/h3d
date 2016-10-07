@@ -183,7 +183,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+B.mha : $(BASENAME)_2D_wsmXbt+1+05+1
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_mask-B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+B_fh+0.mha
 	mask-negated $^ $@ 0
 
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+B_fh+0@1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_mask-B@2.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+B_fh+0@1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_mask-B@2.mha # pre B+a
 	add $^ $@ 0
 
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B.mha $(BASENAME)_th+125_kNo+1.mha
@@ -229,7 +229,7 @@ $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_
 $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha : $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1.mha $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha
 	mask-negated $^ $@ 0
 
-$(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha # actual B+a
+$(BASENAME)_A+B_wsmXm_A+B.mha : $(BASENAME)_A+B_wsmXm+2+1+0_masked_th+125_kNo+1_B@1.mha $(BASENAME)_A+B_wsmXm+1+1+0_masked_th+125_kNo+1_mask-B.mha # final B+a
 	add $^ $@ 0
 
 ### rule for manual creation of target
