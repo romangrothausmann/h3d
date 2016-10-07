@@ -677,22 +677,22 @@ $(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B_ROI900.mha $(BASENAME)_seg_a45_ed+
 
 %_kNo+1+0+1.mha : %.mha
 	touch $@.stime
-	keepNobj $< $@ 0 1 0 1 0 1 NumberOfPixels
+	keepNobj $< $@ 1  1 0 1 0 1 NumberOfPixels # using compression, only ment for <= ROI900
 
 ### rule for manual creation of target
 # $(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.mha : $(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1.mha
 # 	$(VGLRUN) $(ITSNKAPDIR)/ITK-SNAP -g $(BASENAME)_ROI900.mha -s $< -S $@ # adaptive brush to add ery
 ### rule to use manual created target
-$(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.mha : ../manual/correction/$(BASENAME)_seg_B@a45.mha # _ery09_th+1_fh+0_m+1_th+127_kNo+1.mha @1
+$(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.mha : ../manual/correction/$(BASENAME)_seg_B@a45.mha # _ery09.mha B@1, ery@2
 	ln -sf $< $@
 
-$(BASENAME)_seg_B@a45_msg.mha : $(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.mha
-	ln -sf $< $@
+%_fh+0.mha : %.mha
+	fill_holes $< $@ 0 0
 
-%_msg.lol : %.mha %_msg.mha
+$(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.lol : %_msg.lol : %.mha %_msg@1.mha # @1 because source has ery@2
 	label_overlap $^ > $@
 
-$(BASENAME)_seg_B@a45+mask.mha : $(BASENAME)_seg_B@a45_msg_add+1.mha $(BASENAME)_seg_a45_ed+60.mha
+$(BASENAME)_seg_B@a45+mask.mha : $(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg@255_fh+0_m+1_th+127@1_kNo+1+0+1_add+1.mha $(BASENAME)_seg_a45_ed+60.mha
 	touch $@.stime
 	mask $^ $@ 0
 
