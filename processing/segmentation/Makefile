@@ -160,17 +160,17 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_mask
 %_wsm+02+1+1.mha : %.mha
 	watershed_morph $< $@ 0 02 1 1 # T: 10:11:22, RAM: 219818144
 
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255.mha # wsm masked by A+V+a
 	mask $^ $@ 0
 
 ### rule for manual creation of target
 # $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1_masked_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha
 # 	$(VGLRUN) $(ITSNKAPDIR)/ITK-SNAP -g $< -s $(word 2 $^) # CnJ
 ### rule to use manual created target
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg18.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.mha : ../../manual/correction/$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_seg18.mha # A+V (no C)
 	ln -sf $< $@
 
-$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10_OR_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.mha
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10_OR_seg00.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C_masked_C+A_fh+0_obm+10.mha  $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_dmsm_wsm+02+1+1_masked_C+A_fh+0_obm+10_msg.mha # C || A+V
 	add $^ $@ 0
 	thresh-glob $@ $@ 0 1 max 255 # as a replacement for OR
 
