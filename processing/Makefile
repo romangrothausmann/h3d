@@ -65,7 +65,7 @@ all : $(BASENAME).mha # from slides2stack/
 all : $(BASENAME)_seg_T+B+a.mha # from segmentation/
 
 ## local "targets" (of this MF)
-all : (BASENAME)_seg_B@a45_msg.lol # not in segmentation because a45 rules are here
+all : $(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.lol # not in segmentation because a45 rules are here
 all : slices.done # manual/slices/
 all : ana.done # processing/ana/
 all : luBounds.done # processing/low_upp-bounds/
@@ -667,15 +667,26 @@ $(BASENAME)_seg_a45.vtp : $(BASENAME)_seg_Alv.vtp
 	touch $@.stime
 	threshold  $< $@  0 1 Scalars_ 46 46 1 # label is stored as cell data, AllScalars does not matter for cell data
 
-%_ed+15.mha : %.mha
+%_ed+15+1.mha : %.mha
 	touch $@.stime
-	erode-dilate_dm_f32 $< $@ 0 15 0
+	erode-dilate_dm_f32 $< $@ 0 15 1 # use image spacing, i.e. 15um
 
-$(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B@1_ROI900.mha $(BASENAME)_seg_a45_ed+15.mha
+$(BASENAME)_seg_B@a45.mha : $(BASENAME)_seg_B_ROI900.mha $(BASENAME)_seg_a45_ed+15+1.mha
 	touch $@.stime
 	mask $^ $@ 0
 
-$(BASENAME)_seg_B@a45_msg.mha : ../manual/correction/$(BASENAME)_seg_B@a45.mha
+%_kNo+1+0+1.mha : %.mha
+	touch $@.stime
+	keepNobj $< $@ 0 1 0 1 0 1 NumberOfPixels
+
+### rule for manual creation of target
+# $(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.mha : $(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1.mha
+# 	$(VGLRUN) $(ITSNKAPDIR)/ITK-SNAP -g $(BASENAME)_ROI900.mha -s $< -S $@ # adaptive brush to add ery
+### rule to use manual created target
+$(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.mha : ../manual/correction/$(BASENAME)_seg_B@a45.mha # _ery09_th+1_fh+0_m+1_th+127_kNo+1.mha @1
+	ln -sf $< $@
+
+$(BASENAME)_seg_B@a45_msg.mha : $(BASENAME)_seg_B@a45_m+1_th+127@1_kNo+1+0+1_msg.mha
 	ln -sf $< $@
 
 %_msg.lol : %.mha %_msg.mha
