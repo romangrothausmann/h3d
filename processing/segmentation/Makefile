@@ -60,7 +60,7 @@ autoSeg.done :
 #	@-rm -vr 
 
 clean :
-	@-rm -v autoSeg.done stderr.out
+	@-rm -v autoSeg.done stderr.out preMask.mha
 	@-rm -v $(BASENAME).mha
 	@-rm -v $(BASENAME)_seg_T+B+a.mha
 	@-rm -v $(BASENAME)_2D*
@@ -155,7 +155,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_mask
 	mask $^ $@ 0
 
 %_dmsm.mha : %.mha
-	distance_map_signed_maurer_f32 $< $@ 0 0 0
+	distance_map_signed_maurer_f32 $< $@ 0 0 1 # orig version of dmsm used image-spacing by default!
 
 %_wsm+02+1+1.mha : %.mha
 	watershed_morph $< $@ 0 02 1 1 # T: 10:11:22, RAM: 219818144
