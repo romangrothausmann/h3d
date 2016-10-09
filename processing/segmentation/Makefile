@@ -76,7 +76,7 @@ clean :
 	pigz -v -- $< 
 
 % :: %.bz2
-	pbzip2 -v -d -- $<
+	pbzip2 -v -d -- $< # no -f to force failure of MF because there should be no *.bz2 if it alreay has been decompressed, if it got copied over again, this leads to extra and unnecessary dependencies!
 
 %.bz2 : %
 	pbzip2 -v -- $< 
@@ -129,6 +129,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A.mha : $(BASENAME)_2D_wsmXbt+1+05+1
 %_wsmXm+1+1+0+0.mha : $(BASENAME).mha %.mha
 	watershed_morph_nX_marker_float $^ $@  0 1 1 0  0 # optional 0 for compat. to earlier version
 
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1+0+0.mha : | $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg_wsmXm+2+1+0.mha # just to avoid parallel execution of wsmXm with other jobs
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1+0+0.mha # borderExtraWS used to be false <=> 0
 	ln -sf $< $@
 
@@ -160,6 +161,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_mask
 %_wsm+02+1+1.mha : %.mha
 	watershed_morph $< $@ 0 02 1 1 # T: 10:11:22, RAM: 219818144
 
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha : | $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1+0+0.mha # just to avoid parallel execution of wsmXm with other jobs
 $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1_masked_obm+10+255_masked_th+125_kNo+1.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1.mha # wsm masked by A+V+a # FN base of orig. target wrong (extra _dmsm_wsm+02+1+1 at FN end)
 	mask $^ $@ 0
 
@@ -205,6 +207,7 @@ $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_e
 $(BASENAME)_A+B_wsmXm+1+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg_wsmXm+1+1+0.mha # a
 	ln -sf $< $@
 
+$(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg_wsmXm+2+1+0.mha : | $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg_wsmXm+1+1+0.mha # just to avoid parallel execution of wsmXm with other jobs
 $(BASENAME)_A+B_wsmXm+2+1+0.mha : $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_obm_A+B_masked_th+125_kNo+1_ebm+01+1_ebm+02+2_msg_wsmXm+2+1+0.mha # B
 	ln -sf $< $@
 
@@ -259,3 +262,5 @@ $(BASENAME)_seg_T+B+a.mha : $(BASENAME)_A+B_wsmXm_A+B+T_msg.mha
 	label_overlap $^ > $@
 
 .SECONDARY: 
+
+.SERIAL: $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha
