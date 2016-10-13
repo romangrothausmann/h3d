@@ -12,6 +12,7 @@ manual/VE/: *blend, *svg for FIGs
 manual/slices/: *svg for FIGs
 
 processing/: base dir for automatic processing
+processing/segmentation/: base dir for automatic segmentation
 processing/low_upp-bounds/: base dir for eval of low/upp bounds (tab:luB)
 processing/ana/: eval V,S @0.33um and @1.0um for tab:V tab:S
 processing/slides2stack/: creation of h3d.mha and h3d.mp4
