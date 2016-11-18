@@ -56,4 +56,5 @@ major: drastical changes to files used in article (e.g. significant changes in t
 minor: for changes that have an effect on checksums of files used in article (tables, figures, vidoes)
 micro: for changes that have no effect on checksums of files used in article
 
-1.0.0: stable creation of tables, figures (even VR with PV), vidoes (first submission)
+0.9.0: stable creation of tables, figures (even VR with PV), vidoes (first submission)
+1.0.0: integrated automatic segementation, all phases working
