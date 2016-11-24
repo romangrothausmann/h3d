@@ -106,6 +106,12 @@ slices.done ana.done luBounds.done VR.done SRV.done VE.done:
 	pigz -v -- $< 
 
 
+$(BASENAME).mha : slides2stack/$(BASENAME).mha
+	ln -sf $< $@
+
+$(BASENAME)_seg_T+B+a.mha : segmentation/$(BASENAME)_seg_T+B+a.mha
+	ln -sf $< $@
+
 
 $(BASENAME)_rsi+1+1.0.mha : $(BASENAME).mha
 	touch $@.stime

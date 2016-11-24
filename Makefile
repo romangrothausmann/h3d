@@ -111,7 +111,7 @@ intTools :
 # processing/%.done : # causes rule to execute as many times as there are *.done !!!
 # %.done : | processing/ # as processing/ already exists this will never execute a recipe
 #	touch $@
-%slices.done %ana.done %luBounds.done %VR.done %SRV.done %VE.done : %slides2stack/slides.done # this way rule will only be executed once for all listed *.done
+%slices.done %ana.done %luBounds.done %VR.done %SRV.done %VE.done : %segmentation/autoSeg.done # this way rule will only be executed once for all listed *.done
 	/usr/bin/time -v -o processing/timing \
 	   $(MAKE) -C processing/ all # uses its own .SERIAL
 	touch processing/compressing.stime
@@ -122,6 +122,8 @@ intTools :
 
 
 processing/slides2stack/slides.done : | base/base.done # order only dep on base.done to prevent reexec of slides.done # prereq dep does not work with phony target, why?
+
+processing/segmentation/autoSeg.done : processing/slides2stack/slides.done
 
 manual/slices/ : processing/slices.done
 
@@ -144,8 +146,8 @@ video : processing/ana/ processing/low_upp-bounds/ manual/slices/ manual/VR/ man
 	   $(MAKE) -C manual/VE/  video
 
 
-$(SUBDIRS) processing/slides2stack/slides.don base/base.done : intTools
-$(SUBDIRS) article/latex/images/ article/latex/tables/ base/base.done processing/slides2stack/slides.done :
+$(SUBDIRS) processing/segmentation/autoSeg.done processing/slides2stack/slides.done base/base.done : | intTools # order only dep to prevent reexec
+$(SUBDIRS) article/latex/images/ article/latex/tables/ base/base.done processing/slides2stack/slides.done processing/segmentation/autoSeg.done :
 	/usr/bin/time -v -o $(dir $@)timing \
 	   $(MAKE) -C $(dir $@)
 
