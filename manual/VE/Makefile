@@ -1,12 +1,20 @@
 
+### setting default paths of external programs
+BLENDER?=/opt/blender-2.76b
+
+
 SHELL:= /bin/bash
+
+
+export PATH:= $(BLENDER):$(PATH)
+
+
 
 ## run IM tools without setting cration and modification date (or -strip) to avoid changes in PNGs that are not visual: http://stackoverflow.com/questions/13577280/getting-imagemagick-convert-to-not-write-out-extra-info
 ## some bug now needs even more default options: http://unix.stackexchange.com/questions/255252/create-the-same-png-with-imagemagick-2-times-binaries-differ#255256
 convertIM:= convert -define png:exclude-chunks=date,time +set date:create +set date:modify
 mogrifyIM:= mogrify -define png:exclude-chunks=date,time +set date:create +set date:modify
 
-BASENAME = kap-net_histo_reg_8bit_rep_smROISBS_masked_m+3+3_rsi+1
 
 
 fig_ov01_PNGs= $(shell echo fig_ov01_{1..6}.png)
@@ -38,9 +46,13 @@ video : A2V.mp4 Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4 A2V-reversed.mp4
 ACN-Arz.blend : ACN-Arz_0.blend ACN-Arz_1.blend ACN-Arz_2.blend ACN-Arz_3.blend
 
 A2V.blend A2V-reversed.blend : A+V+ACN-path_dec.blend
-fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend A2V.blend A2V-reversed.blend fig_A2V.blend : A+V+ACN-path.blend
-fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend ACN-Bt.blend
+fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend A2V.blend A2V-reversed.blend fig_A2V.blend cover.blend : A+V+ACN-path.blend
+fig_ov01.blend V2A_ov.blend Bt2A45.blend A452Bt.blend cover.blend : A.blend V.blend Bt.blend Arz.blend Arz_dec.blend ACN-Arz.blend ACN-Bt.blend
 Bt2A45.blend V2A_ov.blend A452Bt.blend : ACN-a45.blend
+cover.blend : h3d_rsi+1+1.0.raw
+
+%.mhd %.raw : ../../processing/%.mha
+	file_converter $< $*.mhd 0
 
 A2V-reversed.mp4 : A2V.mp4 Bt2A45.mp4 V2A_ov.mp4 A452Bt.mp4 # make A2V-reversed.mp4 after all others
 
@@ -97,6 +109,11 @@ fig_ov01.svg : $(fig_ov01_PNGs)
 	@echo "changed files: " $?
 	touch $@
 
+
+cover.png : cover.blend
+	touch $@.stime
+	blender -b $< -o $(basename $@)_######.png -noaudio -F PNG -f 1 # -o $@ does not work
+	mv -f $(basename $@)_000001.png $@ # remove frame number ending
 
 fig_A2V/ :
 	+mkdir -p $@
