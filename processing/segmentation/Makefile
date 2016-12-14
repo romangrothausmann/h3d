@@ -57,7 +57,7 @@ autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B_msg.lol
 autoSeg.done : $(BASENAME)_A+B_wsmXm_A+B+T_msg.lol
 autoSeg.done :
 	touch $@
-#	@-rm -vr 
+	@-rm -vr !(Makefile|h3d_seg_T+B+a.mha|h3d_A+B_wsmXm_A+B+T_msg.mha|autoSeg.done|*.lol) # http://stackoverflow.com/questions/8525437/list-files-not-matching-a-pattern#12265662
 
 clean :
 	@-rm -v autoSeg.done stderr.out preMask.mha
@@ -261,6 +261,7 @@ $(BASENAME)_seg_T+B+a.mha : $(BASENAME)_A+B_wsmXm_A+B+T_msg.mha
 %_msg.lol : %.mha %_msg.mha
 	label_overlap $^ > $@
 
-.SECONDARY: 
+# .SECONDARY:
+.PRECIOUS: $(BASENAME)_A+B_wsmXm_A+B+T_msg.mha
 
 .SERIAL: $(BASENAME)_2D_wsmXbt+1+05+1+150_ols+3000_C+A_wsmXm+1+1_C+A_fh+0_obm+10+255_masked_th+125_kNo+1_dmsm_wsm+02+1+1.mha
