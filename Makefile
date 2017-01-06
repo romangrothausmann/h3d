@@ -13,6 +13,7 @@ PV?=/opt/paraview-5.1.2_GL2/
 ## 64-bit enabled octave:
 OCTAVE?=/opt/octave-4.0.0
 BF?=/opt/bio-format_CLIs/
+IJ?=/opt/fiji/Fiji.app/
 MP?=/opt/mplayer-1.3.0/
 MAKE2GV?=/opt/makefile2graph
 
@@ -39,6 +40,7 @@ export PATH:= $(BLENDER):$(PATH)
 export PATH:= $(PV)/bin:$(PATH)
 export PATH:= $(OCTAVE)/bin:$(PATH)
 export PATH:= $(BF):$(PATH)
+export PATH:= $(IJ):$(PATH)
 export PATH:= $(MP)/bin:$(PATH)
 export PATH:= $(MAKE2GV)/bin:$(PATH)
 
@@ -54,8 +56,13 @@ EXECUTABLES+= pvpython
 EXECUTABLES+= octave
 EXECUTABLES+= gnuplot
 EXECUTABLES+= bfconvert
+EXECUTABLES+= ImageJ-linux64
+EXECUTABLES+= parallel
 EXECUTABLES+= mencoder
 EXECUTABLES+= make2graph
+EXECUTABLES+= unpigz
+EXECUTABLES+= pbzip2
+EXECUTABLES+= mmv
 EXECUTABLES+= $(VGLRUN)
 
 K:= $(foreach exec,$(EXECUTABLES),\
