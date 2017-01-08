@@ -18,7 +18,7 @@
 
 
 
-SHELL:= /bin/bash
+SHELL:= /bin/bash -O extglob
 GVmake=$(MAKE) #any line with $(MAKE) gets exectued even with -n, GVmake should merely be used for makefile-visualization to avoid its execution with -n
 
 SUBMODDIR?=../../submodules/

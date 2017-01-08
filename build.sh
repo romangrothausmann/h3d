@@ -7,7 +7,7 @@
 #      `free | awk '{if ($1 ~ /Mem:/) t=$2 } $2 ~ /buffers/ { print $4*100/t }'` # http://serverfault.com/questions/38065/how-to-get-memory-usage-with-vmstat
 ## start logging CPU and RAM usage with top
 top -b -d 2 \
-    | awk ' {if ($3 ~ /..:..:../) "date -d "$3" +%s" | getline T } # pipe time to date within awk: http://stackoverflow.com/questions/20646819/how-can-i-pass-variables-from-awk-to-a-shell-command#34420667 \
+    | gawk ' {if ($3 ~ /..:..:../) "date -d "$3" +%s" | getline T } # pipe time to date within awk (needs gawk!): http://stackoverflow.com/questions/20646819/how-can-i-pass-variables-from-awk-to-a-shell-command#34420667 \
             {if ($1 ~ /%Cpu/) c=$8 } \
             {if ($0 ~ /iB Mem:/) {t=$3; u=$5;}} \
             {if ($0 ~ /iB Swap:/) s=$9} \
