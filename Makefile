@@ -12,7 +12,9 @@ BLENDER?=/opt/blender-2.76b
 PV?=/opt/paraview-5.1.2_GL2/
 ## 64-bit enabled octave:
 OCTAVE?=/opt/octave-4.0.0
+## bio-format_CLIs-5.1.8
 BF?=/opt/bio-format_CLIs/
+## Fiji.app-160229/
 IJ?=/opt/fiji/Fiji.app/
 MP?=/opt/mplayer-1.3.0/
 MAKE2GV?=/opt/makefile2graph
