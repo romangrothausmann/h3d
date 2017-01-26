@@ -17,6 +17,7 @@ BF?=/opt/bio-format_CLIs/
 ## Fiji.app-160229/
 IJ?=/opt/fiji/Fiji.app/
 MP?=/opt/mplayer-1.3.0/
+FF?=/opt/ffmpeg-3.2.2/
 MAKE2GV?=/opt/makefile2graph
 
 ## vglrun < 2.4 might need +xcb parameter
@@ -44,6 +45,7 @@ export PATH:= $(OCTAVE)/bin:$(PATH)
 export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 export PATH:= $(MP)/bin:$(PATH)
+export PATH:= $(FF)/bin:$(PATH)
 export PATH:= $(MAKE2GV)/bin:$(PATH)
 
 
@@ -61,6 +63,7 @@ EXECUTABLES+= bfconvert
 EXECUTABLES+= ImageJ-linux64
 EXECUTABLES+= parallel
 EXECUTABLES+= mencoder
+EXECUTABLES+= ffmpeg
 EXECUTABLES+= make2graph
 EXECUTABLES+= unpigz
 EXECUTABLES+= pbzip2

@@ -39,6 +39,7 @@ VTK?=$(SUBMODDIR)/VTK-CLIs/
 BF?=/opt/bio-format_CLIs/
 IJ?=/opt/fiji/Fiji.app/
 MP?=/opt/mplayer-1.3.0/
+FF?=/opt/ffmpeg-3.2.2/
 
 
 
@@ -47,6 +48,7 @@ export PATH:= $(VTK)/build:$(PATH)
 export PATH:= $(BF):$(PATH)
 export PATH:= $(IJ):$(PATH)
 export PATH:= $(MP)/bin:$(PATH)
+export PATH:= $(FF)/bin:$(PATH)
 
 
 EXECUTABLES = file-series_reader_SDI tile subimage_extract paste_image std-mean_ROI_SBS median resample-iso hull mask-negated mask bin slice change_header
@@ -56,6 +58,7 @@ EXECUTABLES+= ImageJ-linux64
 EXECUTABLES+= gnuplot
 EXECUTABLES+= parallel
 EXECUTABLES+= mencoder
+EXECUTABLES+= ffmpeg
 
 
 K:= $(foreach exec,$(EXECUTABLES),\
@@ -224,7 +227,9 @@ $(BASENAME)%mhd $(BASENAME)%raw : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_hu
 
 %.mp4 : %.raw %.2pass.log %.2pass.log.mbtree
 	touch $@.stime
-	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o $@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log
+	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log
+
+	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
 # MR3006g_OT1.png : %.png : %.tif ## as tile cannot stream (so far) insufficient RAM without binning
 MR3006g_OT1_b+64.png MR3006g_OT2_b+64.png : %_b+64.png : %.tif

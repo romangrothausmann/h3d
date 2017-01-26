@@ -59,7 +59,9 @@ A452Bt/render%.png : ../A452Bt/render%.png
 
 %.mp4 : %.flist %.2pass.log %.2pass.log.mbtree
 	touch $@.stime
-	mencoder mf://@$< -o $@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=3000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log
+	mencoder mf://@$< -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=3000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log
+
+	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
 
 # %.mpg : %.flist

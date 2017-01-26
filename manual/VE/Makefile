@@ -89,8 +89,10 @@ Bt2A45/render_000000.png : Bt2A45.blend # 000000 not replaced by % to avoid mult
 	$(SUBDIR)/blender/blender-multi $< $(dir $@)    0 4600 4
 
 %.mp4 : %/render_000000.png
-	mencoder mf://$*/*.png -o $*/$@  -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=3000:threads=auto:pass=1  -fps 25 && \
-	mencoder mf://$*/*.png -o $*/$@  -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=3000:threads=auto:pass=2  -fps 25
+	mencoder mf://$*/*.png -o $*/_$@  -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=3000:threads=auto:pass=1  -fps 25 && \
+	mencoder mf://$*/*.png -o $*/_$@  -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=3000:threads=auto:pass=2  -fps 25
+
+	ffmpeg -y -i $*/_$@ -vcodec copy -acodec copy -movflags +faststart $*/$@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
 	ln -sf $*/$@ .
 	rm divx2pass.log divx2pass.log.mbtree
