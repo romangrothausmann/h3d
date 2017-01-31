@@ -53,8 +53,8 @@ A452Bt/render%.png : ../A452Bt/render%.png
 	+sed -i 's/ /\n/g' $@
 	@echo $@ created
 
-%.ass : ../../processing/default.ass
-	ln -sf $< $@
+# %.ass : ../../processing/default.ass
+# 	ln -sf $< $@
 
 %.mp4.1p %.2pass.log %.2pass.log.mbtree : %.flist $(Fall)
 	touch $@.stime
