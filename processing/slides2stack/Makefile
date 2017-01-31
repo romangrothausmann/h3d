@@ -221,13 +221,16 @@ $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask sh
 $(BASENAME)%mhd $(BASENAME)%raw : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_hull.mha
 	file_converter $< $(basename $@).mhd 0
 
+%.ass : ../../manual/processing/default.ass
+	ln -sf $< $@
+
 %.mp4.1p %.2pass.log %.2pass.log.mbtree : %.raw
 	touch $@.stime
 	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o $*.mp4.1p -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=1  -fps 25 -passlogfile $*.2pass.log
 
-%.mp4 : %.raw %.2pass.log %.2pass.log.mbtree
+%.mp4 : %.raw %.2pass.log %.2pass.log.mbtree %.ass
 	touch $@.stime
-	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log
+	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log -ass -sub $*.ass
 
 	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
