@@ -178,10 +178,12 @@ $(BASENAME)_raw_rep.mha : $(BASENAME)_raw.mha $(REPIMGs)
 	touch $@.stime
 	resample-iso $< $@ 0 1 # 0.11;0.11;1.0 => 0.331662; resample-iso specific for 
 
+hu%_01.vtp hu%_01.mha : $(BASENAME)_raw.mha
 hu%_02.vtp hu%_02.mha : ../../manual/processing/mask-seg.mha
+hu%.vtp hu%.mha : 
 ## move all sides slidly further in (~2-3µm) normal directions: 1.: +x; 2.: -x; 3.: -y; 4.: +y
 	touch $@.stime
-	hull hull_02.vtp 0 0  $<  hull_02.mha  0 \
+	hull $(basenmae $@).vtp 0 0  $<  $(basenmae $@).mha  0 \
 		820       574.062  -34                1.2191     -0.140661  -0.536829398293234  \
 		37        655.467  315.587743993803   -0.912432  0.0870706  -0.399858  \
 		-61.0851  224      -32.7672328973014  0.051673   -0.924611  -0.377391  \
@@ -216,6 +218,13 @@ mask.mha : $(BASENAME)_hull_02-seg.mha # general name
 	ln -sf $< $@
 
 $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask should be after rsi
+	ln -sf $< $@
+
+%_rsi+1+1.0.mha : %.mha
+	touch $@.stime
+	resample $< $@ 0 1 1.0 1.0 1.0
+
+$(BASENAME)@1um.mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1+1.0_mask.mha # mask should be after rsi
 	ln -sf $< $@
 
 $(BASENAME)%mhd $(BASENAME)%raw : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_hull.mha
