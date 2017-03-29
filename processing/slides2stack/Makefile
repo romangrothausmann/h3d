@@ -99,6 +99,8 @@ BFmem=10g
 
 all : slides.done
 
+intussus : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI01.mp4  $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI02.mp4
+
 slides.done : $(BASENAME).mha $(BASENAME).mp4
 slides.done : $(BASENAME)_hull_02.mha hull.mha $(BASENAME)_hull_02.vtp hull.vtp
 slides.done : $(BASENAME)_hull_02-seg.mha mask.mha
@@ -217,6 +219,12 @@ mask.mha : $(BASENAME)_hull_02-seg.mha # general name
 
 $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask should be after rsi
 	ln -sf $< $@
+
+%_ROI01.mha : %.mha
+	subimage_extract $< $@ 1  730 1600 830  100 100 100 # from GUI
+
+%_ROI02.mha : %.mha
+	subimage_extract $< $@ 1  800 1450 700  100 100 100 # from GUI
 
 $(BASENAME)%mhd $(BASENAME)%raw : $(BASENAME)%mha
 	file_converter $< $(basename $@).mhd 0
