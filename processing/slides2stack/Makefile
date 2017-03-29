@@ -221,10 +221,10 @@ $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask sh
 	ln -sf $< $@
 
 %_ROI01.mha : %.mha
-	subimage_extract $< $@ 1  730 1600 830  100 100 100 # from GUI
+	subimage_extract $< $@ 1  680 1550 780  200 200 200 # from GUI
 
 %_ROI02.mha : %.mha
-	subimage_extract $< $@ 1  800 1450 700  100 100 100 # from GUI
+	subimage_extract $< $@ 1  750 1400 650  200 200 200 # from GUI
 
 $(BASENAME)%mhd $(BASENAME)%raw : $(BASENAME)%mha
 	file_converter $< $(basename $@).mhd 0
