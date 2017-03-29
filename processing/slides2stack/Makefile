@@ -245,6 +245,12 @@ $(BASENAME).raw : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_hull.raw
 
 	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
+%@5fps.mp4 : %.raw %.mhd %.2pass.log %.2pass.log.mbtree %.ass
+	touch $@.stime
+	mencoder $< -rawvideo `awk '/DimSize/{printf("w=%d:h=%d:y8", $$3, $$4)}' $*.mhd` -demuxer rawvideo -vf scale=640:-11 -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log -ass -sub $*.ass
+
+	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
+
 # MR3006g_OT1.png : %.png : %.tif ## as tile cannot stream (so far) insufficient RAM without binning
 MR3006g_OT1_b+64.png MR3006g_OT2_b+64.png : %_b+64.png : %.tif
 	BF_MAX_MEM=$(BFmem) bfconvert -no-upgrade -overwrite -tilex 16384 -tiley 16384  $< $*_T%m.tif # 170187/8 == 21273.375 : 16384/64 == 256 ; 21248/64 == 332
