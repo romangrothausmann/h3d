@@ -99,7 +99,7 @@ BFmem=10g
 
 all : slides.done
 
-intussus : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI01.mp4  $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI02.mp4
+intussus : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI01@5fps.mp4  $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI02@5fps.mp4
 
 slides.done : $(BASENAME).mha $(BASENAME).mp4
 slides.done : $(BASENAME)_hull_02.mha hull.mha $(BASENAME)_hull_02.vtp hull.vtp
@@ -245,9 +245,9 @@ $(BASENAME).raw : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_hull.raw
 
 	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
-%@5fps.mp4 : %.raw %.mhd %.2pass.log %.2pass.log.mbtree %.ass
+%@5fps.mp4 : %.raw %.mhd %.ass
 	touch $@.stime
-	mencoder $< -rawvideo `awk '/DimSize/{printf("w=%d:h=%d:y8", $$3, $$4)}' $*.mhd` -demuxer rawvideo -vf scale=640:-11 -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log -ass -sub $*.ass
+	mencoder $< -rawvideo `awk '/DimSize/{printf("w=%d:h=%d:y8", $$3, $$4)}' $*.mhd` -demuxer rawvideo -vf scale=640:-11 -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto  -fps 5 -passlogfile $*.2pass.log -ass -sub $*.ass
 
 	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
