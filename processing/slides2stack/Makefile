@@ -99,7 +99,7 @@ BFmem=10g
 
 all : slides.done
 
-intussus : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI01@5fps.mp4  $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI02@5fps.mp4
+intussus : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask_ROI01@5fps.mp4  $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask_ROI02@5fps.mp4 # need other ROIs: $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI01@5fps.mp4  $(BASENAME)_raw_rep_smROISBS_md+3+3+0_ROI02@5fps.mp4
 
 slides.done : $(BASENAME).mha $(BASENAME).mp4
 slides.done : $(BASENAME)_hull_02.mha hull.mha $(BASENAME)_hull_02.vtp hull.vtp
