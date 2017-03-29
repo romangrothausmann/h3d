@@ -218,19 +218,22 @@ mask.mha : $(BASENAME)_hull_02-seg.mha # general name
 $(BASENAME).mha : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_mask.mha # mask should be after rsi
 	ln -sf $< $@
 
-$(BASENAME)%mhd $(BASENAME)%raw : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_hull.mha
+$(BASENAME)%mhd $(BASENAME)%raw : $(BASENAME)%mha
 	file_converter $< $(basename $@).mhd 0
+
+$(BASENAME).raw : $(BASENAME)_raw_rep_smROISBS_md+3+3+0_rsi+1_hull.raw
+	ln -sf $< $@
 
 %.ass : ../../manual/processing/default.ass
 	ln -sf $< $@
 
-%.mp4.1p %.2pass.log %.2pass.log.mbtree : %.raw
+%.mp4.1p %.2pass.log %.2pass.log.mbtree : %.raw %.mhd
 	touch $@.stime
-	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o $*.mp4.1p -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=1  -fps 25 -passlogfile $*.2pass.log
+	mencoder $< -rawvideo `awk '/DimSize/{printf("w=%d:h=%d:y8", $$3, $$4)}' $*.mhd` -demuxer rawvideo -vf scale=640:-11 -o $*.mp4.1p -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=1  -fps 25 -passlogfile $*.2pass.log
 
-%.mp4 : %.raw %.2pass.log %.2pass.log.mbtree %.ass
+%.mp4 : %.raw %.mhd %.2pass.log %.2pass.log.mbtree %.ass
 	touch $@.stime
-	mencoder $< -rawvideo w=3048:h=3279:fps=25.0:y8 -demuxer rawvideo -vf scale=640:-11 -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log -ass -sub $*.ass
+	mencoder $< -rawvideo `awk '/DimSize/{printf("w=%d:h=%d:y8", $$3, $$4)}' $*.mhd` -demuxer rawvideo -vf scale=640:-11 -o _$@        -ovc x264 -x264encopts preset=veryslow:fast_pskip=0:tune=film:frameref=15:bitrate=2000:threads=auto:pass=2  -fps 25 -passlogfile $*.2pass.log -ass -sub $*.ass
 
 	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
