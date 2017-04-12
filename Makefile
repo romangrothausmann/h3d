@@ -63,6 +63,7 @@ EXECUTABLES+= make2graph
 EXECUTABLES+= unpigz
 EXECUTABLES+= pbzip2
 EXECUTABLES+= mmv
+EXECUTABLES+= neato
 EXECUTABLES+= $(VGLRUN)
 
 K:= $(foreach exec,$(EXECUTABLES),\
