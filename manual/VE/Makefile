@@ -100,6 +100,14 @@ Bt2A45/render_000000.png : Bt2A45.blend # 000000 not replaced by % to avoid mult
 	ln -sf $*/$@ .
 	rm divx2pass.log divx2pass.log.mbtree
 
+%.avi : %/render_000000.png %.ass
+	mencoder mf://$*/*.png -o $*/$@  -ovc lavc -lavcopts vcodec=msmpeg4v2:vhq:vbitrate=24000000:vpass=1  -fps 25 && \
+	mencoder mf://$*/*.png -o $*/$@  -ovc lavc -lavcopts vcodec=msmpeg4v2:vhq:vbitrate=24000000:vpass=2  -fps 25 -ass -sub $*.ass
+
+	ln -sf $*/$@ .
+	-rm divx2pass.log
+
+
 fig_ov01/ :
 	+mkdir -p $@
 
