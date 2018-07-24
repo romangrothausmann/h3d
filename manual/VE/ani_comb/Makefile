@@ -66,6 +66,9 @@ A452Bt/render%.png : ../A452Bt/render%.png
 
 	ffmpeg -y -i _$@ -vcodec copy -acodec copy -movflags +faststart $@ # -movflags must appear after -i !!! ffmpeg -f image2 -i $*/render_%06d.png -movflags +faststart */$@ # -f image2 does not regard -movflags re-enc is needed!
 
+%m.mp4 : %.mp4 # 480p: https://stackoverflow.com/questions/25670902/using-ffmpeg-to-generate-multiple-resolutions-with-the-exact-same-keyframe-posit
+	ffmpeg -i $< -vf scale=854:480 -vcodec libx264 -profile:v main -acodec libvo_aacenc -b:a 128k -ac 2 $@ 
+
 
 # %.mpg : %.flist
 # 	mencoder -ovc lavc -of mpeg -mpegopts format=dvd:tsaf -vf-clr -srate 48000 -ofps 25 -lavcopts vcodec=mpeg2video:vpass=1:vrc_buf_size=1835:vrc_maxrate=8264:vbitrate=4500:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=2:predia=2:o=mpv_flags=+cbp_rd+mv0:lmin=1:dc=10:acodec=ac3:abitrate=384:vstrict=0:aspect=16/9 -o $@  mf://@$<
